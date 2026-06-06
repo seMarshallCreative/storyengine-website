@@ -383,7 +383,7 @@
 
     /* ─────────────── SO I REBUILT ─────────────── */
     #rebuilt {
-      background: var(--ink-2); padding: 8rem 3rem; position: relative; overflow: hidden;
+      background: var(--ink-2); padding: 6rem 3rem; position: relative; overflow: hidden;
     }
     .rebuilt-wrap { max-width: 1300px; margin: 0 auto; }
     .rebuilt-grid {
@@ -437,121 +437,123 @@
 
     /* ─────────────── ONE SHOOT DIAGRAM ─────────────── */
     #diagram {
-      background: var(--ink); padding: 8rem 3rem; position: relative; overflow: hidden;
+      background: var(--ink); padding: 6rem 3rem; position: relative; overflow: hidden;
     }
-    .diag-wrap { max-width: 860px; margin: 0 auto; }
+    .diag-wrap { max-width: 760px; margin: 0 auto; }
     .diag-intro {
-      font-size: .9rem; color: rgba(242,237,228,.32);
-      line-height: 1.75; margin-bottom: 4rem;
-      max-width: 500px; text-align: center;
+      font-size: .85rem; color: rgba(242,237,228,.28);
+      line-height: 1.75; margin-bottom: 3.5rem;
+      max-width: 420px; text-align: center;
       margin-left: auto; margin-right: auto;
     }
 
     /* Source box */
     .diag-source {
-      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
-      padding: 1.4rem 3rem; border: 1px solid rgba(242,237,228,.12);
-      background: rgba(242,237,228,.025);
+      display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+      padding: 1.1rem 2.5rem; border: 1px solid rgba(242,237,228,.1);
+      background: rgba(242,237,228,.02); width: fit-content; margin: 0 auto;
     }
-    .diag-src-label {
-      font-family: var(--f); font-size: .56rem; font-weight: 600;
-      letter-spacing: .26em; text-transform: uppercase; color: var(--sand);
-    }
-    .diag-src-sep { width: 1px; height: 1.4rem; background: var(--rule-dk); }
+    .diag-src-icon { opacity: .35; width: 16px; height: 16px; flex-shrink: 0; }
     .diag-src-name {
-      font-family: var(--f); font-size: 2.4rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: .04em; color: #f2ede4;
+      font-family: var(--f); font-size: 1rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .22em; color: rgba(242,237,228,.7);
     }
 
-    /* Connectors */
-    .diag-line {
-      display: flex; align-items: stretch; justify-content: center;
-      height: 36px;
+    /* Connectors — explicit divs, no pseudo-elements */
+    .diag-vline {
+      width: 1px; height: 32px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.07), rgba(137,26,16,.3));
+      margin: 0 auto;
     }
-    .diag-line::before {
-      content: ''; width: 1px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.08), rgba(137,26,16,.4));
+    .diag-hbranch {
+      display: flex; align-items: flex-start; gap: 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin-bottom: 0;
     }
 
-    /* Thumbnails */
-    .diag-thumbs {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+    /* Asset tiles — 7 clean blocks */
+    .diag-assets {
+      display: flex; gap: 4px; align-items: stretch;
     }
-    .diag-thumb {
-      aspect-ratio: 16/9;
-      background: linear-gradient(135deg, #1c1810, #100e08);
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
+    .diag-asset {
+      flex: 1; min-height: 64px;
+      border: 1px solid rgba(242,237,228,.13);
+      background: rgba(242,237,228,.03);
+      transition: background .3s, border-color .3s;
     }
-    .diag-thumb::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.05), transparent);
+    .diag-asset:hover {
+      background: rgba(242,237,228,.07);
+      border-color: rgba(242,237,228,.22);
     }
-    .diag-thumb svg { width: 16px; opacity: .09; }
+    /* Slight variation for organic feel */
+    .diag-asset:nth-child(1) { min-height: 72px; }
+    .diag-asset:nth-child(3) { min-height: 80px; }
+    .diag-asset:nth-child(5) { min-height: 70px; }
+    .diag-asset:nth-child(7) { min-height: 76px; }
 
     /* Output channels */
     .diag-outputs {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
     }
     .diag-out {
-      padding: 1.4rem 1.2rem;
-      border: 1px solid var(--rule-dk);
-      background: rgba(242,237,228,.018);
+      padding: 1.1rem 1rem;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(242,237,228,.015);
       transition: background .2s, border-color .2s;
     }
-    .diag-out:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.12); }
+    .diag-out:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.1); }
     .diag-out-num {
-      display: block; font-family: var(--f); font-size: .52rem; font-weight: 700;
-      letter-spacing: .22em; color: var(--sand); margin-bottom: .5rem;
+      display: block; font-family: var(--f); font-size: .48rem; font-weight: 700;
+      letter-spacing: .22em; color: var(--sand); margin-bottom: .4rem;
     }
     .diag-out-name {
-      font-family: var(--f); font-size: 1.3rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: .04em; color: #f2ede4; line-height: 1;
+      font-family: var(--f); font-size: 1.1rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; color: rgba(242,237,228,.65); line-height: 1;
     }
 
     /* Future launches */
     .diag-future {
-      padding: 1.6rem 2rem;
-      border: 1px solid rgba(137,26,16,.35);
-      background: rgba(137,26,16,.06);
-      display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+      padding: 1.3rem 1.8rem;
+      border: 1px solid rgba(137,26,16,.28);
+      background: rgba(137,26,16,.04);
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     }
     .diag-future-num {
-      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      font-family: var(--f); font-size: .48rem; font-weight: 700;
       letter-spacing: .22em; color: var(--red); flex-shrink: 0;
     }
     .diag-future-name {
-      font-family: var(--f); font-size: 1.6rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: .04em; color: #f2ede4;
+      font-family: var(--f); font-size: 1.3rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; color: rgba(242,237,228,.7);
     }
     .diag-future-desc {
-      font-size: .75rem; color: rgba(242,237,228,.25);
+      font-size: .7rem; color: rgba(242,237,228,.2);
       letter-spacing: .04em; margin-left: auto;
     }
 
     /* ─────────────── PRODUCES / OPTIONS ─────────────── */
     #produces {
       background: var(--cream); color: var(--ink);
-      padding: 8rem 3rem; position: relative; overflow: hidden;
+      padding: 6rem 3rem; position: relative; overflow: hidden;
     }
     .prod-wrap { max-width: 1300px; margin: 0 auto; }
     .prod-hl {
-      font-family: var(--f); font-size: clamp(3rem, 8vw, 7.5rem);
+      font-family: var(--f); font-size: clamp(2.4rem, 6vw, 5.5rem);
       font-weight: 800; line-height: .92; text-transform: uppercase;
       color: var(--ink); margin-bottom: 1rem; letter-spacing: -.01em;
     }
     .prod-hl .red { color: var(--red); }
     .prod-hl .dim { color: rgba(13,12,10,.2); }
     .prod-sub {
-      font-size: .9rem; color: var(--mid);
-      margin-bottom: 6rem; max-width: 440px; line-height: 1.7;
+      font-size: .85rem; color: var(--mid);
+      margin-bottom: 4rem; max-width: 380px; line-height: 1.7;
     }
     .prod-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
     }
     .prod-item {
-      padding: 2.5rem 2rem 2.5rem 0;
-      border-top: 2px solid var(--ink); transition: border-color .25s;
+      padding: 1.8rem 1.5rem 1.8rem 0;
+      border-top: 1px solid rgba(13,12,10,.18); transition: border-color .25s;
     }
     .prod-item:hover { border-color: var(--red); }
     .prod-num {
@@ -559,7 +561,7 @@
       letter-spacing: .22em; color: rgba(13,12,10,.25); margin-bottom: .8rem;
     }
     .prod-name {
-      font-family: var(--f); font-size: 2rem; font-weight: 800;
+      font-family: var(--f); font-size: 1.5rem; font-weight: 800;
       text-transform: uppercase; letter-spacing: .04em;
       color: var(--ink); line-height: 1; margin-bottom: .2rem;
     }
@@ -588,7 +590,7 @@
 
     /* ─────────────── HOW IT HOLDS TOGETHER ─────────────── */
     #holds {
-      background: var(--ink-2); padding: 9rem 3rem; position: relative; overflow: hidden;
+      background: var(--ink-2); padding: 6rem 3rem; position: relative; overflow: hidden;
     }
     .holds-wrap { max-width: 1100px; margin: 0 auto; }
     .holds-hl {
@@ -613,7 +615,7 @@
 
     /* ─────────────── BAHÉ DETAIL ─────────────── */
     #bahe-detail {
-      background: var(--ink); padding: 8rem 3rem; position: relative; overflow: hidden;
+      background: var(--ink); padding: 6rem 3rem; position: relative; overflow: hidden;
     }
     .bahe-wrap {
       max-width: 1200px; margin: 0 auto;
@@ -721,7 +723,9 @@
       .n-links { display: none; }
       .case-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .rebuilt-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .diag-thumbs, .diag-outputs { grid-template-columns: repeat(2, 1fr); }
+      .diag-assets { flex-wrap: wrap; }
+      .diag-asset { min-width: calc(25% - 4px); }
+      .diag-outputs { grid-template-columns: repeat(2, 1fr); }
       .bahe-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .bahe-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-dk); padding-top: 3rem; }
     }
@@ -954,36 +958,30 @@
 <section id="diagram">
   <div class="diag-wrap">
     <div class="s-label light fu" style="justify-content:center;"><span class="dash"></span> The system</div>
-    <p class="diag-intro fu" style="transition-delay:.06s">One shoot designed to support far more than a single campaign.</p>
+    <p class="diag-intro fu" style="transition-delay:.06s">One shoot. Seven assets. Four channels. Keeps working long after the day.</p>
 
     <div class="fu" style="transition-delay:.1s">
 
       <div class="diag-source">
-        <span class="diag-src-label">Input</span>
-        <span class="diag-src-sep"></span>
+        <svg class="diag-src-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         <span class="diag-src-name">One Shoot</span>
       </div>
 
-      <div class="diag-line"></div>
+      <div class="diag-vline"></div>
 
-      <div class="diag-thumbs">
-        <div class="diag-thumb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15" fill="white" opacity=".2" stroke="none"/></svg>
-        </div>
-        <div class="diag-thumb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15" fill="white" opacity=".2" stroke="none"/></svg>
-        </div>
-        <div class="diag-thumb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15" fill="white" opacity=".2" stroke="none"/></svg>
-        </div>
-        <div class="diag-thumb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15" fill="white" opacity=".2" stroke="none"/></svg>
-        </div>
+      <div class="diag-assets">
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
       </div>
 
-      <div class="diag-line"></div>
+      <div class="diag-vline"></div>
 
-      <div class="diag-outputs" style="margin-bottom:3px;">
+      <div class="diag-outputs" style="margin-bottom:2px;">
         <div class="diag-out">
           <span class="diag-out-num">01</span>
           <span class="diag-out-name">Social</span>
@@ -1002,7 +1000,7 @@
         </div>
       </div>
 
-      <div class="diag-line"></div>
+      <div class="diag-vline"></div>
 
       <div class="diag-future">
         <span class="diag-future-num">05</span>
@@ -1085,12 +1083,12 @@
       rebuilt.
     </h2>
     <p class="holds-sub fu" style="transition-delay:.1s">
-      Every shot is captured by function, not sequence. So when a new campaign lands, a new product launches, or a new platform opens up â the library is already there.
+      Every shot is captured by function, not sequence. So when a new campaign lands, a new product launches, or a new platform opens up — the library is already there.
     </p>
   </div>
 </section>
 
-<!-- BAHÃ: WHAT CHANGED -->
+<!-- BAHÉ: WHAT CHANGED -->
 <section id="bahe-detail">
   <div class="bahe-wrap">
     <div class="fu">
@@ -1106,13 +1104,13 @@
         <span class="bahe-tag on">Foundation</span>
         <span class="bahe-tag on">Action</span>
       </div>
-      <span class="bahe-case-label">What changed for BahÃ©</span>
+      <span class="bahe-case-label">What changed for Bahé</span>
     </div>
     <div class="bahe-right fu" style="transition-delay:.12s">
       <blockquote class="bahe-quote">
         "It's really useful to have that content as a library we can keep using."
       </blockquote>
-      <p class="bahe-attr">Alex, Founder of BahÃ©</p>
+      <p class="bahe-attr">Alex, Founder of Bahé</p>
     </div>
   </div>
 </section>
@@ -1132,7 +1130,7 @@
     </p>
     <div class="contact-row fu" style="transition-delay:.14s">
       <a href="mailto:hello@storyengine.video" class="btn fill">Get in touch</a>
-      <a href="#pilot" class="ghost-link">See how a pilot works â</a>
+      <a href="#pilot" class="ghost-link">See how a pilot works →</a>
     </div>
   </div>
 </section>
@@ -1142,7 +1140,7 @@
   <div class="f-left">
     <a href="#hero" class="f-logo" style="display:flex;align-items:center;gap:.7rem;">
       <img src="logo-mark.png" width="22" height="22" alt="Marshall Creative" style="display:block;opacity:.45;">
-      Story Engineâ¢
+      Story Engine™
     </a>
     <a href="https://instagram.com/storyengine.studio" target="_blank" rel="noopener" class="f-ig" title="Instagram">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1152,7 +1150,7 @@
       </svg>
     </a>
   </div>
-  <p>Â© 2026 Seb Marshall. All rights reserved. â storyengine.video</p>
+  <p>© 2026 Seb Marshall. All rights reserved. — storyengine.video</p>
 </footer>
 
 <script>
@@ -1170,7 +1168,7 @@
       : 'rgba(13,12,10,.82)';
   });
 
-  // Pattern lines â cascade in on scroll
+  // Pattern lines — cascade in on scroll
   const patLines = document.querySelectorAll('.pat-lines li');
   const patObs = new IntersectionObserver(es => {
     es.forEach(e => {
