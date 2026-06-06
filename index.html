@@ -31,7 +31,7 @@
       color: #f2ede4;
       font-family: var(--b);
       font-weight: 300;
-      line-height: 1.6;
+      line-height: 1.7;
       overflow-x: hidden;
     }
 
@@ -171,10 +171,10 @@
 
     .hero-hl {
       font-family: var(--f);
-      font-size: clamp(4.8rem, 13.5vw, 13rem);
-      font-weight: 800; line-height: .9; text-transform: uppercase;
-      letter-spacing: -.02em; color: #f2ede4;
-      margin-left: -.04em; margin-bottom: 3rem;
+      font-size: clamp(1.8rem, 3.4vw, 3.8rem);
+      font-weight: 700; line-height: .98; text-transform: uppercase;
+      letter-spacing: -.01em; color: #f2ede4;
+      margin-left: -.03em; margin-bottom: 2rem;
     }
     .hero-hl .l-dim  { opacity: .14; }
     .hero-hl .l-red  { color: var(--red-2); }
@@ -334,8 +334,8 @@
       color: rgba(242,237,228,.28); margin-bottom: 1.8rem; position: relative; z-index: 1;
     }
     .pilot-hl {
-      font-family: var(--f); font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 800; line-height: .95; text-transform: uppercase; color: #f2ede4;
+      font-family: var(--f); font-size: clamp(2.6rem, 5.5vw, 5rem);
+      font-weight: 700; line-height: .98; text-transform: uppercase; color: #f2ede4;
       margin-bottom: 2rem; position: relative; z-index: 1;
     }
     .pilot-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
@@ -361,12 +361,12 @@
     }
     .pat-lines { list-style: none; border-top: 1px solid var(--rule-lt); }
     .pat-lines li {
-      font-family: var(--f); font-size: clamp(1.6rem, 3.8vw, 3rem);
-      font-weight: 700; text-transform: uppercase; letter-spacing: .01em;
+      font-family: var(--f); font-size: clamp(1.4rem, 3.2vw, 2.6rem);
+      font-weight: 600; text-transform: uppercase; letter-spacing: .01em;
       padding: .55rem 0; border-bottom: 1px solid var(--rule-lt);
       color: rgba(13,12,10,.15); transition: color .35s;
       display: flex; align-items: baseline; justify-content: space-between;
-      line-height: 1.1;
+      line-height: 1.15;
     }
     .pat-lines li.active,
     .pat-lines li:hover { color: var(--ink); }
@@ -391,8 +391,8 @@
       gap: 6rem; align-items: start; margin-bottom: 5rem;
     }
     .rebuilt-hl {
-      font-family: var(--f); font-size: clamp(3rem, 7vw, 6.5rem);
-      font-weight: 800; line-height: .92; text-transform: uppercase;
+      font-family: var(--f); font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 700; line-height: .96; text-transform: uppercase;
       color: #f2ede4; letter-spacing: -.01em;
     }
     .rebuilt-hl em { font-style: italic; color: var(--red-2); }
@@ -471,64 +471,82 @@
       margin-bottom: 0;
     }
 
-    /* Asset tiles — 7 clean blocks */
+    /* Asset tiles — 14 squares, 2 rows of 7 */
     .diag-assets {
-      display: flex; gap: 4px; align-items: stretch;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 4px;
     }
     .diag-asset {
-      flex: 1; min-height: 64px;
-      border: 1px solid rgba(242,237,228,.13);
-      background: rgba(242,237,228,.03);
+      aspect-ratio: 1;
+      border-radius: 5px;
+      border: 1px solid rgba(242,237,228,.10);
+      background: rgba(242,237,228,.04);
       transition: background .3s, border-color .3s;
     }
-    .diag-asset:hover {
-      background: rgba(242,237,228,.07);
-      border-color: rgba(242,237,228,.22);
-    }
-    /* Slight variation for organic feel */
-    .diag-asset:nth-child(1) { min-height: 72px; }
-    .diag-asset:nth-child(3) { min-height: 80px; }
-    .diag-asset:nth-child(5) { min-height: 70px; }
-    .diag-asset:nth-child(7) { min-height: 76px; }
+    .diag-asset:hover { background: rgba(242,237,228,.12); border-color: rgba(242,237,228,.28); }
 
-    /* Output channels */
-    .diag-outputs {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    /* Varied transparency per tile */
+    .diag-asset:nth-child(1)  { background: rgba(242,237,228,.22); border-color: rgba(242,237,228,.36); }
+    .diag-asset:nth-child(2)  { background: rgba(242,237,228,.07); border-color: rgba(242,237,228,.13); }
+    .diag-asset:nth-child(3)  { background: rgba(242,237,228,.30); border-color: rgba(242,237,228,.46); }
+    .diag-asset:nth-child(4)  { background: rgba(242,237,228,.05); border-color: rgba(242,237,228,.10); }
+    .diag-asset:nth-child(5)  { background: rgba(242,237,228,.15); border-color: rgba(242,237,228,.26); }
+    .diag-asset:nth-child(6)  { background: rgba(242,237,228,.38); border-color: rgba(242,237,228,.55); }
+    .diag-asset:nth-child(7)  { background: rgba(242,237,228,.08); border-color: rgba(242,237,228,.15); }
+    .diag-asset:nth-child(8)  { background: rgba(242,237,228,.18); border-color: rgba(242,237,228,.30); }
+    .diag-asset:nth-child(9)  { background: rgba(242,237,228,.11); border-color: rgba(242,237,228,.20); }
+    .diag-asset:nth-child(10) { background: rgba(242,237,228,.26); border-color: rgba(242,237,228,.40); }
+    .diag-asset:nth-child(11) { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.08); }
+    .diag-asset:nth-child(12) { background: rgba(242,237,228,.20); border-color: rgba(242,237,228,.33); }
+    .diag-asset:nth-child(13) { background: rgba(242,237,228,.13); border-color: rgba(242,237,228,.22); }
+    .diag-asset:nth-child(14) { background: rgba(242,237,228,.06); border-color: rgba(242,237,228,.12); }
+
+    /* Campaign blocks */
+    .diag-campaigns {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
     }
-    .diag-out {
-      padding: 1.1rem 1rem;
+    .diag-campaign {
+      padding: 1.2rem 1.2rem 1.4rem;
       border: 1px solid rgba(255,255,255,.06);
       background: rgba(242,237,228,.015);
       transition: background .2s, border-color .2s;
     }
-    .diag-out:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.1); }
-    .diag-out-num {
-      display: block; font-family: var(--f); font-size: .48rem; font-weight: 700;
-      letter-spacing: .22em; color: var(--sand); margin-bottom: .4rem;
+    .diag-campaign:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.1); }
+    .diag-camp-num {
+      display: block; font-family: var(--f); font-size: .44rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase; color: var(--sand); margin-bottom: .7rem;
     }
-    .diag-out-name {
-      font-family: var(--f); font-size: 1.1rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .04em; color: rgba(242,237,228,.65); line-height: 1;
+    .diag-camp-body { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem; }
+    .diag-camp-who {
+      font-family: var(--f); font-size: .95rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em; color: rgba(242,237,228,.75); line-height: 1;
+    }
+    .diag-camp-sep { color: var(--red); font-family: var(--f); font-size: .85rem; font-weight: 400; }
+    .diag-camp-what {
+      font-size: .75rem; color: rgba(242,237,228,.32);
+      font-style: italic; letter-spacing: .02em; line-height: 1.3;
     }
 
-    /* Future launches */
-    .diag-future {
-      padding: 1.3rem 1.8rem;
-      border: 1px solid rgba(137,26,16,.28);
+    /* Channels footer */
+    .diag-channels {
+      padding: 1.1rem 1.8rem;
+      border: 1px solid rgba(137,26,16,.22);
       background: rgba(137,26,16,.04);
       display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     }
-    .diag-future-num {
-      font-family: var(--f); font-size: .48rem; font-weight: 700;
-      letter-spacing: .22em; color: var(--red); flex-shrink: 0;
+    .diag-ch-label {
+      font-family: var(--f); font-size: .44rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase; color: var(--red); flex-shrink: 0;
     }
-    .diag-future-name {
-      font-family: var(--f); font-size: 1.3rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .04em; color: rgba(242,237,228,.7);
+    .diag-ch-list {
+      font-family: var(--f); font-size: .85rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: rgba(242,237,228,.55);
     }
-    .diag-future-desc {
-      font-size: .7rem; color: rgba(242,237,228,.2);
-      letter-spacing: .04em; margin-left: auto;
+    .diag-ch-note {
+      font-size: .65rem; color: rgba(242,237,228,.18);
+      letter-spacing: .04em; margin-left: auto; font-style: italic;
     }
 
     /* ─────────────── PRODUCES / OPTIONS ─────────────── */
@@ -538,8 +556,8 @@
     }
     .prod-wrap { max-width: 1300px; margin: 0 auto; }
     .prod-hl {
-      font-family: var(--f); font-size: clamp(2.4rem, 6vw, 5.5rem);
-      font-weight: 800; line-height: .92; text-transform: uppercase;
+      font-family: var(--f); font-size: clamp(2.2rem, 5vw, 4.8rem);
+      font-weight: 700; line-height: .96; text-transform: uppercase;
       color: var(--ink); margin-bottom: 1rem; letter-spacing: -.01em;
     }
     .prod-hl .red { color: var(--red); }
@@ -594,9 +612,9 @@
     }
     .holds-wrap { max-width: 1100px; margin: 0 auto; }
     .holds-hl {
-      font-family: var(--f); font-size: clamp(4rem, 10vw, 9.5rem);
-      font-weight: 800; line-height: .9; text-transform: uppercase; color: #f2ede4;
-      margin-bottom: 3rem; letter-spacing: -.02em;
+      font-family: var(--f); font-size: clamp(3rem, 7.5vw, 7.5rem);
+      font-weight: 700; line-height: .94; text-transform: uppercase; color: #f2ede4;
+      margin-bottom: 3rem; letter-spacing: -.015em;
     }
     .holds-hl .wd { opacity: .12; }
     .holds-hl em { font-style: italic; }
@@ -680,9 +698,9 @@
       color: rgba(242,237,228,.25); margin-bottom: 2rem;
     }
     .contact-hl {
-      font-family: var(--f); font-size: clamp(3.5rem, 10vw, 9rem);
-      font-weight: 800; text-transform: uppercase; line-height: .92;
-      color: #f2ede4; margin-bottom: 3rem; letter-spacing: -.02em;
+      font-family: var(--f); font-size: clamp(3rem, 7.5vw, 7.5rem);
+      font-weight: 700; text-transform: uppercase; line-height: .94;
+      color: #f2ede4; margin-bottom: 3rem; letter-spacing: -.015em;
     }
     .contact-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
     .contact-desc {
@@ -723,16 +741,15 @@
       .n-links { display: none; }
       .case-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .rebuilt-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .diag-assets { flex-wrap: wrap; }
-      .diag-asset { min-width: calc(25% - 4px); }
-      .diag-outputs { grid-template-columns: repeat(2, 1fr); }
+      .diag-assets { grid-template-columns: repeat(7, 1fr); }
+      .diag-campaigns { grid-template-columns: 1fr; }
       .bahe-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .bahe-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-dk); padding-top: 3rem; }
     }
     @media (max-width: 560px) {
       .prod-grid { grid-template-columns: 1fr; }
       #strip { grid-template-columns: 1fr; }
-      .hero-hl { font-size: 4.2rem; }
+      .hero-hl { font-size: 1.8rem; }
       footer { flex-direction: column; gap: .8rem; text-align: center; }
     }
   </style>
@@ -958,7 +975,7 @@
 <section id="diagram">
   <div class="diag-wrap">
     <div class="s-label light fu" style="justify-content:center;"><span class="dash"></span> The system</div>
-    <p class="diag-intro fu" style="transition-delay:.06s">One shoot. Seven assets. Four channels. Keeps working long after the day.</p>
+    <p class="diag-intro fu" style="transition-delay:.06s">One shoot. Multiple campaigns. Each one built around a specific person and problem.</p>
 
     <div class="fu" style="transition-delay:.1s">
 
@@ -977,35 +994,50 @@
         <div class="diag-asset"></div>
         <div class="diag-asset"></div>
         <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
+        <div class="diag-asset"></div>
       </div>
 
       <div class="diag-vline"></div>
 
-      <div class="diag-outputs" style="margin-bottom:2px;">
-        <div class="diag-out">
-          <span class="diag-out-num">01</span>
-          <span class="diag-out-name">Social</span>
+      <div class="diag-campaigns">
+        <div class="diag-campaign">
+          <span class="diag-camp-num">Campaign 01</span>
+          <div class="diag-camp-body">
+            <span class="diag-camp-who">New customer</span>
+            <span class="diag-camp-sep">→</span>
+            <span class="diag-camp-what">Why this is worth it</span>
+          </div>
         </div>
-        <div class="diag-out">
-          <span class="diag-out-num">02</span>
-          <span class="diag-out-name">Product</span>
+        <div class="diag-campaign">
+          <span class="diag-camp-num">Campaign 02</span>
+          <div class="diag-camp-body">
+            <span class="diag-camp-who">Returning buyer</span>
+            <span class="diag-camp-sep">→</span>
+            <span class="diag-camp-what">What's changed since last time</span>
+          </div>
         </div>
-        <div class="diag-out">
-          <span class="diag-out-num">03</span>
-          <span class="diag-out-name">Founder</span>
-        </div>
-        <div class="diag-out">
-          <span class="diag-out-num">04</span>
-          <span class="diag-out-name">Email</span>
+        <div class="diag-campaign">
+          <span class="diag-camp-num">Campaign 03</span>
+          <div class="diag-camp-body">
+            <span class="diag-camp-who">Gift buyer</span>
+            <span class="diag-camp-sep">→</span>
+            <span class="diag-camp-what">Easy to choose, easy to share</span>
+          </div>
         </div>
       </div>
 
       <div class="diag-vline"></div>
 
-      <div class="diag-future">
-        <span class="diag-future-num">05</span>
-        <span class="diag-future-name">Future Launches</span>
-        <span class="diag-future-desc">Evergreen clips that keep working long after the shoot.</span>
+      <div class="diag-channels">
+        <span class="diag-ch-label">Any channel</span>
+        <span class="diag-ch-list">Social — Product — Founder — Email</span>
+        <span class="diag-ch-note">Deployed however the campaign needs it.</span>
       </div>
 
     </div>
