@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story Engine™ — Visual Continuity for Modern Brands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,600;1,700;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0c0a;
+      --ink-2:   #181510;
+      --cream:   #e9e3d6;
+      --cream-2: #f0ebe0;
+      --mid:     #7a7060;
+      --red:     #891a10;
+      --red-2:   #a82015;
+      --rule-dk: rgba(255,255,255,0.07);
+      --rule-lt: rgba(13,12,10,0.09);
+      --f:       'Barlow Condensed', sans-serif;
+      --b:       'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: #f2ede4;
+      font-family: var(--b);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─────────────── NAV ─────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(13,12,10,0.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule-dk);
+      transition: padding .3s, background .3s;
+    }
+
+    .n-logo { text-decoration: none; display: flex; align-items: center; gap: .7rem; }
+
+    .n-links {
+      list-style: none; display: flex; gap: 3rem;
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .n-links a {
+      font-family: var(--f); font-size: .7rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.4); text-decoration: none; transition: color .2s;
+    }
+    .n-links a:hover { color: #f2ede4; }
+
+    .n-id { text-align: right; }
+    .n-id .nm { font-family: var(--f); font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1.2; }
+    .n-id .tl { font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(242,237,228,.3); }
+
+    /* ─────────────── HERO ─────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      padding: 6rem 3rem 0;
+      position: relative; overflow: hidden;
+      background: var(--ink-2);
+    }
+
+    /* Film grain — heavier, more organic */
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 3;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: .6;
+      mix-blend-mode: overlay;
+    }
+
+    /* Atmospheric glow — deeper, more cinematic */
+    .hero-glow {
+      position: absolute; z-index: 1;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(137,26,16,.22) 0%, rgba(137,26,16,.04) 50%, transparent 70%);
+      top: -200px; right: -200px;
+      pointer-events: none;
+      animation: glowPulse 8s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: .7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+
+    /* Second glow — bottom left, subtle */
+    .hero-glow-2 {
+      position: absolute; z-index: 1;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(137,26,16,.08) 0%, transparent 70%);
+      bottom: -100px; left: -50px;
+      pointer-events: none;
+    }
+
+    .hero-body {
+      position: relative; z-index: 2;
+      flex: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding-bottom: 3rem;
+    }
+
+    /* Brand identity block — stacked */
+    .hero-eyebrow {
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: .9rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .he-brand {
+      display: flex; align-items: center; gap: .6rem;
+    }
+
+    .he-name {
+      font-family: var(--f); font-size: .8rem; font-weight: 400;
+      letter-spacing: .36em; text-transform: uppercase;
+      color: rgba(242,237,228,.5);
+    }
+
+    .he-badge {
+      font-family: var(--f); font-size: .8rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      background: var(--red); color: #f2ede4;
+      padding: .1em .45em .14em;
+    }
+
+    .he-tagline {
+      font-family: var(--f);
+      font-size: clamp(.85rem, 1.4vw, 1.1rem);
+      font-weight: 300; font-style: italic;
+      letter-spacing: .06em;
+      color: rgba(242,237,228,.35);
+      padding-left: .08em;
+    }
+
+    /* GIANT headline */
+    .hero-hl {
+      font-family: var(--f);
+      font-size: clamp(4.8rem, 13.5vw, 13rem);
+      font-weight: 800;
+      line-height: .9;
+      text-transform: uppercase;
+      letter-spacing: -.02em;
+      color: #f2ede4;
+      margin-left: -.04em;
+      margin-bottom: 3rem;
+    }
+
+    .hero-hl .l-dim  { opacity: .14; }
+    .hero-hl .l-red  { color: var(--red-2); }
+
+    /* Clean strikethrough */
+    .hero-hl .l-thru {
+      position: relative; color: rgba(242,237,228,.16);
+      display: inline-block;
+    }
+    .hero-hl .l-thru::after {
+      content: ''; position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 4px; background: var(--red);
+      transform: translateY(-50%) skewX(-5deg);
+      box-shadow: 0 0 10px rgba(137,26,16,.55);
+    }
+
+    .hero-bottom {
+      position: relative; z-index: 2;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 1.8rem 0 2.8rem;
+      border-top: 1px solid var(--rule-dk);
+    }
+
+    .hero-cta-group { display: flex; align-items: center; gap: 2rem; }
+
+    .btn {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      padding: .85rem 2rem; border: 1px solid rgba(242,237,228,.2);
+      color: #f2ede4; background: transparent;
+      transition: background .25s, border-color .25s, color .25s;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--red); border-color: var(--red); }
+    .btn.fill { background: var(--red); border-color: var(--red); }
+    .btn.fill:hover { background: var(--red-2); border-color: var(--red-2); }
+
+    .ghost-link {
+      font-family: var(--f); font-size: .68rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); text-decoration: none;
+      transition: color .2s;
+    }
+    .ghost-link:hover { color: rgba(242,237,228,.75); }
+
+    .hero-loc {
+      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.2);
+    }
+
+    /* ─────────────── MARQUEE ─────────────── */
+    .marquee-wrap {
+      background: var(--red);
+      overflow: hidden;
+      padding: .55rem 0;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    .marquee-item {
+      font-family: var(--f); font-size: .68rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.85);
+      padding: 0 2.5rem;
+    }
+
+    .marquee-dot {
+      color: rgba(255,255,255,.35);
+      font-size: .45rem; vertical-align: middle;
+    }
+
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─────────────── ABOUT ─────────────── */
+    #about {
+      background: var(--cream);
+      color: var(--ink);
+      padding: 9rem 3rem 7rem;
+      position: relative;
+    }
+
+    .about-wrap {
+      max-width: 1300px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .about-left { padding-right: 7rem; }
+
+    .s-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--mid); display: flex; align-items: center; gap: .7rem;
+      margin-bottom: 3rem;
+    }
+    .s-label .dash { width: 24px; height: 1px; background: var(--red); flex-shrink: 0; }
+
+    .about-lede {
+      font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+      font-weight: 300; line-height: 1.6; color: var(--ink);
+      margin-bottom: 2rem;
+    }
+    .about-lede strong { font-weight: 500; }
+
+    .about-detail {
+      font-size: .9rem; color: var(--mid); line-height: 1.75;
+      margin-bottom: 2.5rem; max-width: 520px;
+    }
+
+    .about-right { position: relative; padding-top: 1rem; }
+
+    .about-photo {
+      width: 100%; aspect-ratio: 3/4;
+      background: #c8c0b0; overflow: hidden; position: relative;
+    }
+
+    .ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #ccc5b8, #b0a898);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .5rem;
+    }
+    .ph svg { width: 28px; opacity: .25; }
+    .ph span { font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; opacity: .35; color: var(--ink); }
+
+    .about-cap {
+      margin-top: .9rem;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .about-cap .nm {
+      font-family: var(--f); font-size: .72rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--ink);
+    }
+    .about-cap .tl { font-size: .65rem; color: var(--mid); }
+
+    .about-bg-text {
+      position: absolute; bottom: -2rem; right: -1rem;
+      font-family: var(--f); font-size: 20rem; font-weight: 800;
+      text-transform: uppercase; line-height: 1;
+      color: rgba(13,12,10,.04); pointer-events: none;
+      user-select: none; z-index: 0;
+    }
+
+    /* ─────────────── PATTERN ─────────────── */
+    #pattern {
+      background: var(--cream-2);
+      color: var(--ink);
+      padding: 5rem 3rem 4rem;
+    }
+
+    .pat-wrap { max-width: 1000px; margin: 0 auto; }
+
+    .pat-lines {
+      list-style: none;
+      border-top: 1px solid var(--rule-lt);
+    }
+
+    .pat-lines li {
+      font-family: var(--f);
+      font-size: clamp(1.6rem, 3.8vw, 3rem);
+      font-weight: 700; text-transform: uppercase;
+      letter-spacing: .01em;
+      padding: .55rem 0;
+      border-bottom: 1px solid var(--rule-lt);
+      color: rgba(13,12,10,.15);
+      transition: color .35s;
+      display: flex; align-items: baseline; justify-content: space-between;
+      line-height: 1.1;
+    }
+
+    .pat-lines li.active,
+    .pat-lines li:hover { color: var(--ink); }
+
+    .pat-lines li .em { font-style: italic; }
+    .pat-lines li .num {
+      font-size: .58rem; font-weight: 600; letter-spacing: .18em;
+      color: rgba(13,12,10,.18);
+      flex-shrink: 0; margin-left: 1rem;
+    }
+    .pat-lines li.punchline {
+      color: var(--ink); font-style: italic;
+      border-bottom: none;
+      padding-top: 1rem;
+    }
+    .pat-lines li.punchline .red { color: var(--red); font-style: normal; }
+
+    /* ─────────────── PILOT ─────────────── */
+    #pilot {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+      background: var(--ink);
+    }
+
+    .pilot-img {
+      position: relative; overflow: hidden;
+      background: #141008;
+    }
+
+    .pilot-img-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(150deg, #201a10, #100e08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pilot-img-ph svg { width: 36px; opacity: .1; }
+
+    /* Vertical text — right edge of image, reading bottom-to-top */
+    .pilot-img-label {
+      position: absolute; bottom: 2rem; right: 1.5rem; z-index: 2;
+      font-family: var(--f); font-size: .56rem; font-weight: 600;
+      letter-spacing: .24em; text-transform: uppercase;
+      color: rgba(242,237,228,.22);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+    }
+
+    .pilot-txt {
+      padding: 5rem 4.5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    /* P watermark — clearly decorative, positioned bottom-right behind content */
+    .pilot-wm {
+      position: absolute;
+      bottom: -3rem; right: -1rem;
+      font-family: var(--f); font-size: 22rem; font-weight: 800;
+      color: rgba(242,237,228,.025); line-height: 1;
+      pointer-events: none; user-select: none;
+      z-index: 0;
+    }
+
+    .pilot-q {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.28); margin-bottom: 1.8rem;
+      position: relative; z-index: 1;
+    }
+
+    .pilot-hl {
+      font-family: var(--f);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: .95;
+      text-transform: uppercase; color: #f2ede4;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+    .pilot-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
+
+    .pilot-desc {
+      font-size: .9rem; color: rgba(242,237,228,.42);
+      line-height: 1.75; margin-bottom: 2.5rem; max-width: 320px;
+      position: relative; z-index: 1;
+    }
+
+    .pilot-note {
+      font-size: .62rem; letter-spacing: .08em;
+      color: rgba(242,237,228,.18); margin-top: .8rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─────────────── PRODUCES ─────────────── */
+    #produces {
+      background: var(--cream);
+      color: var(--ink);
+      padding: 8rem 3rem;
+      position: relative; overflow: hidden;
+    }
+
+    .prod-wrap { max-width: 1300px; margin: 0 auto; }
+
+    .prod-hl {
+      font-family: var(--f);
+      font-size: clamp(3rem, 8vw, 7.5rem);
+      font-weight: 800; line-height: .92;
+      text-transform: uppercase;
+      color: var(--ink); margin-bottom: 1rem;
+      letter-spacing: -.01em;
+    }
+    .prod-hl .red { color: var(--red); }
+    .prod-hl .dim { color: rgba(13,12,10,.2); }
+
+    .prod-sub {
+      font-size: .9rem; color: var(--mid);
+      margin-bottom: 6rem; max-width: 440px; line-height: 1.7;
+    }
+
+    .prod-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .prod-item {
+      padding: 2.5rem 2rem 2.5rem 0;
+      border-top: 2px solid var(--ink);
+      transition: border-color .25s;
+    }
+    .prod-item:hover { border-color: var(--red); }
+
+    .prod-num {
+      font-family: var(--f); font-size: .58rem; font-weight: 700;
+      letter-spacing: .22em; color: rgba(13,12,10,.25);
+      margin-bottom: .8rem;
+    }
+
+    .prod-name {
+      font-family: var(--f);
+      font-size: 2rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .04em;
+      color: var(--ink); line-height: 1;
+      margin-bottom: .2rem;
+    }
+
+    .prod-sub-name {
+      font-family: var(--f); font-size: .65rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.2rem;
+    }
+
+    .prod-desc {
+      font-size: .8rem; color: var(--mid); line-height: 1.7;
+    }
+
+    /* ─────────────── CASE ─────────────── */
+    #case {
+      background: var(--ink-2);
+      padding: 8rem 3rem;
+      position: relative; overflow: hidden;
+    }
+
+    .case-wrap {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 3fr 5fr;
+      gap: 5rem; align-items: center;
+    }
+
+    .case-lbl {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.5rem;
+    }
+
+    .case-hl {
+      font-family: var(--f);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800; text-transform: uppercase;
+      line-height: 1.05; color: #f2ede4;
+      margin-bottom: 2rem;
+    }
+
+    .case-q {
+      font-size: 1rem; font-style: italic;
+      color: rgba(242,237,228,.4);
+      line-height: 1.65; margin-bottom: .5rem;
+    }
+
+    .case-attr {
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: rgba(242,237,228,.25);
+      margin-bottom: 2.5rem;
+    }
+
+    .link-red {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--red-2); text-decoration: none;
+      border-bottom: 1px solid var(--red);
+      padding-bottom: 2px; transition: color .2s, border-color .2s;
+    }
+    .link-red:hover { color: #f2ede4; border-color: rgba(242,237,228,.3); }
+
+    .case-img {
+      aspect-ratio: 4/5; background: #201810;
+      overflow: hidden; position: relative;
+    }
+    .case-img-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #2a2018, #181008);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .case-img-ph svg { opacity: .12; width: 40px; }
+
+    .case-bg {
+      position: absolute; top: 50%; right: 0;
+      transform: translateY(-50%);
+      font-family: var(--f); font-size: 18rem; font-weight: 800;
+      text-transform: uppercase; line-height: 1;
+      color: rgba(242,237,228,.025);
+      pointer-events: none; user-select: none;
+    }
+
+    /* ─────────────── STRIP ─────────────── */
+    #strip {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1.2fr 0.8fr;
+      height: 280px;
+    }
+
+    .s-item {
+      position: relative; overflow: hidden;
+    }
+
+    .s-item-bg {
+      position: absolute; inset: 0;
+      transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+    }
+    .s-item:hover .s-item-bg { transform: scale(1.06); }
+
+    /* Strip label */
+    .s-item-lbl {
+      position: absolute; bottom: 1rem; left: 1.2rem; z-index: 2;
+      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.3);
+    }
+
+    /* ─────────────── CONTACT ─────────────── */
+    #contact {
+      background: var(--ink);
+      padding: 10rem 3rem 8rem;
+      position: relative; overflow: hidden;
+    }
+
+    .contact-bg {
+      position: absolute; bottom: -5rem; left: -2rem;
+      font-family: var(--f); font-size: 22rem; font-weight: 800;
+      text-transform: uppercase; line-height: 1;
+      color: rgba(242,237,228,.02);
+      pointer-events: none; user-select: none;
+      white-space: nowrap;
+    }
+
+    .contact-wrap {
+      max-width: 800px; position: relative; z-index: 1;
+    }
+
+    .contact-ey {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(242,237,228,.25); margin-bottom: 2rem;
+    }
+
+    .contact-hl {
+      font-family: var(--f);
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 800; text-transform: uppercase;
+      line-height: .92; color: #f2ede4;
+      margin-bottom: 3rem; letter-spacing: -.02em;
+    }
+    .contact-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
+
+    .contact-desc {
+      font-size: .95rem; color: rgba(242,237,228,.38);
+      line-height: 1.75; margin-bottom: 3rem; max-width: 440px;
+    }
+
+    .contact-row { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+
+    /* ─────────────── FOOTER ─────────────── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid var(--rule-dk);
+      padding: 1.8rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .f-left { display: flex; align-items: center; gap: 2rem; }
+
+    .f-logo {
+      font-family: var(--f); font-size: .7rem; font-weight: 800;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); text-decoration: none;
+      transition: color .2s;
+    }
+    .f-logo:hover { color: rgba(242,237,228,.7); }
+
+    .f-ig {
+      display: flex; align-items: center;
+      color: rgba(242,237,228,.2); text-decoration: none;
+      transition: color .2s;
+    }
+    .f-ig:hover { color: rgba(242,237,228,.7); }
+    .f-ig svg { width: 16px; height: 16px; }
+
+    footer p { font-size: .6rem; color: rgba(242,237,228,.15); letter-spacing: .06em; }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 960px) {
+      nav, #hero, #about, #pattern, #produces, #case, #contact, footer { padding-left: 1.8rem; padding-right: 1.8rem; }
+      .about-wrap { grid-template-columns: 1fr; }
+      .about-left { padding-right: 0; margin-bottom: 3rem; }
+      .prod-grid { grid-template-columns: 1fr 1fr; }
+      #pilot { grid-template-columns: 1fr; }
+      .pilot-img { min-height: 260px; }
+      .pilot-txt { padding: 3.5rem 2rem; }
+      #strip { grid-template-columns: 1fr 1fr; height: auto; }
+      .s-item { aspect-ratio: 4/3; }
+      .n-links { display: none; }
+      .case-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    @media (max-width: 560px) {
+      .prod-grid { grid-template-columns: 1fr; }
+      #strip { grid-template-columns: 1fr; }
+      .hero-hl { font-size: 4.2rem; }
+      footer { flex-direction: column; gap: .8rem; text-align: center; }
+    }
+
+    /* ─────────────── ANIMATIONS ─────────────── */
+    .fu { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .fu.v { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="n-logo">
+    <img src="logo-mark.png" width="32" height="32" alt="Marshall Creative" style="display:block;">
+  </a>
+  <ul class="n-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="n-id">
+    <div class="nm">Seb Marshall</div>
+    <div class="tl">Creative Director</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="hero-body">
+    <div class="hero-eyebrow">
+      <div class="he-brand">
+        <span class="he-name">Story</span>
+        <span class="he-badge">Engine™</span>
+      </div>
+      <span class="he-tagline">Visual continuity for modern brands.</span>
+    </div>
+
+    <h1 class="hero-hl">
+      Most<br>
+      brands<br>
+      don't have<br>
+      a <span class="l-thru">content</span><br>
+      problem.<br>
+      <span class="l-dim">They have a</span><br>
+      <span class="l-red">continuity</span><br>
+      <span class="l-dim">problem.</span>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-cta-group">
+      <a href="#pilot" class="btn">See how a pilot works</a>
+      <a href="#about" class="ghost-link">Learn more →</a>
+    </div>
+    <span class="hero-loc">UK</span>
+  </div>
+</section>
+
+<!-- MARQUEE TICKER -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Brand Video</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Content Systems</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Visual Continuity</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Story Engine™</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pilot Shoot</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">One Shoot. More Places.</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Brand Video</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Content Systems</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Visual Continuity</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Story Engine™</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pilot Shoot</span>
+    <span class="marquee-dot">◆</span>
+    <span class="marquee-item">One Shoot. More Places.</span>
+    <span class="marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-bg-text" aria-hidden="true">01</div>
+  <div class="about-wrap">
+    <div class="about-left fu">
+      <div class="s-label"><span class="dash"></span> About</div>
+      <p class="about-lede">
+        I help <strong>founder-led lifestyle brands</strong> get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.
+      </p>
+      <p class="about-lede">
+        Instead of one final video, <strong>I build an asset bank your team keeps using long after the shoot is done.</strong>
+      </p>
+      <p class="about-detail">
+        One shoot. Multiple uses. Less wasted content.<br><br>
+        I build the shoot around what each asset needs to do: build story, show product, prove quality, create reuse. Not repurposed after the edit — pre-purposed before production. Distributed across every channel it needs to live on.
+      </p>
+      <a href="#contact" class="btn" style="margin-top:.5rem;">Work with me</a>
+    </div>
+    <div class="fu" style="transition-delay:.12s">
+      <div class="about-photo">
+        <!-- Replace with your actual photo -->
+        <div class="ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span>Your photo here</span>
+        </div>
+      </div>
+      <div class="about-cap">
+        <span class="nm">Seb Marshall</span>
+        <span class="tl">Creative Director</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PATTERN -->
+<section id="pattern">
+  <div class="pat-wrap">
+    <div class="s-label fu" style="color:var(--mid);margin-bottom:2rem;">
+      <span class="dash"></span> The Pattern
+    </div>
+    <ul class="pat-lines fu" style="transition-delay:.08s">
+      <li><span>You make something <span class="em">good.</span></span><span class="num">01</span></li>
+      <li><span>It works… for a <span class="em">moment.</span></span><span class="num">02</span></li>
+      <li><span>Then it disappears.</span><span class="num">03</span></li>
+      <li><span>You're back where you started.</span><span class="num">04</span></li>
+      <li class="punchline">The problem isn't output. It's <span class="red">continuity.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- PILOT -->
+<section id="pilot">
+  <div class="pilot-img">
+    <!-- Replace with your actual location/on-set photo -->
+    <div class="pilot-img-ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15"/></svg>
+    </div>
+    <span class="pilot-img-label">On location</span>
+  </div>
+  <div class="pilot-txt fu">
+    <span class="pilot-wm" aria-hidden="true">P</span>
+    <div class="pilot-q">Ready to stop starting from zero?</div>
+    <h2 class="pilot-hl">
+      Start with<br>
+      a <span class="hi">pilot</span><br>
+      shoot
+    </h2>
+    <p class="pilot-desc">One day on location. Built around your brand — not a brief template. Walk away with a full content library.</p>
+    <div style="position:relative;z-index:1;">
+      <a href="#contact" class="btn fill">Start my pilot</a>
+      <p class="pilot-note">No long-term commitment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCES -->
+<section id="produces">
+  <div class="prod-wrap">
+    <h2 class="prod-hl fu">
+      The shoot<br>
+      doesn't produce<br>
+      <span class="dim">content.</span><br>
+      <span class="red">It produces<br>options.</span>
+    </h2>
+    <p class="prod-sub fu" style="transition-delay:.08s">Every piece has a job. Every job has a place. Every place keeps working long after the day.</p>
+    <div class="prod-grid fu" style="transition-delay:.14s">
+      <div class="prod-item">
+        <div class="prod-num">01</div>
+        <div class="prod-name">Story</div>
+        <div class="prod-sub-name">Connection</div>
+        <p class="prod-desc">Build emotional alignment around the brand. The human side that makes people care before they buy.</p>
+      </div>
+      <div class="prod-item">
+        <div class="prod-num">02</div>
+        <div class="prod-name">Action</div>
+        <div class="prod-sub-name">Understanding</div>
+        <p class="prod-desc">Show the product in motion and in real use. The stuff that answers questions before they're asked.</p>
+      </div>
+      <div class="prod-item">
+        <div class="prod-num">03</div>
+        <div class="prod-name">Proof</div>
+        <div class="prod-sub-name">Trust</div>
+        <p class="prod-desc">Ground the product in detail, texture, and credibility. Visual evidence that earns the next step.</p>
+      </div>
+      <div class="prod-item">
+        <div class="prod-num">04</div>
+        <div class="prod-name">Foundation</div>
+        <div class="prod-sub-name">Continuity</div>
+        <p class="prod-desc">A reusable visual world your brand keeps growing into. Evergreen clips that keep working long after the shoot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="case">
+  <span class="case-bg" aria-hidden="true">Bahé</span>
+  <div class="case-wrap">
+    <div class="case-txt fu">
+      <div class="case-lbl">Case Study</div>
+      <h3 class="case-hl">How one shoot became a content library for Bahé</h3>
+      <p class="case-q">"We were getting all these files. Large and ungraded. No direction on what to do with them…"</p>
+      <p class="case-attr">— Alex, Founder of Bahé</p>
+      <a href="#" class="link-red">Read here →</a>
+    </div>
+    <div class="case-img fu" style="transition-delay:.12s">
+      <div class="case-img-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7a7060" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div id="strip">
+  <div class="s-item">
+    <div class="s-item-bg" style="background:linear-gradient(150deg,#28200e,#181008);position:absolute;inset:0;"></div>
+    <span class="s-item-lbl">Story</span>
+  </div>
+  <div class="s-item">
+    <div class="s-item-bg" style="background:linear-gradient(150deg,#1e1c10,#100e08);position:absolute;inset:0;"></div>
+    <span class="s-item-lbl">Action</span>
+  </div>
+  <div class="s-item">
+    <div class="s-item-bg" style="background:linear-gradient(150deg,#241a12,#14100a);position:absolute;inset:0;"></div>
+    <span class="s-item-lbl">Proof</span>
+  </div>
+  <div class="s-item">
+    <div class="s-item-bg" style="background:linear-gradient(150deg,#1a180e,#0e0c08);position:absolute;inset:0;"></div>
+    <span class="s-item-lbl">Foundation</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <span class="contact-bg" aria-hidden="true">Let's go</span>
+  <div class="contact-wrap">
+    <div class="contact-ey fu">Let's build something that lasts</div>
+    <h2 class="contact-hl fu" style="transition-delay:.06s">
+      One shoot.<br>
+      More places<br>
+      to use <span class="hi">it.</span>
+    </h2>
+    <p class="contact-desc fu" style="transition-delay:.1s">
+      Drop a message and let's talk about what a pilot shoot could look like for your brand.
+    </p>
+    <div class="contact-row fu" style="transition-delay:.14s">
+      <!-- Replace href with your Formspree or Tally form URL when ready -->
+      <a href="mailto:hello@storyengine.video" class="btn fill">Get in touch</a>
+      <a href="#pilot" class="ghost-link">See how a pilot works →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <a href="#hero" class="f-logo" style="display:flex;align-items:center;gap:.7rem;">
+      <img src="logo-mark.png" width="22" height="22" alt="Marshall Creative" style="display:block;opacity:.45;">
+      Story Engine™
+    </a>
+    <a href="https://instagram.com/storyengine.studio" target="_blank" rel="noopener" class="f-ig" title="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </div>
+  <p>© 2026 Seb Marshall. All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); io.unobserve(e.target); } });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 50
+      ? 'rgba(13,12,10,.97)'
+      : 'rgba(13,12,10,.82)';
+  });
+
+  // Pattern lines — cascade in on scroll
+  const patLines = document.querySelectorAll('.pat-lines li');
+  const patObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        patLines.forEach((li, i) => {
+          setTimeout(() => li.classList.add('active'), i * 90);
+        });
+        patObs.disconnect();
+      }
+    });
+  }, { threshold: 0.25 });
+  const patSection = document.querySelector('#pattern');
+  if (patSection) patObs.observe(patSection);
+</script>
+</body>
+</html>
