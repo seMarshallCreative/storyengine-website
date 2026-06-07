@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bahé — Case Study · Story Engine™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,600;1,700;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0c0a;
+      --ink-2:   #181510;
+      --cream:   #e9e3d6;
+      --cream-2: #f0ebe0;
+      --mid:     #7a7060;
+      --sand:    #c4b49a;
+      --red:     #891a10;
+      --red-2:   #a82015;
+      --rule-dk: rgba(255,255,255,0.07);
+      --rule-lt: rgba(13,12,10,0.09);
+      --f:       'Barlow Condensed', sans-serif;
+      --b:       'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: #f2ede4;
+      font-family: var(--b);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Scroll reveal ─── */
+    .fu { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .fu.v { opacity: 1; transform: none; }
+
+    /* ─── Shared ─── */
+    .s-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--mid); display: flex; align-items: center; gap: .7rem;
+      margin-bottom: 3rem;
+    }
+    .s-label .dash { width: 24px; height: 1px; background: var(--red); flex-shrink: 0; }
+    .s-label.light { color: rgba(242,237,228,.28); }
+
+    .btn {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      padding: .85rem 2rem; border: 1px solid rgba(242,237,228,.2);
+      color: #f2ede4; background: transparent;
+      transition: background .25s, border-color .25s, color .25s;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--red); border-color: var(--red); }
+    .btn.fill { background: var(--red); border-color: var(--red); }
+    .btn.fill:hover { background: var(--red-2); border-color: var(--red-2); }
+
+    /* ─────────────── NAV ─────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(13,12,10,0.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    .n-logo {
+      text-decoration: none; display: flex; align-items: center; gap: .7rem;
+      font-family: var(--f); font-size: .8rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase; color: rgba(242,237,228,.7);
+    }
+    .n-back {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); text-decoration: none; transition: color .2s;
+    }
+    .n-back:hover { color: rgba(242,237,228,.75); }
+    .n-case-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.22);
+    }
+
+    /* ─────────────── HERO ─────────────── */
+    #cs-hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8rem 3rem 5rem;
+      position: relative; overflow: hidden;
+      background: var(--ink-2);
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    #cs-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(137,26,16,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cs-eyebrow {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.8rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .cs-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--red); }
+    .cs-hl {
+      font-family: var(--f); font-weight: 800; line-height: .92;
+      text-transform: uppercase; letter-spacing: -.01em;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      color: #f2ede4; max-width: 900px;
+      margin-bottom: 2.5rem;
+    }
+    .cs-hl em { font-style: italic; color: rgba(242,237,228,.32); }
+    .cs-sub {
+      font-family: var(--b); font-size: clamp(.95rem, 1.4vw, 1.1rem);
+      font-weight: 300; line-height: 1.65;
+      color: rgba(242,237,228,.55); max-width: 520px;
+      margin-bottom: 4rem;
+    }
+    .cs-meta-row {
+      display: flex; gap: 4rem; align-items: flex-end;
+      border-top: 1px solid var(--rule-dk); padding-top: 2.5rem;
+    }
+    .cs-meta-item {}
+    .cs-meta-label {
+      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(242,237,228,.22); margin-bottom: .4rem;
+    }
+    .cs-meta-value {
+      font-family: var(--f); font-size: .78rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(242,237,228,.55);
+    }
+
+    /* ─────────────── STATS BAR ─────────────── */
+    #cs-stats {
+      background: var(--ink);
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    .stats-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-left: 1px solid var(--rule-dk);
+    }
+    .stat-cell {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--rule-dk);
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    .stat-num {
+      font-family: var(--f); font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800; line-height: 1; text-transform: uppercase;
+      color: #f2ede4; margin-bottom: .5rem;
+    }
+    .stat-num .sym { color: var(--red); }
+    .stat-desc {
+      font-family: var(--f); font-size: .68rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.3);
+    }
+
+    /* ─────────────── SECTIONS ─────────────── */
+    .cs-section {
+      padding: 7rem 3rem;
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    .cs-section.cream {
+      background: var(--cream); color: var(--ink);
+    }
+    .cs-section.ink-2 { background: var(--ink-2); }
+
+    .cs-wrap { max-width: 1200px; margin: 0 auto; }
+    .cs-two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
+    }
+    .cs-three-col {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem;
+    }
+
+    .cs-body-hl {
+      font-family: var(--f); font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: .96; text-transform: uppercase; letter-spacing: -.01em;
+      margin-bottom: 2rem;
+    }
+    .cs-body-hl .red { color: var(--red); }
+    .cs-body-hl .dim { color: rgba(13,12,10,.15); }
+    .cs-body-hl .cream-dim { color: rgba(242,237,228,.22); }
+
+    .cs-body-text {
+      font-family: var(--b); font-size: 1rem; font-weight: 300;
+      line-height: 1.75; color: rgba(242,237,228,.6); margin-bottom: 1.4rem;
+    }
+    .cs-body-text.ink { color: rgba(13,12,10,.65); }
+    .cs-body-text:last-child { margin-bottom: 0; }
+
+    .cs-pull-quote {
+      font-family: var(--f); font-weight: 700; font-style: italic;
+      font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+      line-height: 1.2; text-transform: uppercase; letter-spacing: .01em;
+      color: rgba(242,237,228,.75);
+      border-left: 2px solid var(--red);
+      padding: 1.2rem 0 1.2rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .cs-pull-quote.ink {
+      color: rgba(13,12,10,.7);
+      border-left-color: var(--red);
+    }
+    .cs-attrib {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); margin-top: .8rem;
+    }
+    .cs-attrib.ink { color: rgba(13,12,10,.35); }
+
+    /* ─────────────── BEFORE / AFTER ─────────────── */
+    .before-after {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      margin-top: 4rem;
+    }
+    .ba-col { padding: 3rem; }
+    .ba-col.before { background: rgba(242,237,228,.03); border: 1px solid rgba(242,237,228,.06); }
+    .ba-col.after  { background: rgba(137,26,16,.06); border: 1px solid rgba(137,26,16,.2); }
+    .ba-label {
+      font-family: var(--f); font-size: .58rem; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      margin-bottom: 2rem; display: flex; align-items: center; gap: .6rem;
+    }
+    .ba-label.before { color: rgba(242,237,228,.25); }
+    .ba-label.after  { color: var(--red); }
+    .ba-label::before { content: ''; display: block; width: 16px; height: 1px; background: currentColor; }
+    .ba-list { list-style: none; display: flex; flex-direction: column; gap: .9rem; }
+    .ba-list li {
+      font-family: var(--f); font-size: .85rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: rgba(242,237,228,.45); padding-left: 1.2rem; position: relative;
+    }
+    .ba-col.after .ba-list li { color: rgba(242,237,228,.7); }
+    .ba-list li::before {
+      content: '—'; position: absolute; left: 0;
+      color: rgba(242,237,228,.2);
+    }
+    .ba-col.after .ba-list li::before { color: var(--red); content: '+'; font-weight: 700; }
+
+    /* ─────────────── WHERE IT WENT ─────────────── */
+    .usage-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
+      margin-top: 4rem;
+    }
+    .usage-cell {
+      padding: 2.5rem 1.5rem;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(242,237,228,.02);
+      transition: background .2s, border-color .2s;
+      position: relative; overflow: hidden;
+    }
+    .usage-cell::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--red); transform: scaleX(0);
+      transform-origin: left; transition: transform .35s ease;
+    }
+    .usage-cell:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.1); }
+    .usage-cell:hover::after { transform: scaleX(1); }
+    .usage-num {
+      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      letter-spacing: .24em; text-transform: uppercase;
+      color: rgba(242,237,228,.2); margin-bottom: 1rem;
+    }
+    .usage-name {
+      font-family: var(--f); font-size: 1rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(242,237,228,.65); line-height: 1.1;
+    }
+
+    /* ─────────────── LESSON / BIG TEXT ─────────────── */
+    .big-statement {
+      font-family: var(--f); font-weight: 800;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: .93; text-transform: uppercase; letter-spacing: -.01em;
+      color: var(--ink); margin-bottom: 2.5rem;
+    }
+    .big-statement span { color: var(--red); }
+
+    .lesson-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      margin-top: 3.5rem;
+    }
+    .lesson-cell {
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--rule-lt);
+      background: rgba(13,12,10,.04);
+    }
+    .lesson-cell-label {
+      font-family: var(--f); font-size: .55rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1rem;
+    }
+    .lesson-cell-name {
+      font-family: var(--f); font-size: 1.3rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: .7rem; line-height: 1;
+    }
+    .lesson-cell-desc {
+      font-family: var(--b); font-size: .88rem; font-weight: 300;
+      line-height: 1.65; color: rgba(13,12,10,.55);
+    }
+
+    /* ─────────────── CTA ─────────────── */
+    #cs-cta {
+      background: var(--ink-2);
+      padding: 8rem 3rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #cs-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(137,26,16,.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(242,237,228,.28); margin-bottom: 2.5rem;
+      display: flex; align-items: center; justify-content: center; gap: .7rem;
+    }
+    .cta-label::before, .cta-label::after { content: ''; display: block; width: 24px; height: 1px; background: var(--red); }
+    .cta-hl {
+      font-family: var(--f); font-weight: 800;
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      line-height: .93; text-transform: uppercase;
+      color: #f2ede4; margin-bottom: 2rem;
+    }
+    .cta-hl em { font-style: italic; color: rgba(242,237,228,.3); }
+    .cta-sub {
+      font-family: var(--b); font-size: 1rem; font-weight: 300;
+      color: rgba(242,237,228,.45); max-width: 420px; margin: 0 auto 3rem;
+      line-height: 1.65;
+    }
+    .cta-row { display: flex; gap: 2rem; align-items: center; justify-content: center; }
+
+    /* ─────────────── FOOTER ─────────────── */
+    .cs-footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--rule-dk);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cs-footer-logo {
+      font-family: var(--f); font-size: .75rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(242,237,228,.25); text-decoration: none;
+    }
+    .cs-footer-copy {
+      font-size: .65rem; color: rgba(242,237,228,.2);
+      letter-spacing: .1em;
+    }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .cs-two-col, .before-after, .cs-three-col { grid-template-columns: 1fr; gap: 3rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .usage-grid { grid-template-columns: 1fr 1fr; }
+      .lesson-grid { grid-template-columns: 1fr; }
+      .cs-section { padding: 5rem 1.5rem; }
+      .cs-meta-row { flex-wrap: wrap; gap: 2rem; }
+      .cta-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="n-logo">Story Engine™</a>
+  <span class="n-case-label">Case Study 01</span>
+  <a href="index.html" class="n-back">← Back to site</a>
+</nav>
+
+<!-- HERO -->
+<section id="cs-hero">
+  <div class="cs-eyebrow fu">Case Study 01</div>
+  <h1 class="cs-hl fu" style="transition-delay:.06s">
+    How one shoot<br>
+    became a<br>
+    <em>content library.</em>
+  </h1>
+  <p class="cs-sub fu" style="transition-delay:.1s">
+    A barefoot footwear brand. A reusable asset library. A lesson that changed how I work.
+  </p>
+  <div class="cs-meta-row fu" style="transition-delay:.15s">
+    <div class="cs-meta-item">
+      <div class="cs-meta-label">Brand</div>
+      <div class="cs-meta-value">Bahé</div>
+    </div>
+    <div class="cs-meta-item">
+      <div class="cs-meta-label">Industry</div>
+      <div class="cs-meta-value">Barefoot Footwear</div>
+    </div>
+    <div class="cs-meta-item">
+      <div class="cs-meta-label">Production</div>
+      <div class="cs-meta-value">4 sessions · ~2 hrs each · 1 model · 3 colourways</div>
+    </div>
+    <div class="cs-meta-item">
+      <div class="cs-meta-label">Brief</div>
+      <div class="cs-meta-value">Reels for performance & brand building</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div id="cs-stats">
+  <div class="stats-grid">
+    <div class="stat-cell fu">
+      <div class="stat-num">16</div>
+      <div class="stat-desc">Story reels</div>
+    </div>
+    <div class="stat-cell fu" style="transition-delay:.06s">
+      <div class="stat-num">30<span class="sym">+</span></div>
+      <div class="stat-desc">Product assets</div>
+    </div>
+    <div class="stat-cell fu" style="transition-delay:.1s">
+      <div class="stat-num"><span class="sym">∞</span></div>
+      <div class="stat-desc">Founder footage support</div>
+    </div>
+    <div class="stat-cell fu" style="transition-delay:.14s">
+      <div class="stat-num">3<span class="sym">+</span></div>
+      <div class="stat-desc">Months still in use</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE REALITY -->
+<section class="cs-section ink-2">
+  <div class="cs-wrap">
+    <div class="cs-two-col">
+      <div>
+        <div class="s-label light fu"><span class="dash"></span> The reality</div>
+        <h2 class="cs-body-hl fu" style="transition-delay:.05s">
+          They didn't<br>come looking<br>
+          <span class="cream-dim">for a film.</span>
+        </h2>
+      </div>
+      <div>
+        <p class="cs-body-text fu" style="transition-delay:.08s">
+          Bahé didn't come looking for a brand film. I approached the founder with the idea of creating a narrative piece. His response was interesting.
+        </p>
+        <blockquote class="cs-pull-quote fu" style="transition-delay:.12s">
+          "We don't really need a hero video. We need content."
+        </blockquote>
+        <p class="cs-attrib fu" style="transition-delay:.14s">— Alex, Founder of Bahé</p>
+        <p class="cs-body-text fu" style="transition-delay:.16s">
+          The challenge wasn't a lack of footage. It was having enough useful assets to support the brand day to day. Like many growing ecommerce brands, Bahé had experience receiving large batches of content that were difficult to organise, difficult to reuse, and often ended up sitting unused on hard drives.
+        </p>
+        <blockquote class="cs-pull-quote fu" style="transition-delay:.2s">
+          "We get all these files and they're one or two edits — big files, ungraded, no direction on what to do."
+        </blockquote>
+        <p class="cs-attrib fu" style="transition-delay:.22s">— Alex, Founder of Bahé</p>
+        <p class="cs-body-text fu" style="transition-delay:.24s">
+          That became the real problem we wanted to explore.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="cs-section" style="background: var(--ink); padding-top: 6rem; padding-bottom: 0;">
+  <div class="cs-wrap">
+    <div class="s-label light fu"><span class="dash"></span> What changed</div>
+    <div class="before-after fu" style="transition-delay:.06s">
+      <div class="ba-col before">
+        <div class="ba-label before">Before</div>
+        <ul class="ba-list">
+          <li>One-off content pieces</li>
+          <li>Footage tied to a single edit</li>
+          <li>Large folders of ungraded files, no clear use</li>
+          <li>Content created for one campaign</li>
+          <li>Limited flexibility after delivery</li>
+        </ul>
+      </div>
+      <div class="ba-col after">
+        <div class="ba-label after">After</div>
+        <ul class="ba-list">
+          <li>A reusable content library</li>
+          <li>Assets usable across multiple formats</li>
+          <li>Assets grouped by purpose, not by clip</li>
+          <li>Assets supporting ongoing marketing</li>
+          <li>Product, lifestyle and supporting footage</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE IT WENT -->
+<section class="cs-section" style="background: var(--ink); padding-top: 5rem;">
+  <div class="cs-wrap">
+    <div class="s-label light fu"><span class="dash"></span> Where it delivered value</div>
+    <h2 class="cs-body-hl fu" style="transition-delay:.05s; max-width: 600px;">
+      The most valuable assets<br>
+      <span class="cream-dim">weren't the finished reels.</span>
+    </h2>
+    <p class="cs-body-text fu" style="transition-delay:.08s; max-width: 580px;">
+      The clips Bahé returned to weren't always the polished edits. They were the reusable product clips and supporting footage — the plug-ins. Instead of relying on a single finished video, Bahé had a library of assets that kept supporting the brand long after delivery.
+    </p>
+    <div class="usage-grid fu" style="transition-delay:.12s;">
+      <div class="usage-cell">
+        <div class="usage-num">01</div>
+        <div class="usage-name">Social Posts</div>
+      </div>
+      <div class="usage-cell">
+        <div class="usage-num">02</div>
+        <div class="usage-name">Paid Ads</div>
+      </div>
+      <div class="usage-cell">
+        <div class="usage-num">03</div>
+        <div class="usage-name">Product Pages</div>
+      </div>
+      <div class="usage-cell">
+        <div class="usage-num">04</div>
+        <div class="usage-name">Founder & Educational</div>
+      </div>
+      <div class="usage-cell">
+        <div class="usage-num">05</div>
+        <div class="usage-name">Email Campaigns</div>
+      </div>
+    </div>
+    <p class="cs-body-text fu" style="transition-delay:.18s; margin-top: 2.5rem; max-width: 500px; font-style: italic; color: rgba(242,237,228,.35);">
+      Functionality over finish.
+    </p>
+  </div>
+</section>
+
+<!-- THE LESSON -->
+<section class="cs-section cream">
+  <div class="cs-wrap">
+    <div class="cs-two-col">
+      <div>
+        <div class="s-label fu"><span class="dash"></span> The biggest lesson</div>
+        <p class="big-statement fu" style="transition-delay:.05s">
+          The most useful footage isn't defined by <span>style.</span><br>It's defined by purpose.
+        </p>
+      </div>
+      <div>
+        <p class="cs-body-text ink fu" style="transition-delay:.08s;">
+          Originally, I believed more reel variations would create more value. Alex's feedback changed that.
+        </p>
+        <p class="cs-body-text ink fu" style="transition-delay:.1s;">
+          The real opportunity wasn't creating more versions of the same reel. It was creating assets that could support different marketing objectives.
+        </p>
+        <div class="lesson-grid fu" style="transition-delay:.14s;">
+          <div class="lesson-cell">
+            <div class="lesson-cell-label">01</div>
+            <div class="lesson-cell-name">Brand</div>
+            <div class="lesson-cell-desc">Emotional connection and storytelling</div>
+          </div>
+          <div class="lesson-cell">
+            <div class="lesson-cell-label">02</div>
+            <div class="lesson-cell-name">Product</div>
+            <div class="lesson-cell-desc">In-use footage and detail shots</div>
+          </div>
+          <div class="lesson-cell">
+            <div class="lesson-cell-label">03</div>
+            <div class="lesson-cell-name">Founder</div>
+            <div class="lesson-cell-desc">Education, trust and authority content</div>
+          </div>
+        </div>
+        <p class="cs-body-text ink fu" style="transition-delay:.18s; margin-top: 2rem;">
+          Different jobs. Different assets. More useful content.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE TAKEAWAY -->
+<section class="cs-section ink-2">
+  <div class="cs-wrap">
+    <div class="s-label light fu"><span class="dash"></span> The takeaway</div>
+    <div class="cs-two-col">
+      <div>
+        <h2 class="cs-body-hl fu" style="transition-delay:.05s;">
+          Turn one shoot into<br>
+          more than one<br>
+          <span class="cream-dim">deliverable.</span>
+        </h2>
+      </div>
+      <div>
+        <p class="cs-body-text fu" style="transition-delay:.08s;">
+          Most shoots produce a final video.
+        </p>
+        <p class="cs-body-text fu" style="transition-delay:.1s;">
+          Story Engine is designed to produce a reusable asset library — one that can support social media, product marketing, founder content, websites and email long after the shoot is finished.
+        </p>
+        <blockquote class="cs-pull-quote fu" style="transition-delay:.14s;">
+          "It's really useful to have that content as a library we can keep using."
+        </blockquote>
+        <p class="cs-attrib fu" style="transition-delay:.16s;">— Alex, Founder of Bahé</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cs-cta">
+  <div class="cta-label fu">Story Engine Pilot</div>
+  <h2 class="cta-hl fu" style="transition-delay:.06s;">
+    Turn one shoot into your<br>
+    next quarter of<br>
+    <em>marketing assets.</em>
+  </h2>
+  <p class="cta-sub fu" style="transition-delay:.1s;">
+    Drop a message and let's talk about what a pilot shoot could look like for your brand.
+  </p>
+  <div class="cta-row fu" style="transition-delay:.14s;">
+    <a href="mailto:hello@storyengine.video" class="btn fill">Get in touch</a>
+    <a href="index.html#pilot" class="btn">See how a pilot works</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="cs-footer">
+  <a href="index.html" class="cs-footer-logo">Story Engine™</a>
+  <span class="cs-footer-copy">© 2026 Seb Marshall · storyengine.video</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
