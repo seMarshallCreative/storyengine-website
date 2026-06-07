@@ -489,12 +489,14 @@
     .diag-vline {
       width: 1px; height: 36px;
       background: linear-gradient(to bottom, rgba(242,237,228,.18), rgba(137,26,16,.45));
+      margin-top: 10px; margin-bottom: 10px;
     }
     /* Disconnected line: source → assets */
     .diag-vline--gap {
       background: none;
       border-left: 1px dashed rgba(242,237,228,.22);
       height: 42px;
+      margin-top: 10px; margin-bottom: 10px;
     }
 
     /* Asset tiles — small and symbolic, 14 squares */
@@ -537,9 +539,9 @@
     .diag-asset:nth-child(14) { background: rgba(242,237,228,.06); border-color: rgba(242,237,228,.12); animation-duration: 3.6s; animation-delay:  1.9s; }
 
     /* Channel output blocks */
-    .diag-outputs { display: flex; gap: 2px; width: 100%; }
+    .diag-outputs { display: flex; gap: 10px; width: 100%; }
     .diag-output {
-      flex: 1; padding: 1rem 1rem 1.1rem;
+      flex: 1; padding: 1.1rem 1rem 1.2rem;
       border: 1px solid rgba(255,255,255,.06);
       background: rgba(242,237,228,.012);
       text-align: center;
@@ -558,16 +560,16 @@
       50%      { box-shadow: 0 0 30px rgba(137,26,16,.28), inset 0 0 18px rgba(137,26,16,.07); border-color: rgba(137,26,16,.40); }
     }
     .diag-future {
-      width: 100%; margin-top: 2px; padding: .9rem 1rem;
+      width: 100%; margin-top: 14px; padding: 1.1rem 2rem;
       border: 1px solid rgba(137,26,16,.22);
       background: rgba(137,26,16,.04);
       font-family: var(--f); font-size: 1rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(242,237,228,.35);
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.55);
       text-align: center;
       animation: futurePulse 5s ease-in-out infinite;
     }
-    .diag-future-semi { color: var(--red); font-weight: 400; margin-right: .3em; }
+    .diag-future-semi { color: var(--red); font-size: 1.5rem; font-weight: 700; line-height: 1; margin-right: .4em; vertical-align: middle; }
 
     /* Tighten red dash in diagram s-label */
     #diagram .s-label { gap: .35rem; margin-bottom: 1.8rem; }
