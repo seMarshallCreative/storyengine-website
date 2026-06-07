@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilot Shoot — Story Engine™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,600;1,700;1,800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0c0a;
+      --ink-2:   #181510;
+      --cream:   #e9e3d6;
+      --cream-2: #f0ebe0;
+      --cream-3: #f6f2eb;
+      --mid:     #7a7060;
+      --sand:    #c4b49a;
+      --red:     #891a10;
+      --red-2:   #a82015;
+      --rule:    rgba(13,12,10,0.09);
+      --f:       'Barlow Condensed', sans-serif;
+      --b:       'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream-2);
+      color: var(--ink);
+      font-family: var(--b);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Scroll reveal ─── */
+    .fu { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .fu.v { opacity: 1; transform: none; }
+
+    /* ─── Shared ─── */
+    .s-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--mid); display: flex; align-items: center; gap: .7rem;
+      margin-bottom: 2rem;
+    }
+    .s-label .dash { width: 24px; height: 1px; background: var(--red); flex-shrink: 0; }
+
+    .btn {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      padding: .85rem 2rem; border: 1px solid rgba(13,12,10,.2);
+      color: var(--ink); background: transparent;
+      transition: background .25s, border-color .25s, color .25s; cursor: pointer;
+    }
+    .btn:hover { background: var(--red); border-color: var(--red); color: #f2ede4; }
+    .btn.fill { background: var(--red); border-color: var(--red); color: #f2ede4; }
+    .btn.fill:hover { background: var(--red-2); border-color: var(--red-2); }
+    .btn.outline { border-color: rgba(13,12,10,.18); color: rgba(13,12,10,.45); }
+    .btn.outline:hover { background: transparent; border-color: rgba(13,12,10,.4); color: var(--ink); }
+
+    /* ─────────────── NAV ─────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(240,235,224,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .n-logo { text-decoration: none; display: flex; align-items: center; gap: .55rem; }
+    .n-logo-text { font-family: var(--f); font-size: .72rem; font-weight: 400; letter-spacing: .36em; text-transform: uppercase; color: rgba(13,12,10,.5); }
+    .n-logo-badge { font-family: var(--f); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; background: var(--red); color: #f2ede4; padding: .1em .45em .14em; }
+    .n-back { font-family: var(--f); font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.35); text-decoration: none; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
+    .n-back:hover { color: var(--ink); }
+    .n-back svg { width: 14px; height: 14px; }
+    .n-cta { font-family: var(--f); font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--red); padding-bottom: 1px; transition: color .2s; }
+    .n-cta:hover { color: var(--red); }
+
+    /* ─────────────── HERO (split) ─────────────── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 5.5rem;
+      background: var(--cream-2);
+      position: relative; overflow: hidden;
+    }
+    .hero-left {
+      padding: 5rem 4rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: .5rem; margin-bottom: 2.5rem;
+    }
+    .he-line { width: 24px; height: 1px; background: var(--red); }
+    .he-text { font-family: var(--f); font-size: .62rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--mid); }
+    .hero-hl {
+      font-family: var(--f);
+      font-size: clamp(2.6rem, 5.5vw, 5.2rem);
+      font-weight: 800; line-height: .9; text-transform: uppercase;
+      letter-spacing: -.01em; color: var(--ink); margin-bottom: 2rem;
+    }
+    .hero-hl .hi { background: var(--red); font-style: italic; color: #f2ede4; padding: .04em .12em .08em; display: inline-block; }
+    .hero-sub { font-size: .92rem; color: rgba(13,12,10,.5); line-height: 1.75; margin-bottom: 2.5rem; max-width: 360px; }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
+    .hero-cta-row { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .price-badge .price {
+      font-family: var(--f); font-size: 1.1rem; font-weight: 800;
+      letter-spacing: .04em; color: #fff;
+      background: var(--red-2); padding: .3em .7em;
+      display: block;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%, 0 80%);
+    }
+
+    .hero-right { position: relative; overflow: hidden; background: #d4cdc0; }
+    .hero-img-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(150deg, #ccc4b4, #b8b0a0);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+    }
+    .hero-img-ph svg { width: 36px; opacity: .2; }
+    .hero-img-ph span { font-family: var(--f); font-size: .56rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.3); }
+    .hero-stat-badge {
+      position: absolute; bottom: 3rem; left: -1px; z-index: 4;
+      background: var(--cream-2); border: 1px solid var(--rule);
+      padding: 1rem 1.5rem;
+    }
+    .hero-stat-badge .num { font-family: var(--f); font-size: 2.2rem; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -.02em; }
+    .hero-stat-badge .num sup { font-size: .5em; vertical-align: super; }
+    .hero-stat-badge .lbl { font-family: var(--f); font-size: .55rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); margin-top: .2rem; }
+
+    /* ─────────────── STATS BAR ─────────────── */
+    .stats-bar { background: var(--red); padding: 2.5rem 3rem; }
+    .stats-bar-note { font-family: var(--f); font-size: .58rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 1.5rem; }
+    .stats-bar-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,.15); }
+    .stat-cell { padding: 1.5rem 2rem 1.5rem 0; border-right: 1px solid rgba(255,255,255,.15); }
+    .stat-cell:first-child { padding-left: 0; }
+    .stat-cell:not(:first-child) { padding-left: 2rem; }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell .n { font-family: var(--f); font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 800; line-height: 1; color: #fff; letter-spacing: -.02em; display: block; }
+    .stat-cell .l { font-family: var(--f); font-size: .58rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: .3rem; display: block; }
+
+    /* ─────────────── WHAT THE PILOT IS ─────────────── */
+    #what { background: var(--cream-3); padding: 8rem 3rem; }
+    .what-wrap { max-width: 1200px; margin: 0 auto; }
+    .what-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 6rem; align-items: start; }
+    .what-hl {
+      font-family: var(--f); font-size: clamp(2rem, 4.5vw, 3.8rem);
+      font-weight: 800; text-transform: uppercase; line-height: .96;
+      color: var(--ink); letter-spacing: -.01em; margin-bottom: 2.5rem;
+    }
+    .what-hl .hi { background: var(--red); color: #f2ede4; font-style: italic; padding: .04em .12em .08em; }
+    .what-copy p { font-size: .95rem; color: var(--mid); line-height: 1.8; margin-bottom: 1.2rem; }
+    .what-copy p.lede { font-size: 1rem; color: rgba(13,12,10,.65); }
+    .what-copy p strong { color: var(--ink); font-weight: 600; }
+    .what-img { aspect-ratio: 3/4; position: relative; overflow: hidden; background: #c8c0b0; }
+    .what-img-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(150deg, #ccc5b8, #b8b0a0);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+    }
+    .what-img-ph svg { width: 32px; opacity: .2; }
+    .what-img-ph span { font-family: var(--f); font-size: .56rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.3); }
+
+    /* ─────────────── WHAT THIS TURNS INTO ─────────────── */
+    #outputs { background: var(--cream-2); padding: 8rem 3rem; }
+    .outputs-wrap { max-width: 1200px; margin: 0 auto; }
+    .outputs-hl {
+      font-family: var(--f); font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 800; text-transform: uppercase; line-height: .96;
+      color: var(--ink); letter-spacing: -.01em; margin-bottom: .75rem;
+    }
+    .outputs-hl .hi { background: var(--red); color: #f2ede4; padding: .04em .12em .08em; }
+    .outputs-sub { font-size: .92rem; color: var(--mid); line-height: 1.7; max-width: 520px; margin-bottom: 4rem; }
+    .outputs-sub .dim { color: rgba(13,12,10,.3); }
+
+    .outputs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--rule); }
+    .output-lane { border-right: 1px solid var(--rule); }
+    .output-lane:last-child { border-right: none; }
+    .output-lane-header { padding: 2rem 2.5rem 1.5rem; border-bottom: 1px solid var(--rule); }
+    .output-tag { font-family: var(--f); font-size: .56rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--red); margin-bottom: .6rem; }
+    .output-name { font-family: var(--f); font-size: clamp(1.4rem, 2.2vw, 2rem); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--ink); line-height: 1.05; margin-bottom: .2rem; }
+    .output-purpose { font-family: var(--f); font-size: .6rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(13,12,10,.3); }
+    .output-media { aspect-ratio: 9/14; position: relative; overflow: hidden; background: #c8c0b0; }
+    .output-media-ph {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, #ccc5b8, #b8b0a0);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .play-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(13,12,10,.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(13,12,10,.2); }
+    .play-btn svg { width: 16px; opacity: .5; margin-left: 2px; fill: var(--ink); }
+    .output-body { padding: 1.8rem 2.5rem; }
+    .output-items { list-style: none; }
+    .output-items li { font-size: .8rem; color: var(--mid); display: flex; align-items: baseline; gap: .6rem; padding: .4rem 0; border-bottom: 1px solid var(--rule); line-height: 1.4; }
+    .output-items li:last-child { border-bottom: none; }
+    .output-items li::before { content: '—'; font-family: var(--f); font-size: .65rem; font-weight: 600; color: var(--red); flex-shrink: 0; }
+    .output-items li.note-line { font-style: italic; color: rgba(13,12,10,.3); font-size: .72rem; }
+    .output-items li.note-line::before { content: ''; width: 0; min-width: 0; }
+
+    .outputs-pull { margin-top: 3.5rem; border-left: 2px solid var(--red); padding: 1.8rem 2.5rem; background: rgba(137,26,16,.06); }
+    .outputs-pull p { font-family: var(--f); font-size: clamp(1.1rem, 2.2vw, 1.7rem); font-weight: 700; font-style: italic; text-transform: uppercase; color: rgba(13,12,10,.55); line-height: 1.2; letter-spacing: .01em; }
+    .outputs-pull .pull-em { color: var(--ink); font-style: normal; }
+
+    /* ─────────────── WHERE IT GETS USED ─────────────── */
+    #uses { background: var(--cream-3); padding: 8rem 3rem; }
+    .uses-wrap { max-width: 1000px; margin: 0 auto; }
+    .uses-hl { font-family: var(--f); font-size: clamp(1.8rem, 3.8vw, 3rem); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; color: rgba(13,12,10,.25); margin-bottom: 3.5rem; line-height: 1; }
+    .uses-list { list-style: none; border-top: 1px solid var(--rule); }
+    .uses-list li { display: grid; grid-template-columns: 3.5rem 1fr 1.4fr; align-items: baseline; gap: 2rem; padding: 1.2rem 0; border-bottom: 1px solid var(--rule); }
+    .uses-num { font-family: var(--f); font-size: .56rem; font-weight: 700; letter-spacing: .2em; color: var(--red); }
+    .uses-name { font-family: var(--f); font-size: clamp(1.1rem, 2.2vw, 1.65rem); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; color: var(--ink); line-height: 1.1; }
+    .uses-desc { font-size: .82rem; color: var(--mid); line-height: 1.6; }
+
+    /* ─────────────── THE PACKAGE ─────────────── */
+    #package { background: var(--cream-2); padding: 9rem 3rem; }
+    .pkg-wrap { max-width: 1200px; margin: 0 auto; }
+    .pkg-top { margin-bottom: 5rem; }
+    .pkg-hl { font-family: var(--f); font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 800; text-transform: uppercase; line-height: .9; color: var(--ink); letter-spacing: -.02em; margin-bottom: 1.5rem; }
+    .pkg-hl .hi { background: var(--red); color: #f2ede4; font-style: italic; padding: .04em .14em .1em; }
+    .pkg-tagline { font-size: .92rem; color: var(--mid); line-height: 1.7; max-width: 480px; }
+
+    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+
+    .pkg-checklist { list-style: none; border-top: 1px solid var(--rule); }
+    .pkg-checklist li { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.8rem 0; border-bottom: 1px solid var(--rule); }
+    .pkg-check { width: 22px; height: 22px; flex-shrink: 0; background: var(--red); display: flex; align-items: center; justify-content: center; margin-top: .15rem; }
+    .pkg-check svg { width: 11px; height: 11px; }
+    .pkg-check-name { font-family: var(--f); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--ink); line-height: 1.1; margin-bottom: .45rem; }
+    .pkg-check-desc { font-size: .82rem; color: var(--mid); line-height: 1.65; }
+    .pkg-check-desc em { color: rgba(13,12,10,.7); font-style: normal; font-weight: 500; }
+
+    /* Package summary box — keep dark for contrast */
+    .pkg-box { background: var(--ink); overflow: hidden; }
+    .pkg-box-head { padding: 2.5rem 3rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .pkg-box-tag { font-family: var(--f); font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--red); margin-bottom: .5rem; }
+    .pkg-box-name { font-family: var(--f); font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 800; text-transform: uppercase; line-height: .96; color: #f2ede4; letter-spacing: -.01em; margin-bottom: 1rem; }
+    .pkg-box-desc { font-size: .82rem; color: rgba(242,237,228,.32); line-height: 1.65; }
+    .pkg-deliverables { list-style: none; }
+    .pkg-deliverables li { display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .pkg-deliverables li:last-child { border-bottom: none; }
+    .d-name { font-family: var(--f); font-size: .82rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(242,237,228,.45); }
+    .d-val { font-family: var(--f); font-size: .9rem; font-weight: 800; letter-spacing: .04em; color: #f2ede4; background: rgba(137,26,16,.35); padding: .25em .65em; min-width: 3rem; text-align: center; }
+    .d-val.check { background: var(--red); }
+    .pkg-box-cta { padding: 2.5rem 3rem; background: var(--red); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .pkg-cta-text { font-family: var(--f); font-size: .65rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+    .btn-white { font-family: var(--f); font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; display: inline-block; padding: .8rem 2rem; border: 1px solid rgba(255,255,255,.4); color: #fff; background: transparent; transition: background .25s, border-color .25s; white-space: nowrap; }
+    .btn-white:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.7); }
+
+    /* ─────────────── FINAL CTA ─────────────── */
+    #final-cta { background: var(--ink-2); padding: 9rem 3rem; position: relative; overflow: hidden; text-align: center; }
+    #final-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(137,26,16,.18) 0%, transparent 65%); }
+    .fcta-wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+    .fcta-tag { font-family: var(--f); font-size: .62rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--red); margin-bottom: 1.5rem; }
+    .fcta-hl { font-family: var(--f); font-size: clamp(2.5rem, 7vw, 7rem); font-weight: 800; line-height: .9; text-transform: uppercase; color: #f2ede4; letter-spacing: -.02em; margin-bottom: 2rem; }
+    .fcta-hl em { font-style: italic; color: var(--red-2); }
+    .fcta-sub { font-size: .95rem; color: rgba(242,237,228,.35); line-height: 1.75; margin-bottom: 3rem; }
+    .fcta-group { display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .fcta-ghost { font-family: var(--f); font-size: .68rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(242,237,228,.3); text-decoration: none; transition: color .2s; }
+    .fcta-ghost:hover { color: rgba(242,237,228,.7); }
+    .fcta-note { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(242,237,228,.2); }
+
+    /* ─────────────── FOOTER ─────────────── */
+    footer { background: var(--cream); padding: 2rem 3rem; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+    .foot-brand { font-family: var(--f); font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.3); }
+    .foot-back { font-family: var(--f); font-size: .62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(13,12,10,.35); text-decoration: none; transition: color .2s; }
+    .foot-back:hover { color: var(--ink); }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 1000px) {
+      #hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { min-height: 55vw; }
+      .what-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .outputs-grid { grid-template-columns: 1fr; }
+      .output-lane { border-right: none; border-bottom: 1px solid var(--rule); }
+      .output-lane:last-child { border-bottom: none; }
+      .pkg-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .stats-bar-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero-left { padding: 3rem 1.5rem; }
+      #what, #outputs, #uses, #package, #final-cta { padding: 5rem 1.5rem; }
+      .uses-list li { grid-template-columns: 2.5rem 1fr; }
+      .uses-desc { display: none; }
+      .stats-bar { padding: 2rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; padding: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="n-logo">
+    <span class="n-logo-text">Story</span>
+    <span class="n-logo-badge">Engine™</span>
+  </a>
+  <a href="index.html" class="n-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Back to home
+  </a>
+  <a href="https://www.storyengine.video/start-your-pilot" class="n-cta">Book a call</a>
+</nav>
+
+<!-- HERO — split -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="he-line"></span>
+      <span class="he-text">Story Engine™ &nbsp;·&nbsp; Pilot Package</span>
+    </div>
+    <h1 class="hero-hl">
+      One<br>
+      <span class="hi">Structured</span><br>
+      Shoot.<br>
+      Weeks of<br>
+      Content.
+    </h1>
+    <p class="hero-sub">
+      Most shoots give you <strong>one</strong> finished <strong>video.</strong><br>
+      A pilot can give you more to work with from <strong>day one.</strong>
+    </p>
+    <div class="hero-cta-row">
+      <div class="price-badge">
+        <span class="price">£450</span>
+      </div>
+      <a href="https://www.storyengine.video/start-your-pilot" class="btn fill">Start my pilot</a>
+    </div>
+    <div style="margin-top:1.4rem;">
+      <a href="#what" class="btn outline">See what's included</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15"/></svg>
+      <span>Image 9 — On location (Bahé)</span>
+    </div>
+    <div class="hero-stat-badge">
+      <div class="num">7<sup>+</sup></div>
+      <div class="lbl">Reels Delivered</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <p class="stats-bar-note">*A typical pilot delivers</p>
+  <div class="stats-bar-grid">
+    <div class="stat-cell">
+      <span class="n">7</span>
+      <span class="l">Story Reels</span>
+    </div>
+    <div class="stat-cell">
+      <span class="n">15</span>
+      <span class="l">PDP / Product Clips</span>
+    </div>
+    <div class="stat-cell">
+      <span class="n">1</span>
+      <span class="l">Shoot Cycle</span>
+    </div>
+    <div class="stat-cell">
+      <span class="n">∞</span>
+      <span class="l">Base of Reusable Footage</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT THE PILOT IS -->
+<section id="what">
+  <div class="what-wrap">
+    <div class="what-grid">
+      <div class="fu">
+        <div class="s-label"><span class="dash"></span> What the pilot is</div>
+        <h2 class="what-hl">
+          Normal shoot<br>
+          vs. <span class="hi">Story Engine</span><br>
+          shoot
+        </h2>
+        <div class="what-copy">
+          <p class="lede">Most shoots give you a one-and-done hero video. Maybe a folder of footage you're not sure how to use.</p>
+          <p>A StoryEngine pilot is built differently.</p>
+          <p>From one shoot, you leave with <strong>7 reels, 15 product clips, and supporting assets.</strong> All with a clear use.</p>
+          <p>You don't need to commit to anything long-term. It's a simple way to test the approach on your brand.</p>
+        </div>
+      </div>
+      <div class="fu" style="transition-delay:.1s">
+        <div class="what-img">
+          <div class="what-img-ph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="1"/><polygon points="10,9 16,12 10,15"/></svg>
+            <span>Image 10 — Bahé athlete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT THIS ACTUALLY TURNS INTO -->
+<section id="outputs">
+  <div class="outputs-wrap">
+    <div class="fu">
+      <div class="s-label"><span class="dash"></span> From the Bahé shoot</div>
+      <h2 class="outputs-hl">
+        What this actually <span class="hi">turns</span> into
+      </h2>
+      <p class="outputs-sub">
+        Content you don't have to keep replacing.<br>
+        <span class="dim">The exact mix depends on the brand, but most pilots are built across three output lanes.</span>
+      </p>
+    </div>
+
+    <div class="outputs-grid fu" style="transition-delay:.08s">
+      <div class="output-lane">
+        <div class="output-lane-header">
+          <div class="output-tag">Output 01</div>
+          <div class="output-name">Story-<br>Led</div>
+          <div class="output-purpose">Brand-Building</div>
+        </div>
+        <div class="output-media">
+          <div class="output-media-ph">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="output-body">
+          <ul class="output-items">
+            <li>Narrative / character-led moments</li>
+            <li>Emotion-led sequences</li>
+            <li>Founder presence</li>
+            <li>Voice or text-led story</li>
+            <li>Slower, immersive pacing</li>
+          </ul>
+        </div>
+      </div>
+      <div class="output-lane">
+        <div class="output-lane-header">
+          <div class="output-tag">Output 02</div>
+          <div class="output-name">Product-<br>Led</div>
+          <div class="output-purpose">Performance / Conversion</div>
+        </div>
+        <div class="output-media">
+          <div class="output-media-ph">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="output-body">
+          <ul class="output-items">
+            <li class="note-line">Typical deliverables can include:</li>
+            <li>Product in real use</li>
+            <li>Detail &amp; texture that builds trust</li>
+            <li>Benefit-led comparisons</li>
+            <li>PDP-ready product clips</li>
+            <li>Faster, direct pacing</li>
+          </ul>
+        </div>
+      </div>
+      <div class="output-lane">
+        <div class="output-lane-header">
+          <div class="output-tag">Output 03</div>
+          <div class="output-name">Founda-<br>tional</div>
+          <div class="output-purpose">Asset Bank + Brand Identity</div>
+        </div>
+        <div class="output-media">
+          <div class="output-media-ph">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="output-body">
+          <ul class="output-items">
+            <li>Evergreen brand moments</li>
+            <li>Supporting stills &amp; textures</li>
+            <li>Background loops</li>
+            <li>Reusable brand footage</li>
+            <li>Future content base</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs-pull fu" style="transition-delay:.14s">
+      <p>We decide your content requirements <span class="pull-em">before we shoot it</span> — giving you content you don't have to replace next week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE THIS CONTENT GETS USED -->
+<section id="uses">
+  <div class="uses-wrap">
+    <div class="fu">
+      <div class="s-label"><span class="dash"></span> Where this content gets used</div>
+      <h2 class="uses-hl">Same shoot.<br>Every channel.</h2>
+    </div>
+    <ul class="uses-list fu" style="transition-delay:.08s">
+      <li>
+        <span class="uses-num">01</span>
+        <span class="uses-name">Social Posts</span>
+        <span class="uses-desc">Ready to publish immediately — not sitting in a folder.</span>
+      </li>
+      <li>
+        <span class="uses-num">02</span>
+        <span class="uses-name">Paid Ad Testing</span>
+        <span class="uses-desc">Multiple angles to test what actually works — no more guesswork.</span>
+      </li>
+      <li>
+        <span class="uses-num">03</span>
+        <span class="uses-name">Product Pages</span>
+        <span class="uses-desc">Show the product clearly — so people can actually decide.</span>
+      </li>
+      <li>
+        <span class="uses-num">04</span>
+        <span class="uses-name">Web Pages</span>
+        <span class="uses-desc">Hero sections, background loops, brand moments — all built from the same shoot.</span>
+      </li>
+      <li>
+        <span class="uses-num">05</span>
+        <span class="uses-name">Future Content</span>
+        <span class="uses-desc">Evergreen clips that keep working long after the shoot.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- THE PACKAGE -->
+<section id="package">
+  <div class="pkg-wrap">
+    <div class="pkg-top fu">
+      <div class="s-label"><span class="dash"></span> The Package</div>
+      <h2 class="pkg-hl">
+        Take your first<br>
+        <span class="hi">step.</span>
+      </h2>
+      <p class="pkg-tagline">One shoot. More to work with after it. No long-term commitment. Just a better way to test it.</p>
+    </div>
+    <div class="pkg-grid">
+      <ul class="pkg-checklist fu" style="transition-delay:.06s">
+        <li>
+          <div class="pkg-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pkg-check-body">
+            <div class="pkg-check-name">We get clear first</div>
+            <p class="pkg-check-desc">We define who this is for, the kind of identity it needs to speak to, and what the content needs to do... <em>before anything is shot.</em></p>
+          </div>
+        </li>
+        <li>
+          <div class="pkg-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pkg-check-body">
+            <div class="pkg-check-name">We capture with intent</div>
+            <p class="pkg-check-desc">Story, product, proof, and supporting moments; <em>all captured in one structured pass.</em></p>
+          </div>
+        </li>
+        <li>
+          <div class="pkg-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pkg-check-body">
+            <div class="pkg-check-name">You leave with usable content</div>
+            <p class="pkg-check-desc">Organised and labelled so you know <em>what's there, what it's for, and how to use it.</em></p>
+          </div>
+        </li>
+      </ul>
+      <div class="pkg-box fu" style="transition-delay:.1s">
+        <div class="pkg-box-head">
+          <div class="pkg-box-tag">StoryEngine™</div>
+          <div class="pkg-box-name">Pilot<br>Shoot</div>
+          <p class="pkg-box-desc">A structured first step for lifestyle brands that need regular content, and more than one finished video.</p>
+        </div>
+        <ul class="pkg-deliverables">
+          <li><span class="d-name">Story-led / product-led reels</span><span class="d-val">7+</span></li>
+          <li><span class="d-name">Product / PDP clips</span><span class="d-val">×15</span></li>
+          <li><span class="d-name">Foundation Assets</span><span class="d-val check">✓</span></li>
+          <li><span class="d-name">Pre-Shoot Strategy</span><span class="d-val check">✓</span></li>
+          <li><span class="d-name">Organised Delivery</span><span class="d-val check">✓</span></li>
+        </ul>
+        <div class="pkg-box-cta">
+          <span class="pkg-cta-text">No long-term commitment</span>
+          <a href="https://www.storyengine.video/start-your-pilot" class="btn-white">Book a call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta">
+  <div class="fcta-wrap fu">
+    <div class="fcta-tag">Story Reels</div>
+    <h2 class="fcta-hl">
+      Start with a<br>
+      <em>pilot</em><br>
+      shoot
+    </h2>
+    <p class="fcta-sub">One structured day that gives you content you can keep using.</p>
+    <div class="fcta-group">
+      <a href="https://www.storyengine.video/start-your-pilot" class="btn fill">Book a call</a>
+      <a href="case-study-bahe.html" class="fcta-ghost">See a case study →</a>
+    </div>
+    <p class="fcta-note">storyengine.video</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-brand">StoryEngine™ — Visual Continuity for Modern Brands</span>
+  <a href="index.html" class="foot-back">← Back to home</a>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
