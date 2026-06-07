@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story Engine™ — Typography Direction</title>
+
+  <!-- Always-on: Barlow Condensed for brand marks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700;1,800&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #0d0c0a;
+      --cream:  #e9e3d6;
+      --mid:    #7a7060;
+      --sand:   #c4b49a;
+      --red:    #891a10;
+      --red-2:  #a82015;
+      --f:      'Barlow Condensed', sans-serif; /* brand font — fixed */
+      --rule:   rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: #0a0908;
+      color: #f2ede4;
+      font-family: var(--f);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 4rem 4rem 3rem;
+      border-bottom: 1px solid var(--rule);
+      max-width: 1400px; margin: 0 auto;
+    }
+    .header-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.2rem;
+    }
+    .header-hl {
+      font-family: var(--f); font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 800; text-transform: uppercase; line-height: .96;
+      color: #f2ede4;
+    }
+    .header-sub {
+      font-family: var(--f); font-size: 1rem; font-weight: 300;
+      color: rgba(242,237,228,.35); margin-top: 1rem; letter-spacing: .04em;
+      max-width: 620px;
+    }
+    .header-note {
+      margin-top: 2rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .header-note-pill {
+      font-family: var(--f); font-size: .6rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      background: rgba(137,26,16,.2); border: 1px solid var(--red);
+      color: var(--red-2); padding: .28em .85em;
+    }
+    .header-note-text {
+      font-family: var(--f); font-size: .72rem; font-weight: 300;
+      color: rgba(242,237,228,.28); letter-spacing: .06em;
+    }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      padding: 1.5rem 4rem;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; gap: 1.2rem;
+      max-width: 1400px; margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-family: var(--f); font-size: .6rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.25); flex-shrink: 0;
+    }
+    .filter-btn {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      padding: .35em 1em; border: 1px solid rgba(242,237,228,.1);
+      background: transparent; color: rgba(242,237,228,.4);
+      cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.on { background: var(--red); border-color: var(--red); color: #f2ede4; }
+
+    /* ── Main grid ── */
+    .grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--rule);
+      max-width: 1400px; margin: 0 auto;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── Option card ── */
+    .card {
+      background: #0d0c0a;
+      padding: 3.5rem 4rem 3rem;
+      position: relative; overflow: hidden;
+      cursor: pointer; transition: background .25s;
+    }
+    .card:hover { background: #121008; }
+    .card.selected { background: #13100a; outline: 2px solid var(--red); outline-offset: -2px; }
+
+    .card-number {
+      position: absolute; top: 2rem; right: 2.5rem;
+      font-family: var(--f); font-size: .58rem; font-weight: 700;
+      letter-spacing: .2em; color: rgba(242,237,228,.12);
+    }
+
+    /* Font meta */
+    .card-meta { margin-bottom: 2.5rem; }
+    .card-name {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--red); margin-bottom: .5rem;
+    }
+    .card-name-large {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+      text-transform: uppercase; line-height: .96; letter-spacing: -.01em;
+      color: #f2ede4; margin-bottom: .6rem;
+    }
+    /* card-name-large uses the preview font */
+    .card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.2rem; }
+    .card-tag {
+      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      padding: .22em .7em; border: 1px solid rgba(242,237,228,.1);
+      color: rgba(242,237,228,.3);
+    }
+    .card-tag.feature { border-color: rgba(137,26,16,.4); color: rgba(168,32,21,.7); }
+    .card-desc {
+      font-size: .82rem; color: rgba(242,237,228,.3); line-height: 1.65;
+      max-width: 420px;
+    }
+    /* card-desc uses preview font */
+
+    /* Preview section */
+    .preview { border-top: 1px solid var(--rule); padding-top: 2rem; }
+
+    /* Brand mark — always Barlow Condensed */
+    .prev-brand {
+      display: flex; align-items: center; gap: .6rem; margin-bottom: 1.8rem;
+    }
+    .prev-brand-name {
+      font-family: var(--f); font-size: .72rem; font-weight: 400;
+      letter-spacing: .36em; text-transform: uppercase;
+      color: rgba(242,237,228,.4);
+    }
+    .prev-brand-badge {
+      font-family: var(--f); font-size: .72rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      background: var(--red); color: #f2ede4;
+      padding: .1em .45em .14em;
+    }
+
+    /* Headline — always Barlow Condensed */
+    .prev-hl {
+      font-family: var(--f);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700; text-transform: uppercase;
+      line-height: .97; color: #f2ede4; margin-bottom: 1.5rem;
+    }
+    .prev-hl .dim { opacity: .15; }
+    .prev-hl .red { color: var(--red-2); }
+
+    /* Body — preview font */
+    .prev-body {
+      font-size: .9rem; color: rgba(242,237,228,.4); line-height: 1.8;
+      margin-bottom: 1.5rem; max-width: 440px;
+    }
+    .prev-label {
+      font-size: .62rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.2);
+    }
+
+    /* Weight showcase */
+    .weight-row {
+      display: flex; gap: 2rem; margin-top: 1.5rem;
+      border-top: 1px solid var(--rule); padding-top: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .weight-item { display: flex; flex-direction: column; gap: .3rem; }
+    .weight-sample {
+      font-size: 1.4rem; color: rgba(242,237,228,.7); line-height: 1;
+    }
+    .weight-name {
+      font-family: var(--f); font-size: .5rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.2);
+    }
+
+    /* CTA overlay */
+    .card-select-btn {
+      position: absolute; bottom: 2.5rem; right: 3rem;
+      font-family: var(--f); font-size: .6rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      padding: .45em 1.2em; border: 1px solid rgba(242,237,228,.15);
+      background: transparent; color: rgba(242,237,228,.4);
+      cursor: pointer; transition: all .2s;
+    }
+    .card-select-btn:hover { background: var(--red); border-color: var(--red); color: #f2ede4; }
+    .card.selected .card-select-btn {
+      background: var(--red); border-color: var(--red); color: #f2ede4;
+    }
+
+    /* Current badge */
+    .current-badge {
+      display: inline-block; margin-left: .8rem;
+      font-family: var(--f); font-size: .5rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      background: rgba(122,112,96,.2); border: 1px solid rgba(122,112,96,.3);
+      color: var(--sand); padding: .2em .6em; vertical-align: middle;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1400px; margin: 0 auto;
+    }
+    footer p {
+      font-family: var(--f); font-size: .6rem; letter-spacing: .1em;
+      color: rgba(242,237,228,.15);
+    }
+
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: 1fr; }
+      header, .filter-bar, footer { padding-left: 2rem; padding-right: 2rem; }
+      .card { padding: 2.5rem 2rem 2rem; }
+      .card-select-btn { position: static; margin-top: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:1400px;margin:0 auto;">
+
+<header>
+  <div class="header-label">Story Engine™ — Internal Review</div>
+  <h1 class="header-hl">Typography<br>Direction</h1>
+  <p class="header-sub">Five body font options to pair with Barlow Condensed. The brand headlines, labels, and STORYENGINE™ mark stay in Barlow Condensed throughout — only the body copy and UI text changes.</p>
+  <div class="header-note">
+    <span class="header-note-pill">Fixed</span>
+    <span class="header-note-text">Barlow Condensed — retained for all headlines, labels, and the brand mark</span>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn on" onclick="filterCards('all', this)">All</button>
+  <button class="filter-btn" onclick="filterCards('grotesque', this)">Grotesque</button>
+  <button class="filter-btn" onclick="filterCards('humanist', this)">Humanist</button>
+  <button class="filter-btn" onclick="filterCards('editorial', this)">Editorial</button>
+</div>
+
+</div>
+
+<div class="grid" id="cardGrid">
+
+  <!-- ── OPTION 1: Current — Barlow ── -->
+  <div class="card" data-font="Barlow, sans-serif" data-tags="grotesque" onclick="selectCard(this)">
+    <span class="card-number">01</span>
+    <div class="card-meta">
+      <div class="card-name">Current — Barlow <span class="current-badge">In use</span></div>
+      <div class="card-name-large" style="font-family:'Barlow',sans-serif;">Barlow</div>
+      <div class="card-tags">
+        <span class="card-tag">Grotesque</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'Barlow',sans-serif;">The existing choice. Shares a design DNA with Barlow Condensed, which creates visual harmony but can feel monotonous — the display and body text feel too similar in character.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'Barlow',sans-serif;font-weight:300;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'Barlow',sans-serif;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Barlow',sans-serif;font-weight:300;">Light</span>
+          <span class="weight-name">300</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Barlow',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Barlow',sans-serif;font-weight:500;">Medium</span>
+          <span class="weight-name">500</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+  <!-- ── OPTION 2: Space Grotesk ── -->
+  <div class="card" data-font="'Space Grotesk', sans-serif" data-tags="grotesque editorial" onclick="selectCard(this)">
+    <span class="card-number">02</span>
+    <div class="card-meta">
+      <div class="card-name">Space Grotesk</div>
+      <div class="card-name-large" style="font-family:'Space Grotesk',sans-serif;">Space Grotesk</div>
+      <div class="card-tags">
+        <span class="card-tag">Grotesque</span>
+        <span class="card-tag feature">Editorial Character</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'Space Grotesk',sans-serif;font-weight:400;">Has subtle ink traps and letter quirks (particularly in 'r', 'a', and 'g') that give it visual character without shouting. Popular in high-end design studios and creative agencies. Creates good contrast against condensed display type.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'Space Grotesk',sans-serif;font-weight:300;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'Space Grotesk',sans-serif;font-weight:500;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Space Grotesk',sans-serif;font-weight:300;">Light</span>
+          <span class="weight-name">300</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Space Grotesk',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Space Grotesk',sans-serif;font-weight:600;">SemiBold</span>
+          <span class="weight-name">600</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+  <!-- ── OPTION 3: Plus Jakarta Sans ── -->
+  <div class="card" data-font="'Plus Jakarta Sans', sans-serif" data-tags="humanist" onclick="selectCard(this)">
+    <span class="card-number">03</span>
+    <div class="card-meta">
+      <div class="card-name">Plus Jakarta Sans</div>
+      <div class="card-name-large" style="font-family:'Plus Jakarta Sans',sans-serif;">Plus Jakarta Sans</div>
+      <div class="card-tags">
+        <span class="card-tag">Humanist</span>
+        <span class="card-tag feature">Warm + Modern</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;">Warm, humanist grotesque with a friendly but refined feel. Works particularly well for founder-voice content — it feels personal without being casual. Strong light weights make long body copy easy to read on dark backgrounds.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;">Light</span>
+          <span class="weight-name">300</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;">SemiBold</span>
+          <span class="weight-name">600</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+  <!-- ── OPTION 4: DM Sans ── -->
+  <div class="card" data-font="'DM Sans', sans-serif" data-tags="grotesque humanist" onclick="selectCard(this)">
+    <span class="card-number">04</span>
+    <div class="card-meta">
+      <div class="card-name">DM Sans</div>
+      <div class="card-name-large" style="font-family:'DM Sans',sans-serif;">DM Sans</div>
+      <div class="card-tags">
+        <span class="card-tag">Grotesque</span>
+        <span class="card-tag feature">Refined</span>
+        <span class="card-tag">Variable Font</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'DM Sans',sans-serif;font-weight:400;">Low-contrast, geometric grotesque with optical sizing built in. Exceptionally legible at small sizes. Used extensively in high-end SaaS and product brands. Pairs well with bold condensed display — the contrast between the two is very strong.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'DM Sans',sans-serif;font-weight:300;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'DM Sans',sans-serif;font-weight:500;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'DM Sans',sans-serif;font-weight:300;">Light</span>
+          <span class="weight-name">300</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'DM Sans',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'DM Sans',sans-serif;font-weight:500;">Medium</span>
+          <span class="weight-name">500</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+  <!-- ── OPTION 5: Syne ── -->
+  <div class="card" data-font="'Syne', sans-serif" data-tags="editorial" onclick="selectCard(this)">
+    <span class="card-number">05</span>
+    <div class="card-meta">
+      <div class="card-name">Syne</div>
+      <div class="card-name-large" style="font-family:'Syne',sans-serif;font-weight:700;">Syne</div>
+      <div class="card-tags">
+        <span class="card-tag">Geometric</span>
+        <span class="card-tag feature">Most Editorial</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'Syne',sans-serif;font-weight:400;">The most editorial choice — designed for contemporary art and design publications. Has a distinctive geometry that communicates creative confidence. The bold weights are particularly striking. Makes the brand feel more like a creative studio than a video service.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'Syne',sans-serif;font-weight:400;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'Syne',sans-serif;font-weight:500;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Syne',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Syne',sans-serif;font-weight:600;">SemiBold</span>
+          <span class="weight-name">600</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Syne',sans-serif;font-weight:800;">ExtraBold</span>
+          <span class="weight-name">800</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+  <!-- ── OPTION 6: Bricolage Grotesque ── -->
+  <div class="card" data-font="'Bricolage Grotesque', sans-serif" data-tags="grotesque editorial" onclick="selectCard(this)">
+    <span class="card-number">06</span>
+    <div class="card-meta">
+      <div class="card-name">Bricolage Grotesque</div>
+      <div class="card-name-large" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;">Bricolage Grotesque</div>
+      <div class="card-tags">
+        <span class="card-tag">Grotesque</span>
+        <span class="card-tag feature">Variable Width</span>
+        <span class="card-tag">On-Trend 2025–26</span>
+        <span class="card-tag">Google Fonts</span>
+        <span class="card-tag">Free</span>
+      </div>
+      <p class="card-desc" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:400;">A variable width grotesque — think condensed-to-wide in one font. Very on-trend in design circles right now. Has a slightly handbuilt quality that suits founder brands. Can condense slightly for labels (visually linking it back to Barlow Condensed) then open up for body copy.</p>
+    </div>
+    <div class="preview">
+      <div class="prev-brand">
+        <span class="prev-brand-name">Story</span>
+        <span class="prev-brand-badge">Engine™</span>
+      </div>
+      <div class="prev-hl">
+        Most brands<br>
+        don't have a <span class="dim">content</span><br>
+        problem. <span class="dim">They have a</span><br>
+        <span class="red">continuity</span> <span class="dim">problem.</span>
+      </div>
+      <p class="prev-body" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:300;">I help founder-led lifestyle brands get more from every shoot — building reusable content libraries that support social, email, product pages, launches and campaigns.</p>
+      <span class="prev-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:500;">One shoot. Multiple uses. Less wasted content.</span>
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:300;">Light</span>
+          <span class="weight-name">300</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:400;">Regular</span>
+          <span class="weight-name">400</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;">Bold</span>
+          <span class="weight-name">700</span>
+        </div>
+      </div>
+    </div>
+    <button class="card-select-btn">Select this →</button>
+  </div>
+
+</div>
+
+<!-- Selected callout -->
+<div id="selectionBar" style="display:none; background:var(--red); padding:1rem 4rem; display:flex; align-items:center; gap:2rem; max-width:1400px; margin:0 auto;">
+  <span style="font-family:var(--f); font-size:.62rem; font-weight:700; letter-spacing:.26em; text-transform:uppercase; color:rgba(255,255,255,.7);">Selected:</span>
+  <span id="selectionName" style="font-family:var(--f); font-size:1rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#fff;"></span>
+  <span style="font-family:var(--f); font-size:.6rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-left:auto;">Tell Seb which number you prefer → he'll implement it</span>
+</div>
+
+<div style="max-width:1400px;margin:0 auto;">
+<footer>
+  <p>Story Engine™ — Typography Review · Not for distribution</p>
+  <p>All fonts loaded from Google Fonts CDN · Free for commercial use</p>
+</footer>
+</div>
+
+<script>
+  function selectCard(card) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    const name = card.querySelector('.card-name').textContent.trim().split('\n')[0].trim();
+    const bar = document.getElementById('selectionBar');
+    bar.style.display = 'flex';
+    document.getElementById('selectionName').textContent = name;
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function filterCards(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    document.querySelectorAll('.card').forEach(card => {
+      if (tag === 'all' || card.dataset.tags.includes(tag)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    // Fix grid gaps after filtering
+    const grid = document.getElementById('cardGrid');
+    const visible = [...grid.querySelectorAll('.card')].filter(c => c.style.display !== 'none');
+    if (visible.length % 2 !== 0) {
+      grid.style.gridTemplateColumns = '1fr';
+    } else {
+      grid.style.gridTemplateColumns = '1fr 1fr';
+    }
+  }
+</script>
+
+</body>
+</html>
