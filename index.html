@@ -453,6 +453,11 @@
     }
     .diag-wrap { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
 
+    /* Centred flow column */
+    .diag-flow {
+      display: flex; flex-direction: column; align-items: center; width: 100%;
+    }
+
     /* Dominant intro */
     .diag-intro {
       font-family: var(--f);
@@ -467,7 +472,7 @@
     .diag-source {
       display: flex; align-items: center; gap: 1.2rem;
       padding: 1rem 2rem; border: 1px solid rgba(242,237,228,.1);
-      background: rgba(242,237,228,.02); width: fit-content;
+      background: rgba(242,237,228,.02);
       animation: sourcePulse 4s ease-in-out infinite;
     }
     @keyframes sourcePulse {
@@ -482,9 +487,14 @@
 
     /* Connectors */
     .diag-vline {
-      width: 1px; height: 28px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.07), rgba(137,26,16,.35));
-      margin-left: 0;
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, rgba(242,237,228,.18), rgba(137,26,16,.45));
+    }
+    /* Disconnected line: source → assets */
+    .diag-vline--gap {
+      background: none;
+      border-left: 1px dashed rgba(242,237,228,.22);
+      height: 42px;
     }
 
     /* Asset tiles — small and symbolic, 14 squares */
@@ -499,13 +509,13 @@
     }
     .diag-assets {
       display: grid;
-      grid-template-columns: repeat(7, 14px);
-      grid-template-rows: repeat(2, 14px);
-      gap: 3px;
+      grid-template-columns: repeat(7, 28px);
+      grid-template-rows: repeat(2, 28px);
+      gap: 5px;
     }
     .diag-asset {
-      width: 14px; height: 14px;
-      border-radius: 2px;
+      width: 28px; height: 28px;
+      border-radius: 4px;
       border: 1px solid rgba(242,237,228,.10);
       background: rgba(242,237,228,.04);
       animation: assetFlicker 3s ease-in-out infinite;
@@ -527,11 +537,12 @@
     .diag-asset:nth-child(14) { background: rgba(242,237,228,.06); border-color: rgba(242,237,228,.12); animation-duration: 3.6s; animation-delay:  1.9s; }
 
     /* Channel output blocks */
-    .diag-outputs { display: flex; gap: 2px; }
+    .diag-outputs { display: flex; gap: 2px; width: 100%; }
     .diag-output {
       flex: 1; padding: 1rem 1rem 1.1rem;
       border: 1px solid rgba(255,255,255,.06);
       background: rgba(242,237,228,.012);
+      text-align: center;
       transition: background .2s, border-color .2s;
     }
     .diag-output:hover { background: rgba(242,237,228,.04); border-color: rgba(242,237,228,.1); }
@@ -542,15 +553,21 @@
     }
 
     /* Future posts footer */
-    .diag-future {
-      margin-top: 2px; padding: .8rem 1rem;
-      border: 1px solid rgba(137,26,16,.18);
-      background: rgba(137,26,16,.03);
-      font-family: var(--f); font-size: .62rem; font-weight: 700;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: rgba(242,237,228,.2);
+    @keyframes futurePulse {
+      0%,100% { box-shadow: 0 0 14px rgba(137,26,16,.10), inset 0 0 10px rgba(137,26,16,.03); border-color: rgba(137,26,16,.20); }
+      50%      { box-shadow: 0 0 30px rgba(137,26,16,.28), inset 0 0 18px rgba(137,26,16,.07); border-color: rgba(137,26,16,.40); }
     }
-    .diag-future-semi { color: var(--red); font-weight: 400; margin-left: .15em; }
+    .diag-future {
+      width: 100%; margin-top: 2px; padding: .9rem 1rem;
+      border: 1px solid rgba(137,26,16,.22);
+      background: rgba(137,26,16,.04);
+      font-family: var(--f); font-size: 1rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(242,237,228,.35);
+      text-align: center;
+      animation: futurePulse 5s ease-in-out infinite;
+    }
+    .diag-future-semi { color: var(--red); font-weight: 400; margin-right: .3em; }
 
     /* Tighten red dash in diagram s-label */
     #diagram .s-label { gap: .35rem; margin-bottom: 1.8rem; }
@@ -747,7 +764,7 @@
       .n-links { display: none; }
       .case-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .rebuilt-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .diag-assets { grid-template-columns: repeat(7, 1fr); }
+      .diag-assets { grid-template-columns: repeat(7, 28px); }
       .diag-outputs { flex-wrap: wrap; }
       .bahe-wrap { grid-template-columns: 1fr; gap: 3rem; }
       .bahe-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-dk); padding-top: 3rem; }
@@ -983,14 +1000,14 @@
     <div class="s-label light fu"><span class="dash"></span> The system</div>
     <p class="diag-intro fu" style="transition-delay:.06s">I design shoots around reusable content, so one shoot can support far more than a single campaign.</p>
 
-    <div class="fu" style="transition-delay:.1s">
+    <div class="diag-flow fu" style="transition-delay:.1s">
 
       <div class="diag-source">
         <svg class="diag-src-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         <span class="diag-src-name">One Shoot</span>
       </div>
 
-      <div class="diag-vline"></div>
+      <div class="diag-vline diag-vline--gap"></div>
 
       <div class="diag-assets">
         <div class="diag-asset"></div>
@@ -1017,7 +1034,7 @@
         <div class="diag-output"><span class="diag-out-label">Founder</span></div>
         <div class="diag-output"><span class="diag-out-label">Email</span></div>
       </div>
-      <div class="diag-future">Future posts <span class="diag-future-semi">;</span></div>
+      <div class="diag-future"><span class="diag-future-semi">;</span> Future posts</div>
 
     </div>
   </div>
