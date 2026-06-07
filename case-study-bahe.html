@@ -255,60 +255,68 @@
 
     /* ─────────────── BEFORE / AFTER ─────────────── */
     .before-after {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 3rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3rem;
     }
-    .ba-col { padding: 3rem; }
+    .ba-col { padding: 3rem; background: #fff; }
     .ba-col.before {
-      background: rgba(13,12,10,.03); border: 1px solid rgba(13,12,10,.08);
+      border: 1px solid rgba(13,12,10,.1);
     }
     .ba-col.after {
-      background: rgba(137,26,16,.05); border: 1px solid rgba(137,26,16,.2);
+      border: 1px solid rgba(13,12,10,.1);
+      border-left: 4px solid var(--red);
     }
     .ba-label {
       font-family: var(--f); font-size: .58rem; font-weight: 700;
       letter-spacing: .28em; text-transform: uppercase;
-      margin-bottom: 2rem; display: flex; align-items: center; gap: .6rem;
+      margin-bottom: 2rem; display: flex; align-items: center; gap: .7rem;
     }
-    .ba-label.before { color: rgba(13,12,10,.3); }
+    .ba-label.before { color: rgba(13,12,10,.35); }
     .ba-label.after { color: var(--red); }
     .ba-label::before { content: ''; display: block; width: 16px; height: 1px; background: currentColor; }
-    .ba-list { list-style: none; display: flex; flex-direction: column; gap: .85rem; }
+    .ba-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
     .ba-list li {
-      font-family: var(--f); font-size: .85rem; font-weight: 600;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: rgba(13,12,10,.45); padding-left: 1.2rem; position: relative;
+      font-family: var(--b); font-size: .95rem; font-weight: 300;
+      line-height: 1.5;
+      color: rgba(13,12,10,.35); padding-left: 1.4rem; position: relative;
+      text-decoration: line-through; text-decoration-color: rgba(13,12,10,.15);
     }
-    .ba-col.after .ba-list li { color: rgba(13,12,10,.8); }
-    .ba-list li::before { content: '—'; position: absolute; left: 0; color: rgba(13,12,10,.2); }
-    .ba-col.after .ba-list li::before { content: '+'; color: var(--red); font-weight: 700; }
+    .ba-col.after .ba-list li {
+      color: rgba(13,12,10,.8);
+      text-decoration: none; font-weight: 400;
+    }
+    .ba-list li::before { content: '—'; position: absolute; left: 0; color: rgba(13,12,10,.2); font-size: .8rem; }
+    .ba-col.after .ba-list li::before { content: '→'; color: var(--red); font-weight: 700; text-decoration: none; }
 
     /* ─────────────── WHERE IT WENT ─────────────── */
     .usage-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-top: 3rem;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 3rem;
     }
     .usage-cell {
-      padding: 2.5rem 1.5rem;
-      border: 1px solid rgba(13,12,10,.08);
+      padding: 2.2rem 1.6rem 2.4rem;
+      border: 1px solid rgba(13,12,10,.09);
       background: #fff;
-      transition: background .2s, border-color .2s;
+      transition: background .2s, border-color .2s, box-shadow .2s;
       position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 1.1rem;
     }
     .usage-cell::after {
       content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2px; background: var(--red); transform: scaleX(0);
+      height: 3px; background: var(--red); transform: scaleX(0);
       transform-origin: left; transition: transform .35s ease;
     }
-    .usage-cell:hover { background: var(--cream); border-color: rgba(13,12,10,.15); }
+    .usage-cell:hover { background: var(--cream-3); border-color: rgba(13,12,10,.18); box-shadow: 0 4px 20px rgba(13,12,10,.05); }
     .usage-cell:hover::after { transform: scaleX(1); }
+    .usage-icon { color: var(--red); opacity: .7; width: 22px; height: 22px; flex-shrink: 0; }
     .usage-num {
-      font-family: var(--f); font-size: .52rem; font-weight: 700;
+      font-family: var(--f); font-size: .5rem; font-weight: 700;
       letter-spacing: .24em; text-transform: uppercase;
-      color: rgba(13,12,10,.22); margin-bottom: 1rem;
+      color: rgba(13,12,10,.2);
     }
     .usage-name {
-      font-family: var(--f); font-size: 1rem; font-weight: 700;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: rgba(13,12,10,.65); line-height: 1.1;
+      font-family: var(--f); font-size: .95rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: rgba(13,12,10,.75); line-height: 1.15;
+      margin-top: auto;
     }
 
     /* ─────────────── LESSON CELLS ─────────────── */
@@ -475,7 +483,7 @@
         <div class="s-label fu"><span class="dash"></span> The reality</div>
         <h2 class="cs-body-hl fu" style="transition-delay:.05s">
           They didn't<br>come looking<br>
-          <span class="dim">for a film.</span>
+          <span class="red">for a film.</span>
         </h2>
         <!-- Image placeholder #1 -->
         <div class="img-block img-tall fu" style="transition-delay:.1s; margin-top: 2.5rem;">
@@ -553,7 +561,7 @@
         <div class="s-label fu"><span class="dash"></span> Where it delivered value</div>
         <h2 class="cs-body-hl fu" style="transition-delay:.05s">
           The most valuable<br>assets weren't the<br>
-          <span class="dim">finished reels.</span>
+          <span class="red">finished reels.</span>
         </h2>
         <p class="cs-body-text fu" style="transition-delay:.1s">
           The clips Bahé returned to weren't always the polished edits. They were the reusable product clips and supporting footage — the plug-ins.
@@ -573,22 +581,48 @@
     </div>
     <div class="usage-grid fu" style="transition-delay:.1s; margin-top: 4rem;">
       <div class="usage-cell">
+        <svg class="usage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+        </svg>
         <div class="usage-num">01</div>
         <div class="usage-name">Social Posts</div>
       </div>
       <div class="usage-cell">
+        <svg class="usage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2" x2="12" y2="6"/>
+          <line x1="12" y1="18" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="6" y2="12"/>
+          <line x1="18" y1="12" x2="22" y2="12"/>
+        </svg>
         <div class="usage-num">02</div>
         <div class="usage-name">Paid Ads</div>
       </div>
       <div class="usage-cell">
+        <svg class="usage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
         <div class="usage-num">03</div>
         <div class="usage-name">Product Pages</div>
       </div>
       <div class="usage-cell">
+        <svg class="usage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
         <div class="usage-num">04</div>
         <div class="usage-name">Founder &amp; Educational</div>
       </div>
       <div class="usage-cell">
+        <svg class="usage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
         <div class="usage-num">05</div>
         <div class="usage-name">Email Campaigns</div>
       </div>
