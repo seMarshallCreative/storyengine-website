@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Pilot Call — Story Engine™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0c0a;
+      --ink-2:   #181510;
+      --cream:   #e9e3d6;
+      --cream-2: #f0ebe0;
+      --cream-3: #f6f2eb;
+      --mid:     #7a7060;
+      --sand:    #c4b49a;
+      --red:     #891a10;
+      --red-2:   #a82015;
+      --rule:    rgba(13,12,10,0.09);
+      --f:       'Barlow Condensed', sans-serif;
+      --b:       'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream-2);
+      color: var(--ink);
+      font-family: var(--b);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(240,235,224,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .n-logo { text-decoration: none; display: flex; align-items: center; gap: .55rem; }
+    .n-logo-text { font-family: var(--f); font-size: .72rem; font-weight: 400; letter-spacing: .36em; text-transform: uppercase; color: rgba(13,12,10,.5); }
+    .n-logo-badge { font-family: var(--f); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; background: var(--red); color: #f2ede4; padding: .1em .45em .14em; }
+    .n-back { font-family: var(--f); font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.35); text-decoration: none; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
+    .n-back:hover { color: var(--ink); }
+    .n-back svg { width: 14px; height: 14px; }
+
+    /* ─── Page layout ─── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 5.5rem;
+    }
+
+    /* ─── Left panel ─── */
+    .left {
+      background: var(--ink-2);
+      padding: 6rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .left::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 10% 80%, rgba(137,26,16,.18) 0%, transparent 65%);
+    }
+    .left-noise {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: .5; mix-blend-mode: overlay;
+    }
+    .left-inner { position: relative; z-index: 1; }
+
+    .left-tag {
+      font-family: var(--f); font-size: .6rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 2rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .left-tag::before { content: ''; width: 24px; height: 1px; background: var(--red); }
+
+    .left-hl {
+      font-family: var(--f);
+      font-size: clamp(2.8rem, 4.5vw, 5rem);
+      font-weight: 800; line-height: .9; text-transform: uppercase;
+      letter-spacing: -.02em; color: #f2ede4;
+      margin-bottom: 2.5rem;
+    }
+    .left-hl em { font-style: italic; color: var(--red-2); }
+
+    .left-body {
+      font-size: .9rem; color: rgba(242,237,228,.38);
+      line-height: 1.8; margin-bottom: 3rem; max-width: 360px;
+    }
+
+    .left-checks { list-style: none; margin-bottom: 3.5rem; }
+    .left-checks li {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .75rem 0; border-bottom: 1px solid rgba(255,255,255,.06);
+      font-family: var(--f); font-size: .9rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: rgba(242,237,228,.55);
+    }
+    .left-checks li:last-child { border-bottom: none; }
+    .left-checks li .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--red); flex-shrink: 0;
+    }
+
+    .left-email {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(242,237,228,.25); text-decoration: none;
+      transition: color .2s;
+    }
+    .left-email:hover { color: rgba(242,237,228,.6); }
+    .left-email-label {
+      font-family: var(--f); font-size: .55rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.18); margin-bottom: .3rem;
+    }
+
+    /* ─── Right panel (form) ─── */
+    .right {
+      background: var(--cream-3);
+      padding: 6rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .form-head { margin-bottom: 3rem; }
+    .form-title {
+      font-family: var(--f); font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800; text-transform: uppercase; line-height: .96;
+      color: var(--ink); letter-spacing: -.01em; margin-bottom: .6rem;
+    }
+    .form-sub {
+      font-size: .82rem; color: var(--mid); line-height: 1.6;
+    }
+
+    form { display: flex; flex-direction: column; gap: 0; }
+
+    .field {
+      position: relative;
+      border-bottom: 1px solid var(--rule);
+    }
+    .field:first-of-type { border-top: 1px solid var(--rule); }
+
+    .field label {
+      display: block;
+      font-family: var(--f); font-size: .56rem; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--mid); padding: 1.4rem 0 .3rem;
+      transition: color .2s;
+    }
+    .field:focus-within label { color: var(--red); }
+
+    .field input,
+    .field textarea,
+    .field select {
+      display: block; width: 100%;
+      background: transparent; border: none; outline: none;
+      font-family: var(--b); font-size: .95rem; font-weight: 400;
+      color: var(--ink); line-height: 1.5;
+      padding: 0 0 1.2rem;
+      resize: none;
+      -webkit-appearance: none; appearance: none;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: rgba(13,12,10,.22); }
+    .field select { cursor: pointer; }
+    .field select option { background: var(--cream-3); color: var(--ink); }
+
+    .field textarea { min-height: 110px; }
+
+    .field-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    }
+    .field-row .field:first-child {
+      border-right: 1px solid var(--rule);
+      padding-right: 2rem;
+    }
+    .field-row .field:last-child { padding-left: 2rem; }
+
+    .form-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; padding-top: 2rem; flex-wrap: wrap;
+    }
+    .form-note {
+      font-size: .72rem; color: rgba(13,12,10,.28); line-height: 1.5;
+    }
+
+    .btn-submit {
+      font-family: var(--f); font-size: .7rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: .75rem;
+      padding: 1rem 2.5rem; border: none;
+      background: var(--red); color: #f2ede4;
+      cursor: pointer; transition: background .25s; flex-shrink: 0;
+    }
+    .btn-submit:hover { background: var(--red-2); }
+    .btn-submit svg { width: 14px; height: 14px; transition: transform .2s; }
+    .btn-submit:hover svg { transform: translateX(3px); }
+
+    /* ─── Thank-you state ─── */
+    .thankyou {
+      display: none; text-align: center;
+      padding: 3rem 0;
+    }
+    .thankyou-icon {
+      width: 48px; height: 48px; background: var(--red);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .thankyou-icon svg { width: 22px; height: 22px; }
+    .thankyou h3 {
+      font-family: var(--f); font-size: 2rem; font-weight: 800;
+      text-transform: uppercase; color: var(--ink); margin-bottom: .75rem;
+    }
+    .thankyou p { font-size: .88rem; color: var(--mid); line-height: 1.7; }
+
+    /* Netlify success page redirect target */
+    body.submitted .form-wrap { display: none; }
+    body.submitted .thankyou { display: block; }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--cream); padding: 1.5rem 3rem;
+      border-top: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .foot-brand { font-family: var(--f); font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(13,12,10,.25); }
+    .foot-links { display: flex; gap: 2rem; }
+    .foot-links a { font-family: var(--f); font-size: .6rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(13,12,10,.3); text-decoration: none; transition: color .2s; }
+    .foot-links a:hover { color: var(--ink); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .page { grid-template-columns: 1fr; }
+      .left { padding: 5rem 1.5rem 4rem; min-height: auto; }
+      .right { padding: 4rem 1.5rem 5rem; }
+      .field-row { grid-template-columns: 1fr; }
+      .field-row .field:first-child { border-right: none; padding-right: 0; }
+      .field-row .field:last-child { padding-left: 0; }
+      footer { flex-direction: column; gap: 1rem; padding: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="n-logo">
+    <span class="n-logo-text">Story</span>
+    <span class="n-logo-badge">Engine™</span>
+  </a>
+  <a href="index.html" class="n-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Back to home
+  </a>
+</nav>
+
+<div class="page">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="left-noise"></div>
+    <div class="left-inner">
+      <div class="left-tag">Book a pilot call</div>
+      <h1 class="left-hl">
+        Tell me<br>
+        about your<br>
+        <em>brand.</em>
+      </h1>
+      <p class="left-body">
+        A short call to understand your brand, what content you need, and whether a pilot shoot makes sense. No pitch, no pressure.
+      </p>
+      <ul class="left-checks">
+        <li><span class="dot"></span>15–20 minutes</li>
+        <li><span class="dot"></span>We map what your brand actually needs</li>
+        <li><span class="dot"></span>You'll leave with clarity — pilot or not</li>
+        <li><span class="dot"></span>No long-term commitment</li>
+      </ul>
+      <div>
+        <p class="left-email-label">Or reach out directly</p>
+        <a href="mailto:hello@storyengine.video" class="left-email">hello@storyengine.video</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT (form) -->
+  <div class="right">
+    <div class="form-head">
+      <h2 class="form-title">Let's get<br>started.</h2>
+      <p class="form-sub">Fill this in and I'll come back to you within 24 hours.</p>
+    </div>
+
+    <div class="form-wrap">
+      <form
+        name="pilot-enquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/contact-success"
+        id="contact-form"
+      >
+        <!-- Netlify hidden fields -->
+        <input type="hidden" name="form-name" value="pilot-enquiry" />
+        <p style="display:none;"><label>Don't fill this in: <input name="bot-field" /></label></p>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Seb Marshall" required />
+          </div>
+          <div class="field">
+            <label for="brand">Brand / company</label>
+            <input type="text" id="brand" name="brand" placeholder="Bahé" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="hello@yourbrand.com" required />
+        </div>
+
+        <div class="field">
+          <label for="stage">Where are you with content?</label>
+          <select id="stage" name="stage" required>
+            <option value="" disabled selected>Select one</option>
+            <option>Starting from scratch — nothing in place yet</option>
+            <option>Have some content but it's inconsistent</option>
+            <option>Posting regularly but want a better system</option>
+            <option>Scaling and need a proper content engine</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Tell me about your brand</label>
+          <textarea id="message" name="message" placeholder="What you sell, who you sell to, what you're trying to achieve with content…" required></textarea>
+        </div>
+
+        <div class="form-foot">
+          <p class="form-note">UK based &nbsp;·&nbsp; Colchester &amp; Essex<br>Replies within 24 hours.</p>
+          <button type="submit" class="btn-submit">
+            Send enquiry
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Thank-you (shown after JS intercept) -->
+    <div class="thankyou">
+      <div class="thankyou-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Message sent.</h3>
+      <p>I'll come back to you within 24 hours.<br>In the meantime, take a look at the <a href="case-study-bahe.html" style="color:var(--red);text-decoration:none;border-bottom:1px solid var(--red);">Bahé case study</a>.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-brand">StoryEngine™ — Visual Continuity for Modern Brands</span>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="pilot.html">Pilot</a>
+    <a href="case-study-bahe.html">Case Study</a>
+  </div>
+</footer>
+
+<script>
+  // Intercept form submission for inline thank-you (Netlify still receives the data)
+  const form = document.getElementById('contact-form');
+  const wrap = document.querySelector('.form-wrap');
+  const ty   = document.querySelector('.thankyou');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+      });
+      wrap.style.display = 'none';
+      ty.style.display   = 'block';
+    } catch (err) {
+      // Fallback: let native submit happen
+      form.submit();
+    }
+  });
+</script>
+</body>
+</html>
