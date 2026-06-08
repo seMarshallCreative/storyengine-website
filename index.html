@@ -353,7 +353,7 @@
       font-weight: 700; line-height: .98; text-transform: uppercase; color: #f2ede4;
       margin-bottom: 2rem; position: relative; z-index: 1;
     }
-    .pilot-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
+    .pilot-hl .hi { background: var(--red); font-style: italic; display: inline-block; padding: .04em .14em .08em; line-height: 1; }
     .pilot-desc {
       font-size: .9rem; color: rgba(242,237,228,.42);
       line-height: 1.75; margin-bottom: 2.5rem; max-width: 320px; position: relative; z-index: 1;
@@ -586,6 +586,74 @@
     /* Tighten red dash in diagram s-label */
     #diagram .s-label { gap: .35rem; margin-bottom: 1.8rem; }
 
+    /* ── Tree collapse toggle ── */
+    .tree-toggle {
+      display: flex; align-items: center; gap: .6rem;
+      background: none; border: none; cursor: pointer;
+      font-family: var(--f); font-size: .56rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.22); padding: 0; margin: 0 auto 2.2rem;
+      transition: color .2s;
+    }
+    .tree-toggle:hover { color: rgba(242,237,228,.5); }
+    .tree-toggle-icon {
+      width: 14px; height: 14px;
+      border: 1px solid rgba(242,237,228,.18);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .35s ease, border-color .2s;
+      flex-shrink: 0;
+    }
+    .tree-toggle-icon svg { width: 7px; height: 7px; transition: transform .35s ease; }
+    .tree-toggle[aria-expanded="false"] .tree-toggle-icon svg { transform: rotate(-90deg); }
+    .tree-body {
+      overflow: hidden;
+      max-height: 900px;
+      transition: max-height .45s ease, opacity .35s ease;
+      opacity: 1;
+    }
+    .tree-body.collapsed { max-height: 0; opacity: 0; pointer-events: none; }
+
+    /* ── Asset squares ── */
+    .asset-squares-wrap {
+      margin-top: 3.5rem; display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .asset-squares-label {
+      font-family: var(--f); font-size: .48rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: rgba(242,237,228,.14); margin-bottom: .9rem;
+    }
+    .asset-squares-grid {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .asset-sq {
+      width: 22px; height: 22px;
+      background: rgba(242,237,228,.055);
+      border: 1px solid rgba(242,237,228,.07);
+      border-radius: 2px;
+      opacity: 0;
+      transform: scale(.6);
+    }
+    .fu.v .asset-sq { animation: sqPop .3s ease forwards; }
+    .fu.v .asset-sq:nth-child(1)  { animation-delay: 2.1s; }
+    .fu.v .asset-sq:nth-child(2)  { animation-delay: 2.18s; }
+    .fu.v .asset-sq:nth-child(3)  { animation-delay: 2.26s; }
+    .fu.v .asset-sq:nth-child(4)  { animation-delay: 2.34s; }
+    .fu.v .asset-sq:nth-child(5)  { animation-delay: 2.42s; }
+    .fu.v .asset-sq:nth-child(6)  { animation-delay: 2.50s; }
+    .fu.v .asset-sq:nth-child(7)  { animation-delay: 2.58s; }
+    .fu.v .asset-sq:nth-child(8)  { animation-delay: 2.66s; }
+    .fu.v .asset-sq:nth-child(9)  { animation-delay: 2.74s; }
+    .fu.v .asset-sq:nth-child(10) { animation-delay: 2.82s; }
+    .fu.v .asset-sq:nth-child(11) { animation-delay: 2.90s; }
+    .fu.v .asset-sq:nth-child(12) { animation-delay: 2.98s; }
+    .fu.v .asset-sq:nth-child(13) { animation-delay: 3.06s; }
+    .fu.v .asset-sq:nth-child(14) { animation-delay: 3.14s; }
+    @keyframes sqPop {
+      from { opacity: 0; transform: scale(.6); }
+      60%  { opacity: 1; transform: scale(1.08); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
     /* ─────────────── PRODUCES / OPTIONS ─────────────── */
     #produces {
       background: var(--cream); color: var(--ink);
@@ -757,7 +825,7 @@
       font-weight: 700; text-transform: uppercase; line-height: .94;
       color: #f2ede4; margin-bottom: 3rem; letter-spacing: -.015em;
     }
-    .contact-hl .hi { background: var(--red); font-style: italic; padding: 0 .12em; }
+    .contact-hl .hi { background: var(--red); font-style: italic; display: inline-block; padding: .04em .14em .08em; line-height: 1; }
     .contact-desc {
       font-size: .95rem; color: rgba(242,237,228,.38);
       line-height: 1.75; margin-bottom: 3rem; max-width: 440px;
@@ -865,33 +933,29 @@
 <!-- MARQUEE -->
 <div class="marquee-wrap" aria-hidden="true">
   <div class="marquee-track">
-    <span class="marquee-item">One Shoot. Many Stories.</span>
+    <span class="marquee-item">One Shoot · Many Stories</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Built Before the Camera Rolls.</span>
+    <span class="marquee-item">Built Before the Camera Rolls</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Not Repurposed. Pre-Purposed.</span>
+    <span class="marquee-item">Not Repurposed · Pre-Purposed</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Social. Product. Founder. Email.</span>
+    <span class="marquee-item">Social · Product · Founder · Email</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Every Frame Has a Job.</span>
+    <span class="marquee-item">Every Frame Has a Job</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Content with a Spine.</span>
+    <span class="marquee-item">Content with a Spine</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">StoryEngine™</span>
+    <span class="marquee-item">One Shoot · Many Stories</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">One Shoot. Many Stories.</span>
+    <span class="marquee-item">Built Before the Camera Rolls</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Built Before the Camera Rolls.</span>
+    <span class="marquee-item">Not Repurposed · Pre-Purposed</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Not Repurposed. Pre-Purposed.</span>
+    <span class="marquee-item">Social · Product · Founder · Email</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Social. Product. Founder. Email.</span>
+    <span class="marquee-item">Every Frame Has a Job</span>
     <span class="marquee-dot">•</span>
-    <span class="marquee-item">Every Frame Has a Job.</span>
-    <span class="marquee-dot">•</span>
-    <span class="marquee-item">Content with a Spine.</span>
-    <span class="marquee-dot">•</span>
-    <span class="marquee-item">StoryEngine™</span>
+    <span class="marquee-item">Content with a Spine</span>
     <span class="marquee-dot">•</span>
   </div>
 </div>
@@ -1054,59 +1118,93 @@
         </div>
       </div>
 
-      <!-- Trunk line down to horizontal -->
-      <div class="tree-trunk"></div>
+      <!-- Collapse toggle -->
+      <button class="tree-toggle" id="tree-toggle" aria-expanded="true" aria-controls="tree-body">
+        <span class="tree-toggle-icon">
+          <svg viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3l2 2 2-2"/></svg>
+        </span>
+        <span class="tree-toggle-txt">Collapse</span>
+      </button>
 
-      <!-- 4 branches -->
-      <div class="tree-branches">
+      <!-- Collapsible tree body -->
+      <div class="tree-body" id="tree-body">
 
-        <div class="tree-branch">
-          <div class="tree-branch-vline"></div>
-          <div class="tree-channel">Social</div>
-          <div class="tree-leaf-group">
-            <div class="tree-leaf-connector"></div>
-            <div class="tree-leaf">Reels</div>
-            <div class="tree-leaf">Posts</div>
-            <div class="tree-leaf">Paid Ads</div>
+        <!-- Trunk line down to horizontal -->
+        <div class="tree-trunk"></div>
+
+        <!-- 4 branches -->
+        <div class="tree-branches">
+
+          <div class="tree-branch">
+            <div class="tree-branch-vline"></div>
+            <div class="tree-channel">Social</div>
+            <div class="tree-leaf-group">
+              <div class="tree-leaf-connector"></div>
+              <div class="tree-leaf">Reels</div>
+              <div class="tree-leaf">Posts</div>
+              <div class="tree-leaf">Paid Ads</div>
+            </div>
           </div>
+
+          <div class="tree-branch">
+            <div class="tree-branch-vline"></div>
+            <div class="tree-channel">Product</div>
+            <div class="tree-leaf-group">
+              <div class="tree-leaf-connector"></div>
+              <div class="tree-leaf">Pages</div>
+              <div class="tree-leaf">Listings</div>
+              <div class="tree-leaf">Demos</div>
+            </div>
+          </div>
+
+          <div class="tree-branch">
+            <div class="tree-branch-vline"></div>
+            <div class="tree-channel">Founder</div>
+            <div class="tree-leaf-group">
+              <div class="tree-leaf-connector"></div>
+              <div class="tree-leaf">Series</div>
+              <div class="tree-leaf">Talks</div>
+              <div class="tree-leaf">Clips</div>
+            </div>
+          </div>
+
+          <div class="tree-branch">
+            <div class="tree-branch-vline"></div>
+            <div class="tree-channel">Email</div>
+            <div class="tree-leaf-group">
+              <div class="tree-leaf-connector"></div>
+              <div class="tree-leaf">Campaigns</div>
+              <div class="tree-leaf">Sequences</div>
+              <div class="tree-leaf">Newsletters</div>
+            </div>
+          </div>
+
         </div>
 
-        <div class="tree-branch">
-          <div class="tree-branch-vline"></div>
-          <div class="tree-channel">Product</div>
-          <div class="tree-leaf-group">
-            <div class="tree-leaf-connector"></div>
-            <div class="tree-leaf">Pages</div>
-            <div class="tree-leaf">Listings</div>
-            <div class="tree-leaf">Demos</div>
-          </div>
-        </div>
+        <div class="diag-future"><span class="diag-future-semi">;</span> Future posts</div>
 
-        <div class="tree-branch">
-          <div class="tree-branch-vline"></div>
-          <div class="tree-channel">Founder</div>
-          <div class="tree-leaf-group">
-            <div class="tree-leaf-connector"></div>
-            <div class="tree-leaf">Series</div>
-            <div class="tree-leaf">Talks</div>
-            <div class="tree-leaf">Clips</div>
-          </div>
-        </div>
+      </div><!-- /tree-body -->
 
-        <div class="tree-branch">
-          <div class="tree-branch-vline"></div>
-          <div class="tree-channel">Email</div>
-          <div class="tree-leaf-group">
-            <div class="tree-leaf-connector"></div>
-            <div class="tree-leaf">Campaigns</div>
-            <div class="tree-leaf">Sequences</div>
-            <div class="tree-leaf">Newsletters</div>
-          </div>
+      <!-- Asset squares -->
+      <div class="asset-squares-wrap">
+        <div class="asset-squares-label">Assets</div>
+        <div class="asset-squares-grid">
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
+          <div class="asset-sq"></div>
         </div>
-
       </div>
-
-      <div class="diag-future"><span class="diag-future-semi">;</span> Future posts</div>
 
     </div>
   </div>
@@ -1285,6 +1383,19 @@
       ? 'rgba(13,12,10,.97)'
       : 'rgba(13,12,10,.82)';
   });
+
+  // Tree collapse toggle
+  const treeToggle = document.getElementById('tree-toggle');
+  const treeBody   = document.getElementById('tree-body');
+  const toggleTxt  = treeToggle && treeToggle.querySelector('.tree-toggle-txt');
+  if (treeToggle && treeBody) {
+    treeToggle.addEventListener('click', () => {
+      const expanded = treeToggle.getAttribute('aria-expanded') === 'true';
+      treeToggle.setAttribute('aria-expanded', String(!expanded));
+      treeBody.classList.toggle('collapsed', expanded);
+      if (toggleTxt) toggleTxt.textContent = expanded ? 'Expand' : 'Collapse';
+    });
+  }
 
   // Pattern lines — cascade in on scroll
   const patLines = document.querySelectorAll('.pat-lines li');
