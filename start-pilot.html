@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Your Pilot — Story Engine™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,600;1,700;1,800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0c0a;
+      --ink-2:   #181510;
+      --cream:   #e9e3d6;
+      --cream-2: #f0ebe0;
+      --mid:     #7a7060;
+      --sand:    #c4b49a;
+      --red:     #891a10;
+      --red-2:   #a82015;
+      --rule:    rgba(13,12,10,0.09);
+      --rule-dk: rgba(255,255,255,0.07);
+      --f:       'Barlow Condensed', sans-serif;
+      --b:       'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink);
+      color: #f2ede4;
+      font-family: var(--b);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(13,12,10,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule-dk);
+    }
+    .n-logo {
+      text-decoration: none; display: flex; align-items: center; gap: .35rem;
+    }
+    .n-logo .nm {
+      font-family: var(--f); font-size: .82rem; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(242,237,228,.55);
+    }
+    .n-logo .badge {
+      font-family: var(--f); font-size: .82rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      background: var(--red); color: #f2ede4;
+      padding: .1em .45em .14em;
+    }
+    .n-back {
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); text-decoration: none;
+      display: flex; align-items: center; gap: .5rem;
+      transition: color .2s;
+    }
+    .n-back:hover { color: rgba(242,237,228,.75); }
+    .n-back svg { width: 12px; opacity: .6; }
+
+    /* ─── MAIN LAYOUT ─── */
+    .sp-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── LEFT PANEL ─── */
+    .sp-left {
+      background: var(--ink-2);
+      padding: 9rem 4.5rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+      border-right: 1px solid var(--rule-dk);
+    }
+    .sp-left-bg {
+      position: absolute; bottom: -4rem; left: -2rem;
+      font-family: var(--f); font-size: 20rem; font-weight: 800;
+      text-transform: uppercase; line-height: 1;
+      color: rgba(242,237,228,.018); pointer-events: none; user-select: none; white-space: nowrap;
+    }
+    .sp-glow {
+      position: absolute; top: -100px; right: -100px; z-index: 0;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(137,26,16,.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .sp-eyebrow {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 2rem; position: relative; z-index: 1;
+    }
+    .sp-hl {
+      font-family: var(--f); font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 800; line-height: .94; text-transform: uppercase;
+      letter-spacing: -.01em; color: #f2ede4;
+      margin-bottom: 2.5rem; position: relative; z-index: 1;
+    }
+    .sp-hl em {
+      font-style: italic;
+      background: var(--red); display: inline-block;
+      padding: .04em .14em .08em; line-height: 1;
+    }
+    .sp-sub {
+      font-size: .92rem; color: rgba(242,237,228,.48);
+      line-height: 1.75; max-width: 360px; margin-bottom: 3rem;
+      position: relative; z-index: 1;
+    }
+    .sp-assurances {
+      list-style: none; position: relative; z-index: 1;
+      border-top: 1px solid var(--rule-dk);
+    }
+    .sp-assurances li {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: .85rem 0; border-bottom: 1px solid var(--rule-dk);
+      font-size: .82rem; color: rgba(242,237,228,.42); line-height: 1.5;
+    }
+    .sp-assurances li::before {
+      content: '—'; font-family: var(--f); font-size: .65rem;
+      font-weight: 600; color: var(--red); flex-shrink: 0; margin-top: .1rem;
+    }
+    .sp-email {
+      margin-top: 2.5rem; position: relative; z-index: 1;
+      font-family: var(--f); font-size: .62rem; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(242,237,228,.2);
+    }
+    .sp-email a {
+      color: rgba(242,237,228,.42); text-decoration: none;
+      border-bottom: 1px solid rgba(242,237,228,.15);
+      padding-bottom: 1px; transition: color .2s, border-color .2s;
+    }
+    .sp-email a:hover { color: #f2ede4; border-color: rgba(242,237,228,.4); }
+
+    /* ─── RIGHT PANEL (form) ─── */
+    .sp-right {
+      background: var(--cream-2);
+      padding: 9rem 4.5rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .sp-form-label {
+      font-family: var(--f); font-size: .62rem; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 2.5rem;
+    }
+
+    /* Form elements */
+    .sp-field { margin-bottom: 1.6rem; }
+    .sp-field label {
+      display: block;
+      font-family: var(--f); font-size: .58rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: .5rem;
+    }
+    .sp-field input,
+    .sp-field select,
+    .sp-field textarea {
+      width: 100%;
+      background: #fff;
+      border: 1px solid rgba(13,12,10,.12);
+      padding: .85rem 1.1rem;
+      font-family: var(--b); font-size: .88rem; font-weight: 400;
+      color: var(--ink); line-height: 1.5;
+      appearance: none;
+      outline: none;
+      transition: border-color .2s;
+      border-radius: 0;
+    }
+    .sp-field input:focus,
+    .sp-field select:focus,
+    .sp-field textarea:focus {
+      border-color: var(--red);
+    }
+    .sp-field textarea { resize: vertical; min-height: 120px; }
+    .sp-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%237a7060' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1.1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    .sp-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .sp-submit-row {
+      margin-top: .8rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+    .sp-btn {
+      font-family: var(--f); font-size: .72rem; font-weight: 800;
+      letter-spacing: .22em; text-transform: uppercase;
+      background: var(--red); color: #f2ede4;
+      border: none; padding: 1.1rem 2.5rem;
+      cursor: pointer; display: inline-block;
+      transition: background .2s;
+      width: 100%;
+    }
+    .sp-btn:hover { background: var(--red-2); }
+    .sp-btn-note {
+      font-size: .7rem; color: rgba(13,12,10,.3);
+      line-height: 1.5; text-align: center;
+    }
+
+    /* Thank you state */
+    .sp-thankyou {
+      display: none;
+      text-align: center; padding: 3rem 0;
+    }
+    .sp-thankyou .ty-icon {
+      width: 48px; height: 48px;
+      border: 1px solid rgba(13,12,10,.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .sp-thankyou .ty-icon svg { width: 20px; color: var(--red); }
+    .sp-thankyou h3 {
+      font-family: var(--f); font-size: 1.8rem; font-weight: 800;
+      text-transform: uppercase; color: var(--ink);
+      margin-bottom: .8rem; line-height: 1;
+    }
+    .sp-thankyou p {
+      font-size: .88rem; color: var(--mid); line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink); border-top: 1px solid var(--rule-dk);
+      padding: 1.8rem 3rem; display: flex; align-items: center; justify-content: space-between;
+      grid-column: 1 / -1;
+    }
+    .f-logo {
+      font-family: var(--f); font-size: .7rem; font-weight: 800;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(242,237,228,.3); text-decoration: none; transition: color .2s;
+    }
+    .f-logo:hover { color: rgba(242,237,228,.7); }
+    footer p { font-size: .6rem; color: rgba(242,237,228,.15); letter-spacing: .06em; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .sp-wrap { grid-template-columns: 1fr; }
+      .sp-left { padding: 8rem 2rem 4rem; min-height: auto; }
+      .sp-right { padding: 4rem 2rem 5rem; }
+      nav { padding: 1rem 1.5rem; }
+      .sp-field-row { grid-template-columns: 1fr; gap: 0; }
+      footer { padding: 1.5rem; flex-direction: column; gap: .8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="n-logo">
+    <img src="logo-mark.png" width="28" height="28" alt="" style="display:block;">
+    <span class="nm">Story</span><span class="badge">Engine™</span>
+  </a>
+  <a href="index.html" class="n-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 4l-4 4 4 4"/></svg>
+    Back to site
+  </a>
+</nav>
+
+<!-- MAIN -->
+<div class="sp-wrap">
+
+  <!-- LEFT -->
+  <div class="sp-left">
+    <div class="sp-glow"></div>
+    <span class="sp-left-bg" aria-hidden="true">Pilot</span>
+    <div class="sp-eyebrow">— Start Your Pilot</div>
+    <h1 class="sp-hl">
+      One shoot.<br>
+      <em>Weeks</em> of<br>
+      content.
+    </h1>
+    <p class="sp-sub">Tell me about your brand and what you're working on. I'll come back to you within 24 hours to talk through what a pilot shoot could look like.</p>
+    <ul class="sp-assurances">
+      <li>No long-term commitment required</li>
+      <li>One structured shoot day, fully planned in advance</li>
+      <li>You walk away with an asset library, not just a video</li>
+      <li>Built for founder-led brands ready to move</li>
+    </ul>
+    <p class="sp-email">Or email directly — <a href="mailto:seb@storyengine.video">seb@storyengine.video</a></p>
+  </div>
+
+  <!-- RIGHT (form) -->
+  <div class="sp-right">
+    <div class="sp-form-label">Your details</div>
+
+    <form
+      id="pilot-form"
+      name="start-pilot"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/start-pilot-success"
+    >
+      <input type="hidden" name="form-name" value="start-pilot" />
+      <p style="display:none;"><label>Don't fill this in: <input name="bot-field" /></label></p>
+
+      <div class="sp-field-row">
+        <div class="sp-field">
+          <label for="sp-name">Your name</label>
+          <input id="sp-name" name="name" type="text" placeholder="First Last" required />
+        </div>
+        <div class="sp-field">
+          <label for="sp-brand">Brand name</label>
+          <input id="sp-brand" name="brand" type="text" placeholder="Your brand" required />
+        </div>
+      </div>
+
+      <div class="sp-field">
+        <label for="sp-email">Email address</label>
+        <input id="sp-email" name="email" type="email" placeholder="you@yourbrand.com" required />
+      </div>
+
+      <div class="sp-field">
+        <label for="sp-stage">Where are you right now?</label>
+        <select id="sp-stage" name="stage" required>
+          <option value="" disabled selected>Select your stage</option>
+          <option value="pre-launch">Pre-launch — building content ahead of launch</option>
+          <option value="early-stage">Early stage — need to establish a content system</option>
+          <option value="scaling">Scaling — existing content but needs more structure</option>
+          <option value="relaunch">Relaunching or refreshing the brand</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="sp-field">
+        <label for="sp-message">Tell me about your brand and what you're trying to build</label>
+        <textarea id="sp-message" name="message" placeholder="What does your brand do, who's it for, and what content challenge are you facing?" required></textarea>
+      </div>
+
+      <div class="sp-submit-row">
+        <button type="submit" class="sp-btn">Send my request</button>
+        <p class="sp-btn-note">I'll reply within 24 hours — usually sooner.</p>
+      </div>
+    </form>
+
+    <div class="sp-thankyou" id="sp-thankyou">
+      <div class="ty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Request sent.</h3>
+      <p>I'll be in touch within 24 hours.<br>In the meantime, take a look at <a href="pilot.html" style="color:var(--red);text-decoration:none;border-bottom:1px solid var(--red);">how a pilot shoot works</a>.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="f-logo">Story Engine™</a>
+  <p>© 2025 Marshall Creative. All rights reserved.</p>
+</footer>
+
+<script>
+  // Intercept form → show inline thank-you
+  const form = document.getElementById('pilot-form');
+  const ty   = document.getElementById('sp-thankyou');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      });
+    } catch(_) {}
+
+    form.style.display = 'none';
+    ty.style.display = 'block';
+  });
+</script>
+</body>
+</html>
