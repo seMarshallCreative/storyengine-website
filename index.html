@@ -889,6 +889,69 @@
       .hero-hl { font-size: 1.8rem; }
       footer { flex-direction: column; gap: .8rem; text-align: center; }
     }
+
+    /* ─── Effect 2: Magnetic Buttons ─── */
+    .btn, .ghost-link { will-change: transform; }
+
+    /* ─── Effect 5: Hero parallax ─── */
+    .hero-glow, .hero-glow-2 { will-change: transform; }
+
+    /* ─── Effect 7: Hero ambient gradient ─── */
+    .hero-ambient {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+    }
+    .hero-ambient-ring {
+      position: absolute; inset: -40%; width: 180%; height: 180%;
+      background: conic-gradient(
+        from 0deg at 32% 58%,
+        rgba(137,26,16,.09) 0deg,
+        rgba(13,12,10,0) 85deg,
+        rgba(196,180,154,.04) 180deg,
+        rgba(13,12,10,0) 275deg,
+        rgba(137,26,16,.09) 360deg
+      );
+      animation: heroAmbientSpin 22s linear infinite;
+    }
+    @keyframes heroAmbientSpin { to { transform: rotate(360deg); } }
+
+    /* ─── Effect 9: Prod-item pulse glow (cream bg) ─── */
+    .prod-item { position: relative; overflow: hidden; }
+    .prod-item::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 90% 55% at 50% 115%, rgba(137,26,16,.07) 0%, transparent 70%);
+      opacity: 0; transition: opacity .5s ease;
+    }
+    .prod-item:hover::after { opacity: 1; }
+
+    /* Rebuilt items glow (dark bg) */
+    .rebuilt-items li { position: relative; overflow: hidden; transition: background .3s; }
+    .rebuilt-items li::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 100% 70% at 50% 110%, rgba(137,26,16,.1) 0%, transparent 70%);
+      opacity: 0; transition: opacity .5s ease;
+    }
+    .rebuilt-items li:hover { background: rgba(242,237,228,.015); }
+    .rebuilt-items li:hover::after { opacity: 1; }
+
+    /* ─── Effect 10: Ghost marquee ─── */
+    .marquee-ghost-wrap {
+      background: var(--ink-2); overflow: hidden;
+      padding: .1rem 0; white-space: nowrap;
+      border-bottom: 1px solid rgba(255,255,255,.03);
+    }
+    .marquee-ghost-track {
+      display: inline-flex; align-items: center;
+      animation: marqueeScroll 58s linear infinite reverse;
+    }
+    .marquee-ghost-item {
+      font-family: var(--f); font-size: 2.6rem; font-weight: 800;
+      letter-spacing: -.02em; text-transform: uppercase; line-height: 1.12;
+      color: rgba(242,237,228,.045); padding: 0 5rem; white-space: nowrap;
+    }
+    .marquee-ghost-sep {
+      color: rgba(137,26,16,.22); font-family: var(--f);
+      font-size: 2.6rem; font-weight: 800; line-height: 1.12; padding: 0 1rem;
+    }
   </style>
 </head>
 <body>
@@ -913,6 +976,7 @@
 <section id="hero">
   <div class="hero-glow"></div>
   <div class="hero-glow-2"></div>
+  <div class="hero-ambient" aria-hidden="true"><div class="hero-ambient-ring"></div></div>
   <div class="hero-body">
     <div class="hero-eyebrow">
       <div class="he-brand">
@@ -968,6 +1032,24 @@
     <span class="marquee-dot">•</span>
     <span class="marquee-item">Content with a Spine</span>
     <span class="marquee-dot">•</span>
+  </div>
+</div>
+
+<!-- GHOST MARQUEE -->
+<div class="marquee-ghost-wrap" aria-hidden="true">
+  <div class="marquee-ghost-track">
+    <span class="marquee-ghost-item">One Shoot</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Many Channels</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Visual Continuity</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Pre-Purposed Content</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Every Frame Has a Job</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Content with a Spine</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">One Shoot</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Many Channels</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Visual Continuity</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Pre-Purposed Content</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Every Frame Has a Job</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Content with a Spine</span><span class="marquee-ghost-sep">·</span>
   </div>
 </div>
 
@@ -1400,6 +1482,33 @@
   }, { threshold: 0.25 });
   const patSection = document.querySelector('#pattern');
   if (patSection) patObs.observe(patSection);
+
+  // ─── Effect 2: Magnetic Buttons ───
+  document.querySelectorAll('.btn, .ghost-link').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform .1s ease, background .25s, border-color .25s, color .25s';
+    });
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width  / 2) * .22;
+      const y = (e.clientY - r.top  - r.height / 2) * .30;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform .55s cubic-bezier(.34,1.56,.64,1), background .25s, border-color .25s, color .25s';
+      btn.style.transform = 'translate(0,0)';
+      setTimeout(() => { btn.style.transition = ''; }, 560);
+    });
+  });
+
+  // ─── Effect 5: Hero parallax ───
+  const heroGlow  = document.querySelector('.hero-glow');
+  const heroGlow2 = document.querySelector('.hero-glow-2');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (heroGlow)  heroGlow.style.transform  = `translateY(${y * .13}px)`;
+    if (heroGlow2) heroGlow2.style.transform = `translateY(${y * .06}px)`;
+  }, { passive: true });
 </script>
 </body>
 </html>

@@ -289,6 +289,68 @@
       .stats-bar { padding: 2rem 1.5rem; }
       footer { flex-direction: column; gap: 1rem; padding: 1.5rem; text-align: center; }
     }
+
+    /* ─── Effect 2: Magnetic Buttons ─── */
+    .btn, .btn-white { will-change: transform; }
+
+    /* ─── Effect 5: Parallax ─── */
+    .hero-img-ph { will-change: transform; }
+
+    /* ─── Effect 7: Final CTA ambient gradient ─── */
+    .fcta-ambient {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .fcta-ambient-ring {
+      position: absolute; inset: -40%; width: 180%; height: 180%;
+      background: conic-gradient(
+        from 0deg at 50% 72%,
+        rgba(137,26,16,.22) 0deg,
+        rgba(13,12,10,0) 100deg,
+        rgba(196,180,154,.05) 180deg,
+        rgba(13,12,10,0) 260deg,
+        rgba(137,26,16,.22) 360deg
+      );
+      animation: fctaAmbient 18s linear infinite;
+    }
+    @keyframes fctaAmbient { to { transform: rotate(360deg); } }
+
+    /* ─── Effect 9: Output lane hover glow ─── */
+    .output-lane { transition: background .3s; position: relative; overflow: hidden; }
+    .output-lane::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 100% 45% at 50% 115%, rgba(137,26,16,.07) 0%, transparent 70%);
+      opacity: 0; transition: opacity .5s ease;
+    }
+    .output-lane:hover { background: rgba(13,12,10,.015); }
+    .output-lane:hover::after { opacity: 1; }
+
+    /* Uses list row hover ─── */
+    .uses-list li { transition: background .25s; position: relative; }
+    .uses-list li .uses-name { transition: color .25s; }
+    .uses-list li:hover { background: rgba(137,26,16,.04); }
+    .uses-list li:hover .uses-name { color: var(--red); }
+
+    /* ─── Effect 10: Ghost marquee (cream bg) ─── */
+    .marquee-ghost-wrap {
+      background: var(--cream-3); overflow: hidden;
+      padding: .12rem 0; white-space: nowrap;
+      border-top: 1px solid rgba(13,12,10,.05);
+      border-bottom: 1px solid rgba(13,12,10,.05);
+    }
+    .marquee-ghost-track {
+      display: inline-flex; align-items: center;
+      animation: mqGhostPilot 60s linear infinite reverse;
+    }
+    @keyframes mqGhostPilot { to { transform: translateX(-50%); } }
+    .marquee-ghost-item {
+      font-family: var(--f); font-size: 2.4rem; font-weight: 800;
+      letter-spacing: -.02em; text-transform: uppercase; line-height: 1.15;
+      color: rgba(13,12,10,.05); padding: 0 5rem; white-space: nowrap;
+    }
+    .marquee-ghost-sep {
+      font-family: var(--f); font-size: 2.4rem; font-weight: 800; line-height: 1.15;
+      color: rgba(137,26,16,.14); padding: 0 1rem;
+    }
   </style>
 </head>
 <body>
@@ -353,15 +415,15 @@
   <p class="stats-bar-note">*A typical pilot delivers</p>
   <div class="stats-bar-grid">
     <div class="stat-cell">
-      <span class="n">7</span>
+      <span class="n" data-target="7">0</span>
       <span class="l">Story Reels</span>
     </div>
     <div class="stat-cell">
-      <span class="n">15</span>
+      <span class="n" data-target="15">0</span>
       <span class="l">PDP / Product Clips</span>
     </div>
     <div class="stat-cell">
-      <span class="n">1</span>
+      <span class="n" data-target="1">0</span>
       <span class="l">Shoot Cycle</span>
     </div>
     <div class="stat-cell">
@@ -494,6 +556,24 @@
   </div>
 </section>
 
+<!-- GHOST MARQUEE -->
+<div class="marquee-ghost-wrap" aria-hidden="true">
+  <div class="marquee-ghost-track">
+    <span class="marquee-ghost-item">One Shoot</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Weeks of Content</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Pre-Purposed</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Every Channel</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Story Engine™</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Built Before You Shoot</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">One Shoot</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Weeks of Content</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Pre-Purposed</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Every Channel</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Story Engine™</span><span class="marquee-ghost-sep">·</span>
+    <span class="marquee-ghost-item">Built Before You Shoot</span><span class="marquee-ghost-sep">·</span>
+  </div>
+</div>
+
 <!-- WHERE THIS CONTENT GETS USED -->
 <section id="uses">
   <div class="uses-wrap">
@@ -596,6 +676,7 @@
 
 <!-- FINAL CTA -->
 <section id="final-cta">
+  <div class="fcta-ambient" aria-hidden="true"><div class="fcta-ambient-ring"></div></div>
   <div class="fcta-wrap fu">
     <div class="fcta-tag">Story Reels</div>
     <h2 class="fcta-hl">
@@ -624,6 +705,55 @@
     { threshold: 0.1 }
   );
   document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+  // ─── Effect 2: Magnetic Buttons ───
+  document.querySelectorAll('.btn, .btn-white').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform .1s ease, background .25s, border-color .25s, color .25s';
+    });
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width  / 2) * .22;
+      const y = (e.clientY - r.top  - r.height / 2) * .30;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform .55s cubic-bezier(.34,1.56,.64,1), background .25s, border-color .25s, color .25s';
+      btn.style.transform = 'translate(0,0)';
+      setTimeout(() => { btn.style.transition = ''; }, 560);
+    });
+  });
+
+  // ─── Effect 4: Scroll counters — stats bar ───
+  const counterEls = document.querySelectorAll('.stat-cell .n[data-target]');
+  const cObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      let start = null;
+      const dur = 1500;
+      const tick = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      cObs.unobserve(el);
+    });
+  }, { threshold: 0.65 });
+  counterEls.forEach(el => cObs.observe(el));
+
+  // ─── Effect 5: Hero parallax ───
+  const heroImgPh    = document.querySelector('.hero-img-ph');
+  const heroStatBadge = document.querySelector('.hero-stat-badge');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (heroImgPh)     heroImgPh.style.transform     = `translateY(${y * .1}px)`;
+    if (heroStatBadge) heroStatBadge.style.transform  = `translateY(${y * .04}px)`;
+  }, { passive: true });
 </script>
 </body>
 </html>
