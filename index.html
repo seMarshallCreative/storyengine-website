@@ -33,7 +33,7 @@
       --b:       'Syne', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; overflow-x: clip; }
 
     body {
       background: var(--ink);
@@ -243,7 +243,7 @@
     /* ─────────────── ABOUT ─────────────── */
     #about {
       background: var(--cream); color: var(--ink);
-      padding: 6rem 3rem 0; position: relative;
+      padding: 6rem 3rem 0; position: relative; overflow: hidden;
     }
     .about-wrap {
       max-width: 1200px; margin: 0 auto;
@@ -276,7 +276,7 @@
     .about-cap .tl { font-size: .65rem; color: var(--mid); }
     .about-bg-text {
       position: absolute; bottom: -2rem; right: -1rem;
-      font-family: var(--f); font-size: 20rem; font-weight: 800;
+      font-family: var(--f); font-size: clamp(8rem, 24vw, 20rem); font-weight: 800;
       text-transform: uppercase; line-height: 1;
       color: rgba(13,12,10,.04); pointer-events: none; user-select: none; z-index: 0;
     }
@@ -986,6 +986,21 @@
       .case-img::before, .case-img::after { display: none !important; }
       .case-img .case-photo { transform: none !important; }
       #cursor-dot, #cursor-ring, .trail-dot { display: none !important; }
+    }
+  
+    /* ─── Mobile hero fixes ─── */
+    @media (max-width: 960px) {
+      .hero-bottom { flex-wrap: wrap; gap: 1.3rem; }
+    }
+    @media (max-width: 640px) {
+      .hero-diag .asset-squares-grid {
+        grid-template-columns: repeat(14, 1fr);
+        gap: 4px; width: 100%; max-width: 430px;
+      }
+      .hero-diag .asset-sq { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .hero-cta-group { flex-wrap: wrap; gap: 1.2rem; row-gap: 1rem; }
+      .hero-sub { max-width: 100%; }
     }
   </style>
   <script type="application/ld+json">
