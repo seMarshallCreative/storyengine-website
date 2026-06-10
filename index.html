@@ -230,6 +230,23 @@
       color: rgba(242,237,228,.45); margin-top: 2rem; max-width: 380px; line-height: 1.8;
     }
 
+    .hero-offer {
+      display: flex; align-items: center; gap: .8rem;
+      margin-top: 2rem; flex-wrap: wrap;
+    }
+    .ho-tag {
+      font-family: var(--f); font-size: .68rem; font-weight: 800;
+      letter-spacing: .18em; text-transform: uppercase;
+      background: var(--red); color: #f2ede4; padding: .25em .6em .3em;
+    }
+    .ho-txt {
+      font-family: var(--f); font-size: .8rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(242,237,228,.78);
+    }
+    @media (max-width: 640px) {
+      .ho-txt { font-size: .7rem; letter-spacing: .1em; }
+    }
     .hero-bottom {
       position: relative; z-index: 2;
       display: flex; align-items: center; justify-content: space-between;
@@ -1145,10 +1162,15 @@
       </div>
     </div>
 
+    <div class="hero-offer fu" style="transition-delay:.08s">
+      <span class="ho-tag">Try it</span>
+      <span class="ho-txt">One-day pilot shoot &middot; Full content library &middot; From &pound;750 &middot; No retainer</span>
+    </div>
+
     <div class="hero-bottom">
       <div class="hero-cta-group">
-        <a href="pilot.html" class="btn">See how a pilot works</a>
-        <a href="#about" class="ghost-link">Learn more →</a>
+        <a href="start-pilot.html" class="btn fill">Start my pilot</a>
+        <a href="pilot.html" class="ghost-link">See how a pilot works →</a>
       </div>
       <span class="hero-loc">Serving UK DTC lifestyle brands</span>
     </div>
