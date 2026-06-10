@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+
+# Source / working files — not deployed
+StoryEngine_files/
+_dev/
+
+# Large video files — not deployed
+video/BAHE_01A_Character.mp4.mov
+video/BAHE_11_HeroAspirational.mov
+video/FOUNDATIONS.mp4
+video/bahe-slowmo.mp4
+
+
+# Build artifact for drag-drop deploys
+deploy/
