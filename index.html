@@ -370,7 +370,11 @@
     .case-stat .cs-n {
       font-family: var(--f); font-size: clamp(2rem, 3.6vw, 3.4rem);
       font-weight: 800; color: var(--red-2); line-height: 1; display: block;
-      letter-spacing: -.01em; text-shadow: 0 1px 18px rgba(13,12,10,.6);
+      letter-spacing: -.01em;
+      text-shadow:
+        0 0 1px rgba(242,237,228,.55),
+        0 0 14px rgba(242,237,228,.32),
+        0 1px 20px rgba(13,12,10,.55);
     }
     .case-stat .cs-l {
       font-family: var(--f); font-size: .64rem; font-weight: 700;
@@ -391,8 +395,13 @@
     .case-top .case-q { color: rgba(242,237,228,.65); }
     .case-top .case-attr { color: rgba(242,237,228,.4); }
     @media (max-width: 640px) {
-      .case-top { padding: 2rem 1.8rem 4rem; }
+      .case-img { height: auto; }
+      .case-top {
+        position: static; background: none;
+        padding: 2.2rem 1.8rem 1.6rem;
+      }
       .case-top .case-q, .case-top .case-attr { display: none; }
+      .case-photo { position: static; width: 100%; height: 70vw; object-fit: cover; }
       .case-overlay { padding: 2.5rem 1.8rem 1.4rem; }
     }
 
@@ -818,7 +827,7 @@
     }
     .hero-diag .asset-squares-grid {
       display: inline-grid;
-      grid-template-columns: repeat(14, 34px);
+      grid-template-columns: repeat(7, 34px);
       grid-template-rows: repeat(2, 34px);
       gap: 5px;
     }
@@ -1064,8 +1073,8 @@
     }
     @media (max-width: 640px) {
       .hero-diag .asset-squares-grid {
-        grid-template-columns: repeat(14, 1fr);
-        gap: 4px; width: 100%; max-width: 430px;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px; width: 100%; max-width: 300px;
       }
       .hero-diag .asset-sq { width: 100%; height: auto; aspect-ratio: 1 / 1; }
       .hero-bottom { flex-direction: column; align-items: flex-start; }
@@ -1149,22 +1158,27 @@
     <!-- Hero asset squares — flush left under headline -->
     <div class="hero-diag fu">
       <div class="asset-squares-grid">
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div><div class="asset-sq"></div>
-        <div class="asset-sq"></div><div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+        <div class="asset-sq"></div>
+      </div>
       </div>
     </div>
 
     <div class="hero-offer fu" style="transition-delay:.08s">
       <span class="ho-tag">Try it</span>
-      <span class="ho-txt">One-day pilot shoot &middot; Full content library &middot; From &pound;750 &middot; No retainer</span>
+      <span class="ho-txt">One-day pilot &middot; Full content library &middot; &pound;750 &middot; Booking July</span>
     </div>
 
     <div class="hero-bottom">
@@ -1247,7 +1261,8 @@
     <p class="pilot-desc">One day on location. Built around your brand — not a brief template. Walk away with a full content library.</p>
     <div style="position:relative;z-index:1;">
       <a href="start-pilot.html" class="btn fill">Start my pilot</a>
-      <p class="pilot-note">From &pound;750 &middot; One day &middot; No long-term commitment.</p>
+      <p class="pilot-note">&pound;750 &middot; One day &middot; No long-term commitment.</p>
+      <p class="pilot-note">I run a small number of pilots each month &mdash; currently booking July.</p>
     </div>
   </div>
 </section>
@@ -1461,16 +1476,16 @@
 <section id="contact">
   <span class="contact-bg" aria-hidden="true">Pilot</span>
   <div class="contact-wrap">
-    <div class="contact-ey fu">Story Engine™ &nbsp;·&nbsp; Pilot from £750</div>
+    <div class="contact-ey fu">Story Engine™ &nbsp;·&nbsp; £750 Pilot &nbsp;·&nbsp; Booking July</div>
     <h2 class="contact-hl fu" style="transition-delay:.06s">
       Start with<br>
       a <span class="hi">pilot.</span>
     </h2>
     <p class="contact-desc fu" style="transition-delay:.1s">
-      One structured shoot. A content library your team can keep using. No retainer — just a clear starting point for your brand's content.
+      One structured shoot. A content library your team keeps using &mdash; instead of another month of asking what to post next week. Tell me about your brand and I&rsquo;ll reply within one working day with <strong style="color:#f2ede4;">three shoot ideas</strong>, before you&rsquo;ve paid anything.
     </p>
     <div class="contact-row fu" style="transition-delay:.14s">
-      <a href="start-pilot.html" class="btn fill">Book a call</a>
+      <a href="start-pilot.html" class="btn fill">Get three shoot ideas</a>
       <a href="pilot.html" class="ghost-link">See what's included →</a>
     </div>
   </div>

@@ -15,3 +15,10 @@ video/bahe-slowmo.mp4
 
 # Build artifact for drag-drop deploys
 deploy/
+
+# Job applications — not part of the site
+applications/
+
+# Local draft — never deploy
+index-draft.html
+pilot-draft.html

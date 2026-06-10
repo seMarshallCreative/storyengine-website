@@ -121,7 +121,7 @@
     .hero-sub strong { color: var(--ink); font-weight: 600; }
     .hero-cta-row { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
     .price-badge .price {
-      font-family: var(--f); font-size: 1.85rem; font-weight: 800;
+      font-family: var(--f); font-size: 2.5rem; font-weight: 800;
       letter-spacing: .04em; color: #fff;
       background: var(--red-2); padding: .3em .85em;
       display: block;
@@ -344,7 +344,7 @@
       position: fixed; inset: 0; z-index: 9999;
       background: #0d0c0a;
       display: flex; align-items: center; justify-content: center;
-      animation: piExit .7s cubic-bezier(.76, 0, .24, 1) 3.2s forwards;
+      animation: piExit .55s cubic-bezier(.76, 0, .24, 1) 1.5s forwards;
     }
     @keyframes piExit {
       to { transform: translateY(-100%); }
@@ -362,7 +362,7 @@
       letter-spacing: .32em; text-transform: uppercase;
       color: var(--red); margin-bottom: 2.2rem;
       opacity: 0;
-      animation: piFadeUp .45s ease .25s forwards;
+      animation: piFadeUp .3s ease .1s forwards;
     }
 
     /* Big headline */
@@ -373,8 +373,8 @@
       letter-spacing: -.02em; color: #f2ede4;
       margin-bottom: 2.8rem;
     }
-    .pi-w1 { display: block; opacity: 0; animation: piFadeUp .4s cubic-bezier(.16,1,.3,1) .5s forwards; }
-    .pi-w2 { display: block; opacity: 0; animation: piFadeUp .4s cubic-bezier(.16,1,.3,1) .75s forwards; }
+    .pi-w1 { display: block; opacity: 0; animation: piFadeUp .35s cubic-bezier(.16,1,.3,1) .2s forwards; }
+    .pi-w2 { display: block; opacity: 0; animation: piFadeUp .35s cubic-bezier(.16,1,.3,1) .35s forwards; }
     .pi-w2 em { font-style: normal; color: rgba(242,237,228,.32); }
 
     /* Rule */
@@ -382,7 +382,7 @@
       height: 1px; width: 0;
       background: rgba(242,237,228,.15);
       margin-bottom: 1.4rem;
-      animation: piGrow .55s ease 1.15s forwards;
+      animation: piGrow .4s ease .55s forwards;
     }
     @keyframes piGrow { to { width: 100%; } }
 
@@ -396,20 +396,20 @@
       border: 1px solid rgba(242,237,228,.12);
       border-radius: 2px; opacity: 0;
     }
-    .pi-sq:nth-child(1)  { animation: piSqIn .18s ease 1.35s forwards; }
-    .pi-sq:nth-child(2)  { animation: piSqIn .18s ease 1.43s forwards; }
-    .pi-sq:nth-child(3)  { animation: piSqIn .18s ease 1.51s forwards; }
-    .pi-sq:nth-child(4)  { animation: piSqIn .18s ease 1.59s forwards; }
-    .pi-sq:nth-child(5)  { animation: piSqIn .18s ease 1.67s forwards; }
-    .pi-sq:nth-child(6)  { animation: piSqIn .18s ease 1.75s forwards; }
-    .pi-sq:nth-child(7)  { animation: piSqIn .18s ease 1.83s forwards; }
-    .pi-sq:nth-child(8)  { animation: piSqIn .18s ease 1.91s forwards; }
-    .pi-sq:nth-child(9)  { animation: piSqIn .18s ease 1.99s forwards; }
-    .pi-sq:nth-child(10) { animation: piSqIn .18s ease 2.07s forwards; }
-    .pi-sq:nth-child(11) { animation: piSqIn .18s ease 2.15s forwards; }
-    .pi-sq:nth-child(12) { animation: piSqIn .18s ease 2.23s forwards; }
-    .pi-sq:nth-child(13) { animation: piSqIn .18s ease 2.31s forwards; }
-    .pi-sq:nth-child(14) { animation: piSqIn .18s ease 2.39s forwards; }
+    .pi-sq:nth-child(1)  { animation: piSqIn .15s ease 0.68s forwards; }
+    .pi-sq:nth-child(2)  { animation: piSqIn .15s ease 0.70s forwards; }
+    .pi-sq:nth-child(3)  { animation: piSqIn .15s ease 0.73s forwards; }
+    .pi-sq:nth-child(4)  { animation: piSqIn .15s ease 0.75s forwards; }
+    .pi-sq:nth-child(5)  { animation: piSqIn .15s ease 0.78s forwards; }
+    .pi-sq:nth-child(6)  { animation: piSqIn .15s ease 0.80s forwards; }
+    .pi-sq:nth-child(7)  { animation: piSqIn .15s ease 0.83s forwards; }
+    .pi-sq:nth-child(8)  { animation: piSqIn .15s ease 0.85s forwards; }
+    .pi-sq:nth-child(9)  { animation: piSqIn .15s ease 0.88s forwards; }
+    .pi-sq:nth-child(10)  { animation: piSqIn .15s ease 0.90s forwards; }
+    .pi-sq:nth-child(11)  { animation: piSqIn .15s ease 0.93s forwards; }
+    .pi-sq:nth-child(12)  { animation: piSqIn .15s ease 0.95s forwards; }
+    .pi-sq:nth-child(13)  { animation: piSqIn .15s ease 0.98s forwards; }
+    .pi-sq:nth-child(14)  { animation: piSqIn .15s ease 1.00s forwards; }
     @keyframes piSqIn {
       from { opacity: 0; transform: scale(.45); }
       60%  { transform: scale(1.12); }
@@ -422,7 +422,7 @@
       font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
       color: rgba(242,237,228,.35);
       opacity: 0;
-      animation: piFadeUp .5s ease 2.55s forwards;
+      animation: piFadeUp .35s ease 1.05s forwards;
     }
     .pi-becomes strong { color: rgba(242,237,228,.75); font-weight: 700; }
 
@@ -532,7 +532,7 @@
     </p>
     <div class="hero-cta-row">
       <div class="price-badge">
-        <span class="price">From £750</span>
+        <span class="price">£750</span>
       </div>
       <a href="start-pilot.html" class="btn fill">Start my pilot</a>
     </div>
@@ -831,7 +831,7 @@
     document.documentElement.classList.remove('pi-active');
     const intro = document.getElementById('pilot-intro');
     if (intro) intro.remove();
-  }, 3900);
+  }, 2100);
 
   // ─── Effect 5: Hero parallax ───
   const heroImgPh    = document.querySelector('.hero-img-ph');
