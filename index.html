@@ -318,9 +318,9 @@
     /* cover panel — only exists once JS arms the wipe, so the image can never be stuck hidden */
     .case-img.wipe-armed::before {
       content: ''; position: absolute; top: -2%; bottom: -2%; left: -12%; right: -12%;
-      background: var(--cream); z-index: 1;
+      background: var(--cream); z-index: 3;
       transform: skewX(-8deg) translateX(0);
-      transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+      transition: transform 2.4s cubic-bezier(.16,1,.3,1);
     }
     .case-img.wipe-armed.v::before { transform: skewX(-8deg) translateX(112%); }
     /* red cut riding the reveal edge */
@@ -328,12 +328,12 @@
       content: ''; position: absolute; top: -2%; bottom: -2%; left: -12%;
       width: 3px; background: var(--red);
       box-shadow: 0 0 18px rgba(137,26,16,.65);
-      transform: skewX(-8deg) translateX(0); opacity: 1; z-index: 2;
-      transition: transform 1.2s cubic-bezier(.16,1,.3,1), opacity .3s ease 1s;
+      transform: skewX(-8deg) translateX(0); opacity: 1; z-index: 4;
+      transition: transform 2.4s cubic-bezier(.16,1,.3,1), opacity .4s ease 2s;
     }
     .case-img.wipe-armed.v::after { transform: skewX(-8deg) translateX(112vw); opacity: 0; }
     /* image settles from a slight zoom as the wipe lands */
-    .case-img.wipe-armed .case-photo { transform: scale(1.07); transition: transform 1.7s cubic-bezier(.22,1,.36,1); }
+    .case-img.wipe-armed .case-photo { transform: scale(1.07); transition: transform 3s cubic-bezier(.22,1,.36,1); }
     .case-img.wipe-armed.v .case-photo { transform: scale(1); }
     .case-photo {
       position: absolute; inset: 0;
@@ -342,21 +342,70 @@
       display: block;
     }
 
-    .case-stats {
-      display: flex; gap: 0;
-      border-bottom: 1px solid rgba(13,12,10,.12);
-      margin-bottom: 1.6rem; padding-bottom: 1.4rem;
+    .case-overlay {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+      padding: 3.2rem 3rem 1.8rem;
+      background: linear-gradient(to top, rgba(13,12,10,.85) 0%, rgba(13,12,10,.45) 60%, transparent 100%);
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
     }
-    .case-stat { flex: 1; padding: 0 1.2rem 0 0; }
+    .case-stats { display: flex; gap: clamp(1.5rem, 5vw, 4rem); }
     .case-stat .cs-n {
-      font-family: var(--f); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-      font-weight: 800; color: var(--red); line-height: 1; display: block;
+      font-family: var(--f); font-size: clamp(1.8rem, 3.2vw, 3rem);
+      font-weight: 800; color: #f2ede4; line-height: 1; display: block;
       letter-spacing: -.01em;
     }
     .case-stat .cs-l {
-      font-family: var(--f); font-size: .58rem; font-weight: 700;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(13,12,10,.45); margin-top: .4rem; display: block;
+      font-family: var(--f); font-size: .6rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(242,237,228,.55); margin-top: .45rem; display: block;
+    }
+    .case-read {
+      font-family: var(--f); font-size: .85rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: #f2ede4; text-decoration: none;
+      border-bottom: 2px solid var(--red); padding-bottom: 3px;
+      transition: color .2s, border-color .2s; white-space: nowrap;
+    }
+    .case-read:hover { color: var(--red-2); border-color: rgba(242,237,228,.4); }
+
+    /* ─── THE THINKING — collapsible philosophy ─── */
+    #thinking { background: var(--ink); padding: 4.5rem 3rem; border-top: 1px solid var(--rule-dk); }
+    .think-wrap { max-width: 1200px; margin: 0 auto; }
+    .think-bar { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .think-hl {
+      font-family: var(--f); font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; text-transform: uppercase; line-height: 1.08;
+      color: #f2ede4; max-width: 560px;
+    }
+    .think-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .65s ease; }
+    .think-body-inner { overflow: hidden; min-height: 0; }
+    .think-body.open { grid-template-rows: 1fr; }
+    .think-row { border-top: 1px solid rgba(242,237,228,.1); }
+    .think-row:first-child { margin-top: 2.6rem; }
+    .think-row:last-of-type { border-bottom: 1px solid rgba(242,237,228,.1); }
+    .think-head {
+      width: 100%; display: flex; align-items: baseline; gap: 1.6rem;
+      background: none; border: none; cursor: pointer; text-align: left;
+      padding: 1.4rem .2rem;
+    }
+    .th-num { font-family: var(--f); font-size: .62rem; font-weight: 700; letter-spacing: .2em; color: var(--red-2); }
+    .th-title {
+      font-family: var(--f); font-size: clamp(1.2rem, 2.2vw, 1.6rem); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; color: #f2ede4; flex: 1;
+      transition: color .2s;
+    }
+    .think-head:hover .th-title { color: var(--red-2); }
+    .th-sub { font-size: .74rem; color: rgba(242,237,228,.38); }
+    .th-chev { color: rgba(242,237,228,.4); font-size: .85rem; transition: transform .3s; }
+    .think-head[aria-expanded="true"] .th-chev { transform: rotate(180deg); }
+    .think-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s ease; }
+    .think-panel-inner { overflow: hidden; min-height: 0; }
+    .think-panel.open { grid-template-rows: 1fr; }
+    .think-cta { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; padding: 2.2rem .2rem .4rem; }
+    @media (max-width: 700px) {
+      .th-sub { display: none; }
+      #thinking { padding: 3.5rem 1.8rem; }
     }
 
     /* Case → Pilot bridge */
@@ -1136,17 +1185,17 @@
         <p class="case-q">"We were getting all these files. Large and ungraded. No direction on what to do with them…"</p>
         <p class="case-attr">— Alex, Founder of Bahé</p>
       </div>
-      <div class="case-meta">
+    </div>
+    <div class="case-img fu">
+      <img src="img/bahe-case-full.jpg" alt="Bahé — on location" class="case-photo" loading="lazy" decoding="async">
+      <div class="case-overlay">
         <div class="case-stats">
           <div class="case-stat"><span class="cs-n" data-count="16">16</span><span class="cs-l">Story reels</span></div>
           <div class="case-stat"><span class="cs-n" data-count="30" data-suffix="+">30+</span><span class="cs-l">Product assets</span></div>
           <div class="case-stat"><span class="cs-n" data-count="3" data-suffix="+ mo">3+ mo</span><span class="cs-l">Still in use</span></div>
         </div>
-        <a href="case-study-bahe.html" class="link-red">Read the case study →</a>
+        <a href="case-study-bahe.html" class="case-read">Read the case study →</a>
       </div>
-    </div>
-    <div class="case-img fu">
-      <img src="img/bahe-case-full.jpg" alt="Bahé — on location" class="case-photo" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -1179,7 +1228,29 @@
   </div>
 </section>
 
-<!-- THE PATTERN -->
+<!-- THE THINKING — collapsible philosophy -->
+<section id="thinking">
+  <div class="think-wrap">
+    <div class="think-bar">
+      <div>
+        <div class="s-label light"><span class="dash"></span> The Thinking</div>
+        <h2 class="think-hl">How does one shoot become months of content?</h2>
+      </div>
+      <button class="btn" id="think-toggle" aria-expanded="false" aria-controls="think-body">Show the thinking &darr;</button>
+    </div>
+
+    <div class="think-body" id="think-body">
+      <div class="think-body-inner">
+
+        <div class="think-row">
+          <button class="think-head" aria-expanded="false">
+            <span class="th-num">01</span>
+            <span class="th-title">The Pattern</span>
+            <span class="th-sub">Campaigns end. Footage gets forgotten.</span>
+            <span class="th-chev" aria-hidden="true">&darr;</span>
+          </button>
+          <div class="think-panel">
+            <div class="think-panel-inner">
 <section id="pattern">
   <div class="pat-wrap">
     <div class="s-label fu"><span class="dash"></span> The Pattern</div>
@@ -1194,8 +1265,19 @@
     </ul>
   </div>
 </section>
+            </div>
+          </div>
+        </div>
 
-<!-- ONE SHOOT DIAGRAM — hierarchical tree -->
+        <div class="think-row">
+          <button class="think-head" aria-expanded="false">
+            <span class="th-num">02</span>
+            <span class="th-title">The Rebuild</span>
+            <span class="th-sub">Shoots designed around reuse.</span>
+            <span class="th-chev" aria-hidden="true">&darr;</span>
+          </button>
+          <div class="think-panel">
+            <div class="think-panel-inner">
 <section id="diagram">
   <div class="diag-wrap">
     <div class="s-label light fu"><span class="dash"></span> The solution</div>
@@ -1276,21 +1358,24 @@
     </div>
   </div>
 </section>
+            </div>
+          </div>
+        </div>
 
-<!-- PILOT NUDGE -->
-<div class="pilot-nudge">
-  <span class="pilot-nudge-txt">What's included in a pilot shoot?</span>
-  <a href="pilot.html" class="pilot-nudge-link">See what you get →</a>
-</div>
-
-<!-- ASSET LEAD-IN -->
+        <div class="think-row">
+          <button class="think-head" aria-expanded="false">
+            <span class="th-num">03</span>
+            <span class="th-title">The Assets</span>
+            <span class="th-sub">Four jobs, not one deliverable.</span>
+            <span class="th-chev" aria-hidden="true">&darr;</span>
+          </button>
+          <div class="think-panel">
+            <div class="think-panel-inner">
 <div class="asset-leadin">
   <div class="asset-leadin-wrap fu">
     <p class="asset-leadin-p">Those assets don't just multiply — they each serve a different purpose. Here's what they're built to do.</p>
   </div>
 </div>
-
-<!-- ASSET PURPOSE STRIP -->
 <section id="asset-strip">
   <div class="asset-strip-grid">
     <div class="asset-strip-item fu">
@@ -1331,6 +1416,19 @@
           <span class="asset-strip-name">Create reuse</span>
           <span class="asset-strip-desc">Assets that keep working.</span>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+            </div>
+          </div>
+        </div>
+
+        <div class="think-cta">
+          <a href="start-pilot.html" class="btn fill">Start my pilot</a>
+          <a href="case-study-bahe.html" class="ghost-link">Read the Bah&eacute; case study &rarr;</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1423,6 +1521,44 @@
       });
     }, { threshold: 0.6 });
     statEls.forEach(el => sObs.observe(el));
+  }
+
+
+  // ─── The Thinking: outer toggle + accordion ───
+  const thinkToggle = document.getElementById('think-toggle');
+  const thinkBody = document.getElementById('think-body');
+  if (thinkToggle && thinkBody) {
+    const rows = thinkBody.querySelectorAll('.think-row');
+    function closeAll() {
+      rows.forEach(r => {
+        r.querySelector('.think-panel').classList.remove('open');
+        r.querySelector('.think-head').setAttribute('aria-expanded', 'false');
+      });
+    }
+    thinkToggle.addEventListener('click', () => {
+      const open = thinkBody.classList.toggle('open');
+      thinkToggle.setAttribute('aria-expanded', open);
+      thinkToggle.innerHTML = open ? 'Hide the thinking \u2191' : 'Show the thinking \u2193';
+      if (open) {
+        const first = rows[0];
+        first.querySelector('.think-panel').classList.add('open');
+        first.querySelector('.think-head').setAttribute('aria-expanded', 'true');
+      } else {
+        closeAll();
+      }
+    });
+    rows.forEach(row => {
+      const head = row.querySelector('.think-head');
+      const panel = row.querySelector('.think-panel');
+      head.addEventListener('click', () => {
+        const wasOpen = panel.classList.contains('open');
+        closeAll();
+        if (!wasOpen) {
+          panel.classList.add('open');
+          head.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
 
   // Nav scroll
