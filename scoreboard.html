@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story Engine — Scoreboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --ink:#0d0c0a; --cream:#e9e3d6; --red:#891a10; --red2:#a82015; --f:'Barlow Condensed',sans-serif; }
+body { background:var(--ink); color:#f2ede4; font-family:'Inter',sans-serif; min-height:100vh; padding:3rem 2.5rem; }
+.wm { font-family:var(--f); font-weight:700; font-size:1rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(242,237,228,.5); }
+.wm .badge { background:var(--red); color:#f2ede4; padding:.1em .4em .15em; font-weight:800; letter-spacing:.1em; }
+h1 { font-family:var(--f); font-weight:800; font-size:clamp(2.2rem,5vw,3.6rem); text-transform:uppercase; margin:.6rem 0 2.5rem; }
+h1 em { font-style:italic; color:var(--red2); }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:3rem; }
+.card { border:1px solid rgba(242,237,228,.12); padding:1.4rem 1.5rem; }
+.card .n { font-family:var(--f); font-weight:800; font-size:3.2rem; line-height:1; color:var(--red2); }
+.card .l { font-family:var(--f); font-weight:700; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(242,237,228,.5); margin-top:.5rem; }
+.sec { font-family:var(--f); font-weight:700; font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(242,237,228,.4); margin-bottom:1rem; }
+.sec::before { content:''; display:inline-block; width:22px; height:2px; background:var(--red); vertical-align:middle; margin-right:.7rem; }
+.row { display:flex; align-items:center; gap:1rem; padding:.65rem 0; border-bottom:1px solid rgba(242,237,228,.07); }
+.row .p { font-family:var(--f); font-weight:600; font-size:.95rem; text-transform:uppercase; letter-spacing:.06em; width:170px; flex-shrink:0; }
+.row .bar { flex:1; height:14px; background:rgba(242,237,228,.06); position:relative; }
+.row .bar i { position:absolute; left:0; top:0; bottom:0; background:var(--red2); display:block; transition:width .6s ease; }
+.row .c { font-family:var(--f); font-weight:800; font-size:1.2rem; width:60px; text-align:right; color:#f2ede4; }
+.meta { margin-top:2.5rem; font-size:.75rem; color:rgba(242,237,228,.35); display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; }
+button { font-family:var(--f); font-weight:700; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; background:none; border:1px solid rgba(242,237,228,.25); color:#f2ede4; padding:.55rem 1.2rem; cursor:pointer; }
+button:hover { background:var(--red); border-color:var(--red); }
+#err { color:#e08a7f; font-size:.85rem; margin-top:1.5rem; display:none; line-height:1.6; }
+a { color:rgba(242,237,228,.5); }
+</style>
+</head>
+<body>
+<div class="wm">Story <span class="badge">Engine™</span></div>
+<h1>The <em>scoreboard.</em></h1>
+<div class="cards">
+  <div class="card"><div class="n" id="today">–</div><div class="l">Visitors today</div></div>
+  <div class="card"><div class="n" id="week">–</div><div class="l">Last 7 days</div></div>
+  <div class="card"><div class="n" id="month">–</div><div class="l">Last 30 days</div></div>
+</div>
+<div class="sec">Pages — last 7 days</div>
+<div id="pages"></div>
+<div class="meta">
+  <button onclick="load()">Refresh</button>
+  <span id="upd"></span>
+  <a href="https://storyengine.goatcounter.com" target="_blank">Full dashboard →</a>
+</div>
+<p id="err">Couldn't reach GoatCounter. In your GoatCounter <a href="https://storyengine.goatcounter.com/settings/main" target="_blank">settings</a>, make sure <strong>"Allow adding visitor counts to your website"</strong> is enabled, then refresh. (An adblocker can also block this.)</p>
+<script>
+const BASE = 'https://storyengine.goatcounter.com/counter/';
+const PAGES = [
+  ['Homepage','/'],
+  ['Pilot page','/pilot.html'],
+  ['Case study','/case-study-bahe.html'],
+  ['Start my pilot','/start-pilot.html'],
+  ['Contact','/contact.html'],
+];
+const d2s = d => d.toISOString().slice(0,10);
+async function count(path, days) {
+  const start = new Date(Date.now() - days*864e5);
+  const u = BASE + encodeURIComponent(path) + '.json?start=' + d2s(start);
+  const r = await fetch(u);
+  if (!r.ok) throw new Error(r.status);
+  const j = await r.json();
+  return parseInt(String(j.count_unique ?? j.count).replace(/[^0-9]/g,'')) || 0;
+}
+async function load() {
+  document.getElementById('err').style.display = 'none';
+  try {
+    const [t,w,m] = await Promise.all([count('TOTAL',0), count('TOTAL',7), count('TOTAL',30)]);
+    document.getElementById('today').textContent = t;
+    document.getElementById('week').textContent = w;
+    document.getElementById('month').textContent = m;
+    const counts = await Promise.all(PAGES.map(p => count(p[1],7).catch(()=>0)));
+    const max = Math.max(...counts, 1);
+    document.getElementById('pages').innerHTML = PAGES.map((p,i) =>
+      `<div class="row"><span class="p">${p[0]}</span><span class="bar"><i style="width:${Math.round(counts[i]/max*100)}%"></i></span><span class="c">${counts[i]}</span></div>`).join('');
+    document.getElementById('upd').textContent = 'Updated ' + new Date().toLocaleTimeString();
+  } catch(e) {
+    document.getElementById('err').style.display = 'block';
+  }
+}
+load();
+setInterval(load, 5*60*1000);
+</script>
+</body>
+</html>
