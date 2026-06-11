@@ -495,6 +495,16 @@
       min-height: 600px; background: var(--ink);
     }
     .pilot-img { position: relative; overflow: hidden; background: #141008; }
+    .pilot-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(160deg, rgba(13,12,10,.4) 0%, rgba(13,12,10,.15) 50%, rgba(137,26,16,.14) 100%);
+    }
+    .pilot-img::after {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: .55; mix-blend-mode: overlay;
+    }
+    .pilot-video { filter: contrast(1.07) saturate(1.08) brightness(.88); }
     .pilot-video {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
