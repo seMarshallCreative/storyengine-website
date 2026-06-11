@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /scoreboard
+Disallow: /scoreboard.html
+
+Sitemap: https://storyengine.video/sitemap.xml
