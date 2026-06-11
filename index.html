@@ -362,7 +362,7 @@
     .case-overlay {
       position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
       padding: 3.2rem 3rem 1.8rem;
-      background: linear-gradient(to top, rgba(13,12,10,.85) 0%, rgba(13,12,10,.45) 60%, transparent 100%);
+      background: linear-gradient(to top, rgba(13,12,10,.94) 0%, rgba(13,12,10,.6) 55%, transparent 100%);
       display: flex; align-items: flex-end; justify-content: space-between;
       gap: 2rem; flex-wrap: wrap;
     }
@@ -371,10 +371,6 @@
       font-family: var(--f); font-size: clamp(2rem, 3.6vw, 3.4rem);
       font-weight: 800; color: var(--red-2); line-height: 1; display: block;
       letter-spacing: -.01em;
-      text-shadow:
-        0 0 1px rgba(242,237,228,.55),
-        0 0 14px rgba(242,237,228,.32),
-        0 1px 20px rgba(13,12,10,.55);
     }
     .case-stat .cs-l {
       font-family: var(--f); font-size: .64rem; font-weight: 700;
@@ -402,7 +398,18 @@
       }
       .case-top .case-q, .case-top .case-attr { display: none; }
       .case-photo { position: static; width: 100%; height: 70vw; object-fit: cover; }
-      .case-overlay { padding: 2.5rem 1.8rem 1.4rem; }
+      .case-overlay {
+        padding: 1.8rem 1.4rem 1.1rem;
+        flex-direction: column; align-items: stretch; gap: .9rem;
+      }
+      .case-stats { width: 100%; justify-content: space-between; gap: 0; }
+      .case-stat { text-align: center; }
+      .case-stat .cs-n { font-size: 2.3rem; }
+      .case-stat .cs-l { font-size: .56rem; letter-spacing: .14em; }
+      .case-read-btn {
+        font-size: .58rem; padding: .55rem 1.1rem;
+        align-self: center; letter-spacing: .16em;
+      }
     }
 
     /* ─── THE THINKING — collapsible philosophy ─── */
@@ -415,6 +422,10 @@
       color: #f2ede4; max-width: 760px; letter-spacing: -.01em;
     }
     .think-hl em { font-style: italic; color: var(--red-2); }
+    .think-sub {
+      font-size: .9rem; color: rgba(242,237,228,.5);
+      line-height: 1.7; max-width: 540px; margin-top: 1.2rem;
+    }
     .think-body { display: block; }
     .think-body-inner { display: block; }
     .think-row { border-top: 1px solid rgba(242,237,228,.1); }
@@ -433,7 +444,14 @@
     }
     .think-head:hover .th-title { color: var(--red-2); }
     .th-sub { font-size: .74rem; color: rgba(242,237,228,.38); }
-    .th-chev { color: rgba(242,237,228,.4); font-size: .85rem; transition: transform .3s; }
+    .th-chev {
+      color: rgba(242,237,228,.55); font-size: .8rem;
+      width: 26px; height: 26px; flex-shrink: 0;
+      border: 1px solid rgba(242,237,228,.22);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .3s, border-color .2s, color .2s;
+    }
+    .think-head:hover .th-chev { border-color: var(--red-2); color: #f2ede4; }
     .think-head[aria-expanded="true"] .th-chev { transform: rotate(180deg); }
     .think-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s ease; }
     .think-panel-inner { overflow: hidden; min-height: 0; }
@@ -1114,13 +1132,12 @@
 <nav id="nav">
   <a href="#hero" class="n-logo">
     <span class="n-wordmark"><span class="he-name">Story</span><span class="he-badge">Engine™</span></span>
-    <span class="n-vc">Visual Continuity for Modern Brands</span>
   </a>
   <ul class="n-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="pilot.html">Pilot</a></li>
+    <li><a href="#about">Learn more</a></li>
+    <li><a href="pilot.html">Try a pilot</a></li>
   </ul>
-  <a href="bespoke.html" class="n-bespoke">Something more bespoke?</a>
+  <a href="bespoke.html" class="n-bespoke">Bespoke projects</a>
   <button class="n-burger" id="n-burger" aria-label="Open menu" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
@@ -1129,11 +1146,11 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
-  <a href="index.html#about">About</a>
-  <a href="pilot.html">Pilot</a>
+  <a href="index.html#about">Learn more</a>
+  <a href="pilot.html">Try a pilot</a>
   <a href="case-study-bahe.html">Case Study</a>
   <a href="start-pilot.html" class="mm-cta">Start my pilot</a>
-  <a href="bespoke.html" class="mm-sub">Something more bespoke?</a>
+  <a href="bespoke.html" class="mm-sub">Bespoke projects</a>
   <a href="contact.html" class="mm-sub">Contact</a>
 </div>
 
@@ -1176,7 +1193,7 @@
       </div>
     </div>
 
-    <div class="hero-offer fu" style="transition-delay:.08s">
+    <div class="hero-offer">
       <span class="ho-tag">Try it</span>
       <span class="ho-txt">One-day pilot &middot; Full content library &middot; &pound;750 &middot; Booking July</span>
     </div>
@@ -1274,6 +1291,7 @@
       <div>
         <div class="s-label light"><span class="dash"></span> The Thinking</div>
         <h2 class="think-hl">How does one shoot become <em>months of content?</em></h2>
+        <p class="think-sub">The shoot is planned backwards from the assets your brand needs after the campaign ends. Tap each step to see how.</p>
       </div>
     </div>
 
@@ -1311,7 +1329,7 @@
           <button class="think-head" aria-expanded="false">
             <span class="th-num">02</span>
             <span class="th-title">The Rebuild</span>
-            <span class="th-sub">Shoots designed around reuse.</span>
+            <span class="th-sub">Planned around reuse before filming starts.</span>
             <span class="th-chev" aria-hidden="true">&darr;</span>
           </button>
           <div class="think-panel">
@@ -1320,7 +1338,7 @@
   <div class="diag-wrap">
     <div class="s-label light fu"><span class="dash"></span> The solution</div>
     <h2 class="rebuilt-hl fu">So, I<br>rebuilt<br>the<br><em>shoot.</em></h2>
-    <p class="diag-intro fu" style="transition-delay:.06s">I design shoots around reusable content, so one shoot can support far more than a single campaign.</p>
+    <p class="diag-intro fu" style="transition-delay:.06s">Before we shoot, every scene is planned around where the footage needs to work: social, product pages, founder content and email.</p>
 
     <div class="fu" style="transition-delay:.1s">
 
@@ -1404,7 +1422,7 @@
           <button class="think-head" aria-expanded="false">
             <span class="th-num">03</span>
             <span class="th-title">The Assets</span>
-            <span class="th-sub">Four jobs, not one deliverable.</span>
+            <span class="th-sub">Every clip captured for a job: social, product, founder, email.</span>
             <span class="th-chev" aria-hidden="true">&darr;</span>
           </button>
           <div class="think-panel">
@@ -1482,7 +1500,7 @@
       a <span class="hi">pilot.</span>
     </h2>
     <p class="contact-desc fu" style="transition-delay:.1s">
-      One structured shoot. A content library your team keeps using &mdash; instead of another month of asking what to post next week. Tell me about your brand and I&rsquo;ll reply within one working day with <strong style="color:#f2ede4;">three shoot ideas</strong>, before you&rsquo;ve paid anything.
+      Tell me about your brand &mdash; I&rsquo;ll reply within one working day with <strong style="color:#f2ede4;">three shoot ideas</strong>. Free.
     </p>
     <div class="contact-row fu" style="transition-delay:.14s">
       <a href="start-pilot.html" class="btn fill">Get three shoot ideas</a>
@@ -1529,11 +1547,22 @@
       if (!e.isIntersecting) return;
       const v = e.target;
       v.src = v.dataset.lazySrc;
-      v.play().catch(()=>{});
+      v.load();
+      v.addEventListener('loadeddata', () => { v.play().catch(()=>{}); }, { once: true });
       vObs.unobserve(v);
     });
   }, { rootMargin: '200px' });
   lazyVids.forEach(v => vObs.observe(v));
+
+  // First interaction rescues any videos the browser refused to autoplay
+  ['touchstart','click','scroll'].forEach(ev => {
+    document.addEventListener(ev, () => {
+      document.querySelectorAll('video').forEach(v => {
+        if (v.hasAttribute('autoplay') && v.paused && v.src) v.play().catch(()=>{});
+      });
+    }, { once: true, passive: true });
+  });
+
 
 
   // Case stats — count up on scroll (skipped if reduced motion)
@@ -1546,8 +1575,7 @@
         const target = +el.dataset.count;
         const suffix = el.dataset.suffix || '';
         let start = null;
-        const dur = 1600;
-        const delay = 700;
+        const dur = 900;
         const tick = ts => {
           if (!start) start = ts;
           const p = Math.min((ts - start) / dur, 1);
@@ -1555,11 +1583,11 @@
           el.textContent = Math.round(ease * target) + suffix;
           if (p < 1) requestAnimationFrame(tick);
         };
-        setTimeout(() => requestAnimationFrame(tick), delay);
+        requestAnimationFrame(tick);
         sObs.unobserve(el);
       });
     }, { threshold: 0.6 });
-    statEls.forEach(el => sObs.observe(el));
+    statEls.forEach(el => { el.textContent = '0' + (el.dataset.suffix || ''); sObs.observe(el); });
   }
 
 

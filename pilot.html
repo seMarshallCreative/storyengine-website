@@ -293,7 +293,7 @@
       position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
     }
     .fcta-ambient-ring {
-      position: absolute; inset: -40%; width: 180%; height: 180%;
+      position: absolute; inset: -120%; width: 340%; height: 340%;
       background: conic-gradient(
         from 0deg at 50% 72%,
         rgba(137,26,16,.22) 0deg,
@@ -489,13 +489,12 @@
 <nav id="nav">
   <a href="index.html" class="n-logo">
     <span class="n-wordmark"><span class="he-name">Story</span><span class="he-badge">Engine™</span></span>
-    <span class="n-vc">Visual Continuity for Modern Brands</span>
   </a>
   <ul class="n-links">
-    <li><a href="index.html#about">About</a></li>
-    <li><a href="case-study-bahe.html">Case Study</a></li>
+    <li><a href="index.html#about">Learn more</a></li>
+    <li><a href="case-study-bahe.html">Case study</a></li>
   </ul>
-  <a href="bespoke.html" class="n-bespoke">Something more bespoke?</a>
+  <a href="bespoke.html" class="n-bespoke">Bespoke projects</a>
   <button class="n-burger" id="n-burger" aria-label="Open menu" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
@@ -504,11 +503,11 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <a href="index.html">Home</a>
-  <a href="index.html#about">About</a>
-  <a href="pilot.html">Pilot</a>
+  <a href="index.html#about">Learn more</a>
+  <a href="pilot.html">Try a pilot</a>
   <a href="case-study-bahe.html">Case Study</a>
   <a href="start-pilot.html" class="mm-cta">Start my pilot</a>
-  <a href="bespoke.html" class="mm-sub">Something more bespoke?</a>
+  <a href="bespoke.html" class="mm-sub">Bespoke projects</a>
   <a href="contact.html" class="mm-sub">Contact</a>
 </div>
 
@@ -819,11 +818,22 @@
       if (!e.isIntersecting) return;
       const v = e.target;
       v.src = v.dataset.lazySrc;
-      v.play().catch(()=>{});
+      v.load();
+      v.addEventListener('loadeddata', () => { v.play().catch(()=>{}); }, { once: true });
       vObs.unobserve(v);
     });
   }, { rootMargin: '200px' });
   lazyVids.forEach(v => vObs.observe(v));
+
+  // First interaction rescues any videos the browser refused to autoplay
+  ['touchstart','click','scroll'].forEach(ev => {
+    document.addEventListener(ev, () => {
+      document.querySelectorAll('video').forEach(v => {
+        if (v.hasAttribute('autoplay') && v.paused && v.src) v.play().catch(()=>{});
+      });
+    }, { once: true, passive: true });
+  });
+
 
   // ─── Page intro cleanup ───
   document.documentElement.classList.add('pi-active');
