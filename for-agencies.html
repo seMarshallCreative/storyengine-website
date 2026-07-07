@@ -363,6 +363,25 @@
     .case-link .ld { width: 18px; height: 1px; background: var(--blue); transition: width .2s; box-shadow: 0 0 6px rgba(220,242,255,.65); }
     .case-link:hover { color: #f2ede4; }
     .case-link:hover .ld { width: 30px; }
+
+    /* ── Featured card hover: burgundy grows, blue elements shift warm ── */
+    .case-row.featured { transition: box-shadow .45s ease, outline-color .45s ease; }
+    .case-row.featured:hover {
+      outline-color: rgba(137,26,16,.55);
+      box-shadow: 0 0 0 1px rgba(137,26,16,.35), 0 0 90px rgba(137,26,16,.55), 0 0 200px rgba(137,26,16,.28);
+    }
+    .case-row.featured:hover::before {
+      background: radial-gradient(ellipse 90% 70% at 70% 50%, rgba(137,26,16,.18) 0%, transparent 65%);
+    }
+    .case-row.featured::before { transition: background .45s ease; }
+    /* Shift child blue elements to burgundy on hover */
+    .case-row.featured:hover .case-link { color: rgba(210,120,110,.75); }
+    .case-row.featured:hover .case-link .ld { background: rgba(200,80,70,.9); box-shadow: 0 0 8px rgba(180,60,50,.6); }
+    .case-row.featured:hover .case-tag.bur { color: rgba(230,140,130,.95); border-color: rgba(160,40,30,.7); }
+    .case-row.featured:hover .vid-thumb:hover .vid-play { background: rgba(137,26,16,.85); border-color: rgba(180,60,50,.6); }
+    .case-row.featured:hover .vid-thumb:hover .vid-play svg { fill: rgba(242,237,228,.9); }
+    .case-row.featured:hover .vid-thumb-glow { background: linear-gradient(135deg, rgba(160,40,30,.12) 0%, transparent 55%); }
+    
     /* ── Featured / Bahé card ── */
     .case-row.featured { border-top: none; position: relative; outline: 1px solid rgba(137,26,16,.28); box-shadow: 0 0 0 1px rgba(137,26,16,.12), 0 0 60px rgba(137,26,16,.22), 0 0 140px rgba(137,26,16,.10); }
     .case-row.featured::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(137,26,16,.07) 0%, transparent 65%); pointer-events: none; z-index: 0; }
@@ -1145,6 +1164,7 @@
       <span class="tag-search-label">Here's what I shoot.</span>
       <div class="tag-search-rule"></div>
       <div class="tag-cloud">
+        <a class="float-tag" style="--td:.0s;--da:3.4s;color:rgba(220,110,100,.95);border-color:rgba(137,26,16,.6);background:rgba(137,26,16,.12);box-shadow:0 0 14px rgba(137,26,16,.25);" onclick="openLb('https://player.vimeo.com/video/1207709911?autoplay=1&badge=0&title=0&byline=0&portrait=0&dnt=1&transparent=0')"><svg width="7" height="8" viewBox="0 0 7 8" fill="rgba(220,110,100,.9)" style="flex-shrink:0"><polygon points="0,0 7,4 0,8"/></svg> Content Systems</a>
         <a class="float-tag" style="--td:.0s;--da:3.6s" onclick="openLb('https://player.vimeo.com/video/1207709911?autoplay=1&badge=0&title=0&byline=0&portrait=0&dnt=1&transparent=0')"><svg width="7" height="8" viewBox="0 0 7 8" fill="white" style="opacity:.7;flex-shrink:0"><polygon points="0,0 7,4 0,8"/></svg> Modular Content System</a>
         <a class="float-tag" style="--td:.0s;--da:3.8s" onclick="openLb('https://player.vimeo.com/video/1204982098?autoplay=1&badge=0&title=0&byline=0&portrait=0&dnt=1&transparent=0')"><svg width="7" height="8" viewBox="0 0 7 8" fill="white" style="opacity:.7;flex-shrink:0"><polygon points="0,0 7,4 0,8"/></svg> Brand Film</a>
         <a class="float-tag" style="--td:.15s;--da:4.3s" onclick="openLb('https://player.vimeo.com/video/1204966874?autoplay=1&badge=0&title=0&byline=0&portrait=0&dnt=1&transparent=0')"><svg width="7" height="8" viewBox="0 0 7 8" fill="white" style="opacity:.7;flex-shrink:0"><polygon points="0,0 7,4 0,8"/></svg> Event Video</a>
