@@ -413,15 +413,17 @@
     e.preventDefault();
     const data = new FormData(form);
     try {
-      await fetch('/', {
+      const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString(),
       });
+      if (!res.ok) throw new Error('Form submission failed: ' + res.status);
       wrap.style.display = 'none';
       ty.style.display   = 'block';
     } catch (err) {
-      // Fallback: let native submit happen
+      console.error('Netlify form submission error, falling back to native submit:', err);
+      // Fallback: let native submit happen (full page nav to action page)
       form.submit();
     }
   });

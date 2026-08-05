@@ -1503,8 +1503,9 @@
     <div class="section-wrap" style="max-width:640px;">
       <div class="section-label fu"><span class="dash"></span>Get in touch</div>
       <h2 class="contact-hl fu d1">Let's<br>talk it<br><em>through.</em></h2>
-      <form class="fu d1" name="agency-contact" method="POST" netlify style="margin-top:2.5rem;">
+      <form class="fu d1" name="agency-contact" method="POST" netlify netlify-honeypot="bot-field" style="margin-top:2.5rem;">
         <input type="hidden" name="form-name" value="agency-contact" />
+        <p style="display:none;"><label>Don't fill this in: <input name="bot-field" /></label></p>
         <div class="form-row"><label class="form-label">Your name</label><input class="form-input" type="text" name="name" placeholder="Jane Smith" required /></div>
         <div class="form-row"><label class="form-label">Agency / company</label><input class="form-input" type="text" name="agency" placeholder="Studio Name" /></div>
         <div class="form-row"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="you@agency.com" required /></div>
